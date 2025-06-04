@@ -83,7 +83,7 @@ bun link
 
 logsmith requires:
 
-- **Node.js 16+** or **Bun 1.0+**
+- **Bun 1.2+**
 - **Git** (for version control operations)
 - A project with a `package.json` file (or other version files)
 
@@ -102,50 +102,13 @@ logsmith patch --dry-run
 logsmith --help
 ```
 
-## Global vs Local Installation
-
-### Global Installation (Recommended)
-
-Install globally to use logsmith across all your projects:
-
-```sh
-npm install -g logsmith
-```
-
-Benefits:
-- Available in any project directory
-- Single installation for all projects
-- Easy to update
-
-### Local Installation (Per Project)
-
-Install as a development dependency for project-specific usage:
-
-```sh
-npm install --save-dev logsmith
-```
-
-Then use with npx or add to package.json scripts:
-
-```sh
-# Using npx
-npx logsmith patch
-
-# Or add to package.json scripts
-{
-  "scripts": {
-    "release": "logsmith patch --commit --tag --push"
-  }
-}
-```
-
 ## Platform Support
 
 logsmith works on all major platforms:
 
-- **macOS** (Intel and Apple Silicon)
-- **Linux** (Ubuntu, CentOS, Alpine, etc.)
-- **Windows** (Windows 10/11, WSL)
+- **macOS** _(Intel and Apple Silicon)_
+- **Linux** _(Ubuntu, CentOS, Alpine, etc.)_
+- **Windows** _(Windows 10/11, WSL)_
 
 ## Updating
 
@@ -153,10 +116,10 @@ Keep logsmith up to date:
 
 ```sh
 # Update global installation
-npm update -g logsmith
+bun update -g logsmith
 
 # Update local installation
-npm update logsmith
+bun update logsmith
 ```
 
 ## Uninstalling
@@ -165,10 +128,10 @@ Remove logsmith when no longer needed:
 
 ```sh
 # Remove global installation
-npm uninstall -g logsmith
+bun uninstall -g logsmith
 
 # Remove local installation
-npm uninstall logsmith
+bun uninstall logsmith
 ```
 
 ## Troubleshooting
@@ -178,10 +141,10 @@ npm uninstall logsmith
 **Command not found:**
 ```sh
 # Check if globally installed packages are in PATH
-echo $PATH | grep npm
+echo $PATH | grep bun
 
 # Reinstall globally
-npm install -g logsmith
+bun install -g logsmith
 ```
 
 **Permission errors (macOS/Linux):**
