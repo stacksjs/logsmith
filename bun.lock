@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "bumpx",
+      "name": "logsmith",
       "dependencies": {
         "ts-pkgx": "^0.2.1",
       },
@@ -35,15 +35,14 @@
         "typescript": "^5.8.3",
       },
     },
-    "packages/bumpx": {
-      "name": "@stacksjs/bumpx",
-      "version": "0.0.0",
+    "packages/logsmith": {
+      "name": "logsmith",
+      "version": "0.0.1",
       "bin": {
-        "bumpx": "./dist/bin/cli.js",
+        "logsmith": "./dist/bin/cli.js",
       },
       "dependencies": {
         "bunfig": "^0.10.0",
-        "cac": "^6.7.14",
       },
       "devDependencies": {
         "bun-plugin-dtsx": "^0.21.12",
@@ -543,8 +542,6 @@
     "@shikijs/vitepress-twoslash": ["@shikijs/vitepress-twoslash@3.2.1", "", { "dependencies": { "@shikijs/twoslash": "", "floating-vue": "^5.2.2", "mdast-util-from-markdown": "^2.0.2", "mdast-util-gfm": "^3.1.0", "mdast-util-to-hast": "^13.2.0", "shiki": "3.2.1", "twoslash": "^0.3.1", "twoslash-vue": "^0.3.1", "vue": "^3.5.13" } }, "sha512-lQNmw3v9gBFYdxfCW5upcDwfQu8BTJz4D4VPN72XElBA6gW82PKNmzZDoHhVcEmgm/cRQpPjpiY6CYChtv/AEw=="],
 
     "@shikijs/vscode-textmate": ["@shikijs/vscode-textmate@10.0.2", "", {}, "sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg=="],
-
-    "@stacksjs/bumpx": ["@stacksjs/bumpx@workspace:packages/bumpx"],
 
     "@stacksjs/cli": ["@stacksjs/cli@0.70.23", "", {}, "sha512-pbu6xESAtRIppcEQlhmRq0yZa1lnYAwtQHh7DmfDcUgVjvahQGe7PXoX+m2dhdFDRthFIVuLeHvrAf1JYv/JOQ=="],
 
@@ -1369,6 +1366,8 @@
     "lodash.sortby": ["lodash.sortby@4.7.0", "", {}, "sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA=="],
 
     "log-update": ["log-update@6.1.0", "", { "dependencies": { "ansi-escapes": "^7.0.0", "cli-cursor": "^5.0.0", "slice-ansi": "^7.1.0", "strip-ansi": "^7.1.0", "wrap-ansi": "^9.0.0" } }, "sha512-9ie8ItPR6tjY5uYJh8K/Zrv/RMZ5VOlOWvtZdEHYSTFKZfIBPQa9tOAEeAWhd+AnIneLJ22w5fjOYtoutpWq5w=="],
+
+    "logsmith": ["logsmith@workspace:packages/logsmith"],
 
     "longest-streak": ["longest-streak@3.1.0", "", {}, "sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g=="],
 

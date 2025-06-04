@@ -11,5 +11,4 @@ node_modules
 temp
 docs/.vitepress/cache
 .env
-packages/bumpx/bin/bumpx
 packages/logsmith/bin/logsmith

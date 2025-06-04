@@ -8,12 +8,6 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "paths": {
-      "@stacksjs/bumpx": [
-        "./packages/bumpx/src"
-      ],
-      "@stacksjs/bumpx/*": [
-        "./packages/bumpx/src/*"
-      ],
       "@stacksjs/logsmith": [
         "./packages/logsmith/src"
       ],

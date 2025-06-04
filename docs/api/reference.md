@@ -1,6 +1,6 @@
 # API Reference
 
-Complete reference documentation for bumpx commands, options, and programmatic API.
+Complete reference documentation for logsmith commands, options, and programmatic API.
 
 ## Command Line Interface
 
@@ -9,7 +9,7 @@ Complete reference documentation for bumpx commands, options, and programmatic A
 #### Version Bump Commands
 
 ```bash
-bumpx <release-type> [options]
+logsmith <release-type> [options]
 ```
 
 **Release Types:**
@@ -45,7 +45,7 @@ bumpx <release-type> [options]
 | `--dry-run` | `boolean` | `false` | Show changes without applying |
 | `--verbose` | `boolean` | `false` | Verbose output |
 | `--commits` | `boolean` | `false` | Show recent commits |
-| `--config` | `string` | `bumpx.config.ts` | Configuration file path |
+| `--config` | `string` | `logsmith.config.ts` | Configuration file path |
 
 ### Command Examples
 
@@ -53,66 +53,66 @@ bumpx <release-type> [options]
 
 ```bash
 # Patch version bump
-bumpx patch
+logsmith patch
 
 # Minor version bump with commit
-bumpx minor --commit
+logsmith minor --commit
 
 # Major version bump with full git workflow
-bumpx major --commit --tag --push
+logsmith major --commit --tag --push
 ```
 
 #### Advanced Usage
 
 ```bash
 # Interactive version selection with commit history
-bumpx prompt --commits --commit --tag
+logsmith prompt --commits --commit --tag
 
 # Custom files and message
-bumpx patch --files "package.json,VERSION.txt" --message "release: v%s"
+logsmith patch --files "package.json,VERSION.txt" --message "release: v%s"
 
 # Prerelease with custom identifier
-bumpx prerelease --preid beta --commit
+logsmith prerelease --preid beta --commit
 
 # Recursive monorepo update
-bumpx patch --recursive --commit --message "chore: bump all packages to %s"
+logsmith patch --recursive --commit --message "chore: bump all packages to %s"
 
 # Dry run to preview changes
-bumpx minor --recursive --dry-run --verbose
+logsmith minor --recursive --dry-run --verbose
 ```
 
 #### Git Integration
 
 ```bash
 # Basic git workflow
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 
 # Signed releases
-bumpx minor --commit --tag --sign
+logsmith minor --commit --tag --sign
 
 # Custom commit and tag messages
-bumpx patch --commit --tag \
+logsmith patch --commit --tag \
   --message "release: version %s" \
   --tag-message "Release v%s"
 
 # Skip git status check
-bumpx patch --commit --no-git-check
+logsmith patch --commit --no-git-check
 
 # Skip git hooks
-bumpx patch --commit --no-verify
+logsmith patch --commit --no-verify
 ```
 
 #### Post-Bump Actions
 
 ```bash
 # Install dependencies after bump
-bumpx patch --commit --install
+logsmith patch --commit --install
 
 # Run custom command after bump
-bumpx minor --commit --execute "npm run build && npm test"
+logsmith minor --commit --execute "npm run build && npm test"
 
 # Complex post-bump workflow
-bumpx major --commit --tag \
+logsmith major --commit --tag \
   --execute "npm run build && npm run test && npm publish"
 ```
 
@@ -123,13 +123,13 @@ bumpx major --commit --tag \
 #### Installation
 
 ```bash
-npm install @stacksjs/bumpx
+npm install @stacksjs/logsmith
 ```
 
 #### Basic Usage
 
 ```typescript
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 // Basic version bump
 await versionBump({
@@ -217,7 +217,7 @@ enum ProgressEventType {
 #### Progress Tracking
 
 ```typescript
-import { versionBump, ProgressEventType } from '@stacksjs/bumpx'
+import { versionBump, ProgressEventType } from '@stacksjs/logsmith'
 
 await versionBump({
   release: 'patch',
@@ -242,7 +242,7 @@ await versionBump({
 #### Error Handling
 
 ```typescript
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 try {
   await versionBump({
@@ -271,7 +271,7 @@ import {
   incrementVersion,
   isValidVersion,
   isReleaseType
-} from '@stacksjs/bumpx'
+} from '@stacksjs/logsmith'
 
 // Version increment
 const newVersion = incrementVersion('1.0.0', 'patch') // '1.0.1'
@@ -289,7 +289,7 @@ import {
   findPackageJsonFiles,
   readPackageJson,
   updateVersionInFile
-} from '@stacksjs/bumpx'
+} from '@stacksjs/logsmith'
 
 // Find package.json files
 const files = await findPackageJsonFiles('.', true) // recursive
@@ -310,7 +310,7 @@ import {
   createGitCommit,
   createGitTag,
   pushToRemote
-} from '@stacksjs/bumpx'
+} from '@stacksjs/logsmith'
 
 // Check git status
 try {
@@ -335,7 +335,7 @@ pushToRemote(true) // include tags
 ### Configuration File
 
 ```typescript
-interface BumpxConfig {
+interface logsmithConfig {
   // Version configuration
   preid?: string
   currentVersion?: string
@@ -367,16 +367,16 @@ interface BumpxConfig {
 ### Configuration Access
 
 ```typescript
-import { config } from '@stacksjs/bumpx'
+import { config } from '@stacksjs/logsmith'
 
 // Access the loaded configuration
 console.log('Current configuration:', config)
 
 // Configuration is automatically loaded from:
-// - bumpx.config.ts/js/mjs/cjs
-// - .config/bumpx.*
-// - config/bumpx.*
-// - package.json (bumpx key)
+// - logsmith.config.ts/js/mjs/cjs
+// - .config/logsmith.*
+// - config/logsmith.*
+// - package.json (logsmith key)
 
 // Use configuration values
 const shouldCommit = config.commit
@@ -387,7 +387,7 @@ const commitMessage = config.message || 'chore: bump version to %s'
 
 ### GitHub Actions Integration
 
-bumpx can be easily integrated into GitHub Actions workflows:
+logsmith can be easily integrated into GitHub Actions workflows:
 
 ```yaml
 # .github/workflows/release.yml
@@ -415,8 +415,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install bumpx
-        run: npm install -g bumpx
+      - name: Install logsmith
+        run: npm install -g logsmith
 
       - name: Configure git
         run: |
@@ -424,21 +424,21 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version and release
-        run: bumpx patch --commit --tag --push
+        run: logsmith patch --commit --tag --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ### Environment Variables for CI/CD
 
-Configure bumpx behavior using environment variables:
+Configure logsmith behavior using environment variables:
 
 ```yaml
 env:
-  BUMPX_COMMIT: true
-  BUMPX_TAG: true
-  BUMPX_PUSH: true
-  BUMPX_MESSAGE: "chore: release v%s [skip ci]"
+  logsmith_COMMIT: true
+  logsmith_TAG: true
+  logsmith_PUSH: true
+  logsmith_MESSAGE: "chore: release v%s [skip ci]"
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
 
@@ -448,22 +448,22 @@ env:
 
 ```bash
 # Git options
-export BUMPX_COMMIT=true
-export BUMPX_TAG=true
-export BUMPX_PUSH=false
-export BUMPX_SIGN=true
+export logsmith_COMMIT=true
+export logsmith_TAG=true
+export logsmith_PUSH=false
+export logsmith_SIGN=true
 
 # Message templates
-export BUMPX_MESSAGE="chore: release v%s"
-export BUMPX_TAG_MESSAGE="Release v%s"
+export logsmith_MESSAGE="chore: release v%s"
+export logsmith_TAG_MESSAGE="Release v%s"
 
 # File options
-export BUMPX_FILES="package.json,package-lock.json"
-export BUMPX_RECURSIVE=true
+export logsmith_FILES="package.json,package-lock.json"
+export logsmith_RECURSIVE=true
 
 # Output options
-export BUMPX_VERBOSE=true
-export BUMPX_DRY_RUN=false
+export logsmith_VERBOSE=true
+export logsmith_DRY_RUN=false
 ```
 
 ### CI/CD Environment Variables
@@ -486,7 +486,7 @@ export NODE_ENV=production
 
 ## Exit Codes
 
-bumpx uses standard exit codes:
+logsmith uses standard exit codes:
 
 | Code | Meaning |
 |------|---------|
@@ -503,7 +503,7 @@ bumpx uses standard exit codes:
 
 ```bash
 #!/bin/bash
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 
 case $? in
   0) echo "Release successful" ;;
@@ -521,10 +521,10 @@ esac
 ```json
 {
   "scripts": {
-    "prebumpx": "npm test",
-    "postbumpx": "npm run build",
-    "prebumpx:commit": "npm run lint",
-    "postbumpx:commit": "npm run changelog"
+    "prelogsmith": "npm test",
+    "postlogsmith": "npm run build",
+    "prelogsmith:commit": "npm run lint",
+    "postlogsmith:commit": "npm run changelog"
   }
 }
 ```
@@ -532,7 +532,7 @@ esac
 ### Custom Event Handling
 
 ```typescript
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 await versionBump({
   release: 'patch',
@@ -557,7 +557,7 @@ await versionBump({
 ### Common Error Scenarios
 
 ```typescript
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 try {
   await versionBump({ release: 'patch' })
@@ -584,20 +584,20 @@ try {
 ### Custom Error Classes
 
 ```typescript
-class BumpxError extends Error {
+class logsmithError extends Error {
   constructor(
     message: string,
     public code: string,
     public details?: any
   ) {
     super(message)
-    this.name = 'BumpxError'
+    this.name = 'logsmithError'
   }
 }
 
 // Usage in error handling
-if (error instanceof BumpxError) {
-  console.error(`Bumpx error [${error.code}]: ${error.message}`)
+if (error instanceof logsmithError) {
+  console.error(`logsmith error [${error.code}]: ${error.message}`)
   if (error.details) {
     console.error('Details:', error.details)
   }
@@ -610,7 +610,7 @@ if (error instanceof BumpxError) {
 
 ```typescript
 import express from 'express'
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 const app = express()
 
@@ -637,7 +637,7 @@ app.post('/api/release', async (req, res) => {
 ```typescript
 #!/usr/bin/env node
 import { program } from 'commander'
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 program
   .command('release <type>')
@@ -662,4 +662,4 @@ program
 program.parse()
 ```
 
-This comprehensive API reference covers all aspects of bumpx usage, from command-line interface to programmatic API and integration patterns.
+This comprehensive API reference covers all aspects of logsmith usage, from command-line interface to programmatic API and integration patterns.
