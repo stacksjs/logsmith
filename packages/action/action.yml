@@ -1,0 +1,20 @@
+name: logsmith Installer
+description: Install packages using logsmith in GitHub Actions
+author: Stacks.js
+branding:
+  icon: package
+  color: blue
+
+inputs:
+  packages:
+    description: Space-separated list of packages to install (overrides auto-detection)
+    required: false
+    default: ''
+  config-path:
+    description: Path to logsmith config file
+    required: false
+    default: logsmith.config.ts
+
+runs:
+  using: node16
+  main: dist/index.js
