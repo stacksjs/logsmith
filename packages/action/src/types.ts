@@ -1,198 +1,94 @@
 /**
- * Input parameters for the logsmith-installer GitHub Action
+ * Input parameters for the Logsmith Changelog GitHub Action
  */
 export interface ActionInputs {
-  /**
-   * Space-separated list of packages to install
-   * Example: "typescript eslint prettier"
-   */
-  packages: string
+  // GitHub settings
+  githubToken: string
 
-  /**
-   * Path to logsmith config file
-   * Default: "logsmith.config.ts"
-   */
-  configPath: string
+  // Changelog generation options
+  outputPath: string
+  format: 'markdown' | 'json' | 'html'
+  theme: string
+  includeUnreleased: boolean
 
-  /**
-   * Version of logsmith to install
-   * Default: "latest"
-   */
-  logsmithVersion: string
+  // Filtering options
+  fromTag?: string
+  toTag?: string
+  commitTypes?: string
+  scopes?: string
+  authors?: string
 
-  /**
-   * Whether to install Bun if not already present
-   * Default: true
-   */
-  installBun: boolean
+  // Release creation options
+  createRelease: boolean
+  releaseTag?: string
+  releaseTitle?: string
+  releaseDraft: boolean
+  releasePrerelease: boolean
+  releaseGenerateNotes: boolean
 
-  /**
-   * Whether to install pkgx
-   * Default: true
-   */
-  installPkgx: boolean
+  // Commit options
+  commitChangelog: boolean
+  commitMessage: string
+  commitAuthorName?: string
+  commitAuthorEmail?: string
 
-  /**
-   * Whether to enable verbose logging
-   * Default: false
-   */
-  verbose: boolean
-
-  /**
-   * Whether to skip dependency detection and only install specified packages
-   * Default: false
-   */
-  skipDetection: boolean
-
-  /**
-   * Working directory for package installation
-   * Default: current directory
-   */
+  // General options
+  configPath?: string
   workingDirectory: string
-
-  /**
-   * Additional environment variables to set during installation
-   * JSON string format: '{"VAR1": "value1", "VAR2": "value2"}'
-   */
-  envVars: string
-
-  /**
-   * Timeout for installation commands in seconds
-   * Default: 600 (10 minutes)
-   */
+  verbose: boolean
   timeout: number
-
-  /**
-   * Whether to cache installed packages
-   * Default: true
-   */
-  cache: boolean
-
-  /**
-   * Cache key prefix for package caching
-   * Default: "logsmith-packages"
-   */
-  cacheKey: string
 }
 
 /**
- * Results from dependency detection
+ * Result from changelog generation
  */
-export interface DependencyDetectionResult {
-  /**
-   * List of detected dependencies
-   */
-  dependencies: string[]
-
-  /**
-   * Sources where dependencies were found
-   */
-  sources: DependencySource[]
-
-  /**
-   * Total number of dependencies detected
-   */
-  count: number
-
-  /**
-   * Time taken for detection in milliseconds
-   */
-  detectionTime: number
-}
-
-/**
- * Source of detected dependencies
- */
-export interface DependencySource {
-  /**
-   * Type of source (e.g., 'package.json', 'config', 'lockfile')
-   */
-  type: string
-
-  /**
-   * File path of the source
-   */
-  file: string
-
-  /**
-   * Dependencies found in this source
-   */
-  dependencies: string[]
-}
-
-/**
- * Installation result for a package
- */
-export interface PackageInstallResult {
-  /**
-   * Package name
-   */
-  name: string
-
-  /**
-   * Whether installation was successful
-   */
+export interface ChangelogResult {
   success: boolean
-
-  /**
-   * Error message if installation failed
-   */
+  generationTime: number
+  outputPath?: string
+  content?: string
+  format?: string
+  theme?: string
   error?: string
-
-  /**
-   * Installation time in milliseconds
-   */
-  installTime: number
-
-  /**
-   * Version that was installed
-   */
-  version?: string
 }
 
 /**
- * Overall installation summary
+ * Result from GitHub release creation
  */
-export interface InstallationSummary {
-  /**
-   * Total packages attempted
-   */
-  totalPackages: number
+export interface ReleaseResult {
+  success: boolean
+  creationTime: number
+  url?: string
+  id?: number
+  tag?: string
+  title?: string
+  draft?: boolean
+  prerelease?: boolean
+  error?: string
+}
 
-  /**
-   * Successfully installed packages
-   */
-  successfulInstalls: number
+/**
+ * Result from committing changelog
+ */
+export interface CommitResult {
+  success: boolean
+  commitTime: number
+  sha?: string
+  message?: string
+  error?: string
+}
 
-  /**
-   * Failed installations
-   */
-  failedInstalls: number
-
-  /**
-   * Individual package results
-   */
-  results: PackageInstallResult[]
-
-  /**
-   * Total installation time in milliseconds
-   */
+/**
+ * Overall action execution summary
+ */
+export interface ActionSummary {
+  changelogGenerated: boolean
+  releaseCreated: boolean
+  changelogCommitted: boolean
   totalTime: number
-
-  /**
-   * Whether logsmith was installed successfully
-   */
-  logsmithInstalled: boolean
-
-  /**
-   * Whether Bun was installed successfully
-   */
-  bunInstalled: boolean
-
-  /**
-   * Whether pkgx was installed successfully
-   */
-  pkgxInstalled: boolean
+  changelogResult: ChangelogResult | null
+  releaseResult: ReleaseResult | null
+  commitResult: CommitResult | null
 }
 
 /**
@@ -200,64 +96,94 @@ export interface InstallationSummary {
  */
 export interface ActionOutputs {
   /**
-   * Whether the action completed successfully
+   * Generated changelog content
    */
-  success: string
+  changelogContent: string
 
   /**
-   * Number of packages installed
+   * Path to the generated changelog file
    */
-  packagesInstalled: string
+  changelogPath: string
 
   /**
-   * List of installed packages (JSON string)
+   * ID of the created GitHub release
    */
-  installedPackages: string
+  releaseId: string
 
   /**
-   * Installation summary (JSON string)
+   * URL of the created GitHub release
    */
-  summary: string
+  releaseUrl: string
 
   /**
-   * Detected dependencies (JSON string)
+   * Upload URL for the created GitHub release
    */
-  detectedDependencies: string
+  releaseUploadUrl: string
 
   /**
-   * Version of logsmith that was installed
+   * SHA of the commit if changelog was committed
    */
-  logsmithVersion: string
-
-  /**
-   * Version of Bun that was installed or detected
-   */
-  bunVersion: string
-
-  /**
-   * Whether pkgx was successfully installed
-   */
-  pkgxInstalled: string
+  commitSha: string
 }
 
 /**
- * Error types that can occur during action execution
+ * GitHub release data structure
+ */
+export interface GitHubRelease {
+  /**
+   * Release tag name
+   */
+  tag_name: string
+
+  /**
+   * Release name/title
+   */
+  name: string
+
+  /**
+   * Release body/description
+   */
+  body: string
+
+  /**
+   * Whether this is a draft release
+   */
+  draft: boolean
+
+  /**
+   * Whether this is a prerelease
+   */
+  prerelease: boolean
+
+  /**
+   * Target commitish for the release
+   */
+  target_commitish?: string
+}
+
+/**
+ * Error types specific to the changelog action
  */
 export enum ActionErrorType {
-  BUN_INSTALLATION_FAILED = 'BUN_INSTALLATION_FAILED',
-  logsmith_INSTALLATION_FAILED = 'logsmith_INSTALLATION_FAILED',
-  PKGX_INSTALLATION_FAILED = 'PKGX_INSTALLATION_FAILED',
-  PACKAGE_INSTALLATION_FAILED = 'PACKAGE_INSTALLATION_FAILED',
-  DEPENDENCY_DETECTION_FAILED = 'DEPENDENCY_DETECTION_FAILED',
+  LOGSMITH_INSTALLATION_FAILED = 'LOGSMITH_INSTALLATION_FAILED',
+  LOGSMITH_NOT_AVAILABLE = 'LOGSMITH_NOT_AVAILABLE',
+  CHANGELOG_GENERATION_FAILED = 'CHANGELOG_GENERATION_FAILED',
+  RELEASE_CREATION_FAILED = 'RELEASE_CREATION_FAILED',
+  COMMIT_FAILED = 'COMMIT_FAILED',
   CONFIG_PARSING_FAILED = 'CONFIG_PARSING_FAILED',
+  INVALID_INPUT = 'INVALID_INPUT',
+  INVALID_TOKEN = 'INVALID_TOKEN',
+  MISSING_TAG = 'MISSING_TAG',
+  GIT_OPERATION_FAILED = 'GIT_OPERATION_FAILED',
+  FILE_OPERATION_FAILED = 'FILE_OPERATION_FAILED',
+  NETWORK_ERROR = 'NETWORK_ERROR',
   TIMEOUT_EXCEEDED = 'TIMEOUT_EXCEEDED',
   UNSUPPORTED_PLATFORM = 'UNSUPPORTED_PLATFORM',
   INSUFFICIENT_PERMISSIONS = 'INSUFFICIENT_PERMISSIONS',
-  NETWORK_ERROR = 'NETWORK_ERROR',
 }
 
 /**
- * Custom error class for action errors
+ * Custom error class for action-specific errors
  */
 export class ActionError extends Error {
   constructor(

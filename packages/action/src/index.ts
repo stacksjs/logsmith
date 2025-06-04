@@ -1,5 +1,5 @@
-import type { ActionInputs, InstallationSummary, PackageInstallResult } from './types'
-import * as os from 'node:os'
+import type { ActionInputs, ActionSummary, ChangelogResult, CommitResult, ReleaseResult } from './types'
+import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
 import * as process from 'node:process'
 import * as core from '@actions/core'
@@ -16,24 +16,23 @@ const DEFAULT_TIMEOUT = 600 // 10 minutes
  */
 export async function run(): Promise<void> {
   const startTime = Date.now()
-  const summary: InstallationSummary = {
-    totalPackages: 0,
-    successfulInstalls: 0,
-    failedInstalls: 0,
-    results: [],
+  const summary: ActionSummary = {
+    changelogGenerated: false,
+    releaseCreated: false,
+    changelogCommitted: false,
     totalTime: 0,
-    logsmithInstalled: false,
-    bunInstalled: false,
-    pkgxInstalled: false,
+    changelogResult: null,
+    releaseResult: null,
+    commitResult: null,
   }
 
   try {
     // Get and validate inputs
     const inputs = getActionInputs()
-    core.info('Starting logsmith Installer Action')
+    core.info('Starting Logsmith Changelog Action')
 
     if (inputs.verbose) {
-      core.info(`Inputs: ${JSON.stringify(inputs, null, 2)}`)
+      core.info(`Inputs: ${JSON.stringify(sanitizeInputs(inputs), null, 2)}`)
       core.info(`Context: ${JSON.stringify(github.context, null, 2)}`)
     }
 
@@ -43,53 +42,49 @@ export async function run(): Promise<void> {
       core.info(`Changed working directory to: ${inputs.workingDirectory}`)
     }
 
-    // Setup environment variables
-    if (inputs.envVars) {
-      setupEnvironmentVariables(inputs.envVars)
-    }
+    // Ensure Logsmith is available
+    await ensureLogsmithAvailable()
 
-    // Setup Bun if requested
-    if (inputs.installBun) {
-      const bunResult = await setupBun()
-      summary.bunInstalled = bunResult.success
-      if (!bunResult.success) {
-        throw new ActionError(
-          `Bun installation failed: ${bunResult.error}`,
-          ActionErrorType.BUN_INSTALLATION_FAILED,
-          { error: bunResult.error },
-        )
-      }
-    }
+    // Generate changelog
+    const changelogResult = await generateChangelog(inputs)
+    summary.changelogResult = changelogResult
+    summary.changelogGenerated = changelogResult.success
 
-    // Install logsmith
-    const logsmithResult = await installlogsmith(inputs.logsmithVersion)
-    summary.logsmithInstalled = logsmithResult.success
-    if (!logsmithResult.success) {
+    if (!changelogResult.success) {
       throw new ActionError(
-        `logsmith installation failed: ${logsmithResult.error}`,
-        ActionErrorType.logsmith_INSTALLATION_FAILED,
-        { error: logsmithResult.error, version: inputs.logsmithVersion },
+        `Changelog generation failed: ${changelogResult.error}`,
+        ActionErrorType.CHANGELOG_GENERATION_FAILED,
+        { error: changelogResult.error },
       )
     }
 
-    // Install pkgx if requested
-    if (inputs.installPkgx) {
-      const pkgxResult = await installPkgx(inputs.verbose)
-      summary.pkgxInstalled = pkgxResult.success
-      if (!pkgxResult.success) {
-        core.warning(`pkgx installation failed: ${pkgxResult.error}`)
+    core.info(`Changelog generated successfully: ${changelogResult.outputPath}`)
+
+    // Commit changelog if requested
+    if (inputs.commitChangelog && changelogResult.outputPath) {
+      const commitResult = await commitChangelog(inputs, changelogResult.outputPath)
+      summary.commitResult = commitResult
+      summary.changelogCommitted = commitResult.success
+
+      if (commitResult.success) {
+        core.info(`Changelog committed: ${commitResult.sha}`)
+      }
+      else {
+        core.warning(`Failed to commit changelog: ${commitResult.error}`)
       }
     }
 
-    // Install specified packages
-    if (inputs.packages) {
-      const packagesToInstall = inputs.packages.split(/\s+/).filter(Boolean)
-      if (packagesToInstall.length > 0) {
-        const installResults = await installPackages(packagesToInstall, inputs.timeout, inputs.verbose)
-        summary.results = installResults
-        summary.totalPackages = installResults.length
-        summary.successfulInstalls = installResults.filter(r => r.success).length
-        summary.failedInstalls = installResults.filter(r => !r.success).length
+    // Create GitHub release if requested
+    if (inputs.createRelease && inputs.githubToken) {
+      const releaseResult = await createGitHubRelease(inputs, changelogResult)
+      summary.releaseResult = releaseResult
+      summary.releaseCreated = releaseResult.success
+
+      if (releaseResult.success) {
+        core.info(`GitHub release created: ${releaseResult.url}`)
+      }
+      else {
+        core.warning(`Failed to create GitHub release: ${releaseResult.error}`)
       }
     }
 
@@ -97,12 +92,12 @@ export async function run(): Promise<void> {
     summary.totalTime = Date.now() - startTime
 
     // Set outputs
-    setActionOutputs(summary, logsmithResult.version)
+    setActionOutputs(summary)
 
     // Log summary
-    logInstallationSummary(summary)
+    logActionSummary(summary)
 
-    core.info(`logsmith installation completed successfully in ${summary.totalTime}ms`)
+    core.info(`Logsmith changelog action completed successfully in ${summary.totalTime}ms`)
   }
   catch (error) {
     summary.totalTime = Date.now() - startTime
@@ -115,18 +110,41 @@ export async function run(): Promise<void> {
  */
 function getActionInputs(): ActionInputs {
   const inputs: ActionInputs = {
-    packages: core.getInput('packages', { required: false }) || '',
-    configPath: core.getInput('config-path', { required: false }) || 'logsmith.config.ts',
-    logsmithVersion: core.getInput('logsmith-version', { required: false }) || 'latest',
-    installBun: core.getBooleanInput('install-bun', { required: false }) ?? true,
-    installPkgx: core.getBooleanInput('install-pkgx', { required: false }) ?? true,
-    verbose: core.getBooleanInput('verbose', { required: false }) ?? false,
-    skipDetection: core.getBooleanInput('skip-detection', { required: false }) ?? false,
+    // GitHub settings
+    githubToken: core.getInput('github-token', { required: false }),
+
+    // Changelog generation options
+    outputPath: core.getInput('output-path', { required: false }) || 'CHANGELOG.md',
+    format: core.getInput('format', { required: false }) as 'markdown' | 'json' | 'html' || 'markdown',
+    theme: core.getInput('theme', { required: false }) || 'default',
+    includeUnreleased: core.getBooleanInput('include-unreleased', { required: false }) ?? true,
+
+    // Filtering options
+    fromTag: core.getInput('from-tag', { required: false }),
+    toTag: core.getInput('to-tag', { required: false }),
+    commitTypes: core.getInput('commit-types', { required: false }),
+    scopes: core.getInput('scopes', { required: false }),
+    authors: core.getInput('authors', { required: false }),
+
+    // Release creation options
+    createRelease: core.getBooleanInput('create-release', { required: false }) ?? false,
+    releaseTag: core.getInput('release-tag', { required: false }),
+    releaseTitle: core.getInput('release-title', { required: false }),
+    releaseDraft: core.getBooleanInput('release-draft', { required: false }) ?? false,
+    releasePrerelease: core.getBooleanInput('release-prerelease', { required: false }) ?? false,
+    releaseGenerateNotes: core.getBooleanInput('release-generate-notes', { required: false }) ?? true,
+
+    // Commit options
+    commitChangelog: core.getBooleanInput('commit-changelog', { required: false }) ?? false,
+    commitMessage: core.getInput('commit-message', { required: false }) || 'chore: update changelog',
+    commitAuthorName: core.getInput('commit-author-name', { required: false }),
+    commitAuthorEmail: core.getInput('commit-author-email', { required: false }),
+
+    // General options
+    configPath: core.getInput('config-path', { required: false }),
     workingDirectory: core.getInput('working-directory', { required: false }) || '.',
-    envVars: core.getInput('env-vars', { required: false }) || '',
+    verbose: core.getBooleanInput('verbose', { required: false }) ?? false,
     timeout: Number.parseInt(core.getInput('timeout', { required: false }) || String(DEFAULT_TIMEOUT)),
-    cache: core.getBooleanInput('cache', { required: false }) ?? true,
-    cacheKey: core.getInput('cache-key', { required: false }) || 'logsmith-packages',
   }
 
   // Validate inputs
@@ -138,281 +156,425 @@ function getActionInputs(): ActionInputs {
     )
   }
 
+  if (inputs.createRelease && !inputs.githubToken) {
+    throw new ActionError(
+      'GitHub token is required when create-release is enabled',
+      ActionErrorType.INVALID_INPUT,
+      { createRelease: inputs.createRelease, githubToken: !!inputs.githubToken },
+    )
+  }
+
+  if (!['markdown', 'json', 'html'].includes(inputs.format)) {
+    throw new ActionError(
+      `Invalid format: ${inputs.format}. Must be one of: markdown, json, html`,
+      ActionErrorType.INVALID_INPUT,
+      { format: inputs.format },
+    )
+  }
+
   return inputs
 }
 
 /**
- * Setup environment variables from JSON string
+ * Sanitize inputs for logging (remove sensitive data)
  */
-function setupEnvironmentVariables(envVarsJson: string): void {
+function sanitizeInputs(inputs: ActionInputs): Partial<ActionInputs> {
+  const sanitized = { ...inputs }
+  if (sanitized.githubToken) {
+    sanitized.githubToken = '***'
+  }
+  return sanitized
+}
+
+/**
+ * Ensure Logsmith is available in the environment
+ */
+async function ensureLogsmithAvailable(): Promise<void> {
   try {
-    const envVars = JSON.parse(envVarsJson)
-    Object.entries(envVars).forEach(([key, value]) => {
-      process.env[key] = String(value)
-      core.info(`Set environment variable: ${key}`)
-    })
+    core.info('Checking for Logsmith availability...')
+    const { exitCode } = await exec.getExecOutput('logsmith', ['--version'], { ignoreReturnCode: true })
+
+    if (exitCode === 0) {
+      core.info('Logsmith is available')
+      return
+    }
+
+    // If logsmith is not available, try to install it
+    core.info('Logsmith not found, attempting to install...')
+
+    // Check if bun is available
+    const { exitCode: bunCheck } = await exec.getExecOutput('bun', ['--version'], { ignoreReturnCode: true })
+
+    if (bunCheck !== 0) {
+      throw new ActionError(
+        'Neither Logsmith nor Bun is available. Please ensure Logsmith is installed or use the setup-bun action first.',
+        ActionErrorType.LOGSMITH_NOT_AVAILABLE,
+      )
+    }
+
+    // Install logsmith globally with bun
+    await exec.exec('bun', ['install', '-g', 'logsmith'])
+
+    // Verify installation
+    const { exitCode: verifyCode } = await exec.getExecOutput('logsmith', ['--version'], { ignoreReturnCode: true })
+
+    if (verifyCode !== 0) {
+      throw new ActionError(
+        'Failed to install Logsmith',
+        ActionErrorType.LOGSMITH_INSTALLATION_FAILED,
+      )
+    }
+
+    core.info('Logsmith installed successfully')
   }
   catch (error) {
+    if (error instanceof ActionError) {
+      throw error
+    }
     throw new ActionError(
-      `Failed to parse env-vars JSON: ${error}`,
-      ActionErrorType.CONFIG_PARSING_FAILED,
-      { envVarsJson, error },
+      `Failed to ensure Logsmith availability: ${error}`,
+      ActionErrorType.LOGSMITH_NOT_AVAILABLE,
+      { error: error instanceof Error ? error.message : String(error) },
     )
   }
 }
 
 /**
- * Setup Bun in the environment
+ * Generate changelog using Logsmith
  */
-async function setupBun(): Promise<PackageInstallResult> {
+async function generateChangelog(inputs: ActionInputs): Promise<ChangelogResult> {
   const startTime = Date.now()
-  core.info('Setting up Bun...')
+  core.info('Generating changelog...')
 
   try {
-    // Check if Bun is already installed
-    const { exitCode } = await exec.getExecOutput('which', ['bun'], { ignoreReturnCode: true })
+    const args = ['generate']
 
-    if (exitCode === 0) {
-      core.info('Bun is already installed')
-      const { stdout } = await exec.getExecOutput('bun', ['--version'])
-      const version = stdout.trim()
+    // Add output path
+    if (inputs.outputPath) {
+      args.push('--output', inputs.outputPath)
+    }
 
+    // Add format
+    if (inputs.format && inputs.format !== 'markdown') {
+      args.push('--format', inputs.format)
+    }
+
+    // Add theme
+    if (inputs.theme && inputs.theme !== 'default') {
+      args.push('--theme', inputs.theme)
+    }
+
+    // Add tag range
+    if (inputs.fromTag) {
+      args.push('--from', inputs.fromTag)
+    }
+    if (inputs.toTag) {
+      args.push('--to', inputs.toTag)
+    }
+
+    // Add filtering options
+    if (inputs.commitTypes) {
+      args.push('--types', inputs.commitTypes)
+    }
+    if (inputs.scopes) {
+      args.push('--scopes', inputs.scopes)
+    }
+    if (inputs.authors) {
+      args.push('--authors', inputs.authors)
+    }
+
+    // Add unreleased flag
+    if (inputs.includeUnreleased) {
+      args.push('--unreleased')
+    }
+
+    // Add config path if specified
+    if (inputs.configPath) {
+      args.push('--config', inputs.configPath)
+    }
+
+    // Add verbose flag
+    if (inputs.verbose) {
+      args.push('--verbose')
+    }
+
+    const options = {
+      timeout: inputs.timeout * 1000, // Convert to milliseconds
+    }
+
+    const { exitCode, stderr } = await exec.getExecOutput('logsmith', args, {
+      ...options,
+      ignoreReturnCode: true,
+    })
+
+    if (exitCode !== 0) {
       return {
-        name: 'bun',
-        success: true,
-        installTime: Date.now() - startTime,
-        version,
+        success: false,
+        generationTime: Date.now() - startTime,
+        error: stderr || 'Unknown error during changelog generation',
       }
     }
 
-    core.info('Bun is not installed, installing now...')
-
-    // Install Bun based on platform
-    const platform = process.platform
-
-    if (platform === 'darwin' || platform === 'linux') {
-      // macOS or Linux
-      await exec.exec('curl', ['-fsSL', 'https://bun.sh/install', '|', 'bash'], {
-        env: { ...process.env, FORCE: '1' },
-      })
-    }
-    else if (platform === 'win32') {
-      // Windows
-      await exec.exec('powershell', ['-Command', 'irm bun.sh/install.ps1 | iex'])
-    }
-    else {
-      throw new ActionError(
-        `Unsupported platform: ${platform}`,
-        ActionErrorType.UNSUPPORTED_PLATFORM,
-        { platform },
-      )
+    // Read the generated changelog content
+    let content = ''
+    if (inputs.outputPath && await fileExists(inputs.outputPath)) {
+      content = await fs.readFile(inputs.outputPath, 'utf-8')
     }
 
-    // Add Bun to PATH
-    const bunPath = path.join(os.homedir(), '.bun', 'bin')
-    core.addPath(bunPath)
-
-    // Verify installation
-    const { stdout } = await exec.getExecOutput('bun', ['--version'])
-    const version = stdout.trim()
-
-    core.info(`Bun installation completed: ${version}`)
+    core.info(`Changelog generated successfully in ${Date.now() - startTime}ms`)
 
     return {
-      name: 'bun',
       success: true,
-      installTime: Date.now() - startTime,
-      version,
+      generationTime: Date.now() - startTime,
+      outputPath: inputs.outputPath,
+      content,
+      format: inputs.format,
+      theme: inputs.theme,
     }
   }
   catch (error) {
     return {
-      name: 'bun',
       success: false,
-      installTime: Date.now() - startTime,
+      generationTime: Date.now() - startTime,
       error: error instanceof Error ? error.message : String(error),
     }
   }
 }
 
 /**
- * Install logsmith using Bun
+ * Commit changelog to repository
  */
-async function installlogsmith(version: string): Promise<PackageInstallResult> {
+async function commitChangelog(inputs: ActionInputs, changelogPath: string): Promise<CommitResult> {
   const startTime = Date.now()
-  core.info(`Installing logsmith version: ${version}`)
+  core.info('Committing changelog...')
 
   try {
-    const packageSpec = version === 'latest' ? 'logsmith' : `logsmith@${version}`
-    await exec.exec('bun', ['install', '-g', packageSpec])
+    // Configure git user if specified
+    if (inputs.commitAuthorName) {
+      await exec.exec('git', ['config', 'user.name', inputs.commitAuthorName])
+    }
+    if (inputs.commitAuthorEmail) {
+      await exec.exec('git', ['config', 'user.email', inputs.commitAuthorEmail])
+    }
 
-    // Verify installation
-    const { stdout } = await exec.getExecOutput('logsmith', ['--version'], { ignoreReturnCode: true })
-    const installedVersion = stdout.trim()
+    // Add the changelog file
+    await exec.exec('git', ['add', changelogPath])
 
-    core.info(`logsmith installation completed: ${installedVersion}`)
+    // Check if there are changes to commit
+    const { exitCode: statusCode } = await exec.getExecOutput('git', ['diff', '--staged', '--quiet'], {
+      ignoreReturnCode: true,
+    })
+
+    if (statusCode === 0) {
+      core.info('No changes to commit')
+      return {
+        success: true,
+        commitTime: Date.now() - startTime,
+        sha: '',
+        message: 'No changes to commit',
+      }
+    }
+
+    // Commit the changes
+    await exec.exec('git', ['commit', '-m', inputs.commitMessage])
+
+    // Get the commit SHA
+    const { stdout } = await exec.getExecOutput('git', ['rev-parse', 'HEAD'])
+    const sha = stdout.trim()
+
+    core.info(`Changelog committed successfully: ${sha}`)
 
     return {
-      name: 'logsmith',
       success: true,
-      installTime: Date.now() - startTime,
-      version: installedVersion,
+      commitTime: Date.now() - startTime,
+      sha,
+      message: inputs.commitMessage,
     }
   }
   catch (error) {
     return {
-      name: 'logsmith',
       success: false,
-      installTime: Date.now() - startTime,
+      commitTime: Date.now() - startTime,
       error: error instanceof Error ? error.message : String(error),
     }
   }
 }
 
 /**
- * Install pkgx using logsmith
+ * Create GitHub release
  */
-async function installPkgx(verbose: boolean): Promise<PackageInstallResult> {
+async function createGitHubRelease(inputs: ActionInputs, changelogResult: ChangelogResult): Promise<ReleaseResult> {
   const startTime = Date.now()
-  core.info('Installing pkgx...')
+  core.info('Creating GitHub release...')
 
   try {
-    const options = {
-      env: {
-        ...process.env,
-        logsmith_VERBOSE: verbose ? 'true' : 'false',
-        CONTEXT: JSON.stringify(github.context),
-      },
+    if (!inputs.githubToken) {
+      throw new Error('GitHub token is required for release creation')
     }
 
-    const args = ['pkgx']
-    if (verbose) {
-      args.push('--verbose')
+    const octokit = github.getOctokit(inputs.githubToken)
+    const { owner, repo } = github.context.repo
+
+    // Determine release tag
+    let tag = inputs.releaseTag
+    if (!tag) {
+      // Try to get the latest tag
+      try {
+        const { stdout } = await exec.getExecOutput('git', ['describe', '--tags', '--abbrev=0'])
+        tag = stdout.trim()
+      }
+      catch {
+        throw new Error('No release tag specified and unable to determine latest tag')
+      }
     }
 
-    await exec.exec('logsmith', args, options)
-    core.info('pkgx installation completed')
+    // Prepare release body
+    let body = ''
+    if (changelogResult.content && inputs.format === 'markdown') {
+      // Extract relevant section from changelog for this release
+      body = extractReleaseNotes(changelogResult.content, tag)
+    }
+
+    const releaseData = {
+      owner,
+      repo,
+      tag_name: tag,
+      name: inputs.releaseTitle || tag,
+      body,
+      draft: inputs.releaseDraft,
+      prerelease: inputs.releasePrerelease,
+      generate_release_notes: inputs.releaseGenerateNotes && !body,
+    }
+
+    const { data: release } = await octokit.rest.repos.createRelease(releaseData)
+
+    core.info(`GitHub release created successfully: ${release.html_url}`)
 
     return {
-      name: 'pkgx',
       success: true,
-      installTime: Date.now() - startTime,
+      creationTime: Date.now() - startTime,
+      url: release.html_url,
+      id: release.id,
+      tag,
+      title: release.name || tag,
+      draft: release.draft,
+      prerelease: release.prerelease,
     }
   }
   catch (error) {
     return {
-      name: 'pkgx',
       success: false,
-      installTime: Date.now() - startTime,
+      creationTime: Date.now() - startTime,
       error: error instanceof Error ? error.message : String(error),
     }
   }
 }
 
 /**
- * Install multiple packages
+ * Extract release notes for a specific tag from changelog content
  */
-async function installPackages(packages: string[], timeout: number, verbose: boolean): Promise<PackageInstallResult[]> {
-  core.info(`Installing ${packages.length} packages: ${packages.join(', ')}`)
+function extractReleaseNotes(changelogContent: string, tag: string): string {
+  const lines = changelogContent.split('\n')
+  const releaseLines: string[] = []
+  let foundRelease = false
+  let nextReleaseFound = false
 
-  const results: PackageInstallResult[] = []
-
-  for (const packageName of packages) {
-    const result = await installSinglePackage(packageName, timeout, verbose)
-    results.push(result)
-
-    if (result.success) {
-      core.info(`✓ ${packageName} installed successfully`)
+  for (const line of lines) {
+    // Look for release headers (## [version] or ## version)
+    if (line.match(/^##\s+\[?v?[\d.]+\]?/)) {
+      if (foundRelease) {
+        // Found the next release, stop collecting
+        nextReleaseFound = true
+        break
+      }
+      // Check if this is our target release
+      if (line.includes(tag.replace(/^v/, ''))) {
+        foundRelease = true
+        continue // Skip the header itself
+      }
     }
-    else {
-      core.warning(`✗ ${packageName} installation failed: ${result.error}`)
+
+    if (foundRelease && !nextReleaseFound) {
+      releaseLines.push(line)
     }
   }
 
-  return results
+  return releaseLines.join('\n').trim()
 }
 
 /**
- * Install a single package
+ * Check if a file exists
  */
-async function installSinglePackage(packageName: string, timeout: number, verbose: boolean): Promise<PackageInstallResult> {
-  const startTime = Date.now()
-
+async function fileExists(filePath: string): Promise<boolean> {
   try {
-    const options = {
-      env: {
-        ...process.env,
-        logsmith_VERBOSE: verbose ? 'true' : 'false',
-        CONTEXT: JSON.stringify(github.context),
-      },
-      timeout: timeout * 1000, // Convert to milliseconds
-    }
-
-    const args = ['install']
-    if (verbose) {
-      args.push('--verbose')
-    }
-    args.push(packageName)
-
-    await exec.exec('logsmith', args, options)
-
-    return {
-      name: packageName,
-      success: true,
-      installTime: Date.now() - startTime,
-    }
+    await fs.access(filePath)
+    return true
   }
-  catch (error) {
-    return {
-      name: packageName,
-      success: false,
-      installTime: Date.now() - startTime,
-      error: error instanceof Error ? error.message : String(error),
-    }
+  catch {
+    return false
   }
 }
 
 /**
  * Set action outputs
  */
-function setActionOutputs(summary: InstallationSummary, logsmithVersion?: string): void {
-  core.setOutput('success', 'true')
-  core.setOutput('packages-installed', String(summary.successfulInstalls))
-  core.setOutput('installed-packages', JSON.stringify(summary.results.filter(r => r.success).map(r => r.name)))
+function setActionOutputs(summary: ActionSummary): void {
+  core.setOutput('success', String(summary.changelogGenerated))
+  core.setOutput('changelog-generated', String(summary.changelogGenerated))
+  core.setOutput('release-created', String(summary.releaseCreated))
+  core.setOutput('changelog-committed', String(summary.changelogCommitted))
+
+  if (summary.changelogResult?.success) {
+    core.setOutput('changelog-path', summary.changelogResult.outputPath || '')
+    core.setOutput('changelog-content', summary.changelogResult.content || '')
+  }
+
+  if (summary.releaseResult?.success) {
+    core.setOutput('release-url', summary.releaseResult.url || '')
+    core.setOutput('release-id', String(summary.releaseResult.id || ''))
+    core.setOutput('release-tag', summary.releaseResult.tag || '')
+  }
+
+  if (summary.commitResult?.success) {
+    core.setOutput('commit-sha', summary.commitResult.sha || '')
+  }
+
   core.setOutput('summary', JSON.stringify(summary))
-  core.setOutput('logsmith-version', logsmithVersion || 'unknown')
-  core.setOutput('bun-version', summary.results.find(r => r.name === 'bun')?.version || 'unknown')
-  core.setOutput('pkgx-installed', String(summary.pkgxInstalled))
 }
 
 /**
- * Log installation summary
+ * Log action summary
  */
-function logInstallationSummary(summary: InstallationSummary): void {
+function logActionSummary(summary: ActionSummary): void {
   core.info('='.repeat(50))
-  core.info('Installation Summary')
+  core.info('Logsmith Changelog Action Summary')
   core.info('='.repeat(50))
-  core.info(`Total packages: ${summary.totalPackages}`)
-  core.info(`Successful installations: ${summary.successfulInstalls}`)
-  core.info(`Failed installations: ${summary.failedInstalls}`)
+  core.info(`Changelog generated: ${summary.changelogGenerated}`)
+  core.info(`Release created: ${summary.releaseCreated}`)
+  core.info(`Changelog committed: ${summary.changelogCommitted}`)
   core.info(`Total time: ${summary.totalTime}ms`)
-  core.info(`logsmith installed: ${summary.logsmithInstalled}`)
-  core.info(`Bun installed: ${summary.bunInstalled}`)
-  core.info(`pkgx installed: ${summary.pkgxInstalled}`)
 
-  if (summary.failedInstalls > 0) {
-    core.info('Failed installations:')
-    summary.results.filter(r => !r.success).forEach((result) => {
-      core.info(`  - ${result.name}: ${result.error}`)
-    })
+  if (summary.changelogResult?.success) {
+    core.info(`Changelog path: ${summary.changelogResult.outputPath}`)
+    core.info(`Generation time: ${summary.changelogResult.generationTime}ms`)
   }
+
+  if (summary.releaseResult?.success) {
+    core.info(`Release URL: ${summary.releaseResult.url}`)
+    core.info(`Release tag: ${summary.releaseResult.tag}`)
+  }
+
+  if (summary.commitResult?.success && summary.commitResult.sha) {
+    core.info(`Commit SHA: ${summary.commitResult.sha}`)
+  }
+
   core.info('='.repeat(50))
 }
 
 /**
  * Handle action errors
  */
-function handleActionError(error: unknown, summary: InstallationSummary): void {
+function handleActionError(error: unknown, summary: ActionSummary): void {
   const errorMessage = error instanceof Error ? error.message : String(error)
 
   if (error instanceof ActionError) {
