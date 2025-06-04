@@ -1,6 +1,6 @@
 # Installation
 
-Installing `logsmith` is simple and straightforward. Choose your preferred package manager to get started with the modern version bumping tool.
+Installing `logsmith` is simple and straightforward. Choose your preferred package manager to get started with the modern changelog generation tool.
 
 ## Package Managers
 
@@ -8,20 +8,20 @@ Choose your preferred package manager:
 
 ::: code-group
 
+```sh [bun]
+# Install globally (recommended)
+bun add -g logsmith
+
+# Or install as a development dependency
+bun add -d logsmith
+```
+
 ```sh [npm]
 # Install globally
 npm install -g logsmith
 
 # Or install as a development dependency
 npm install --save-dev logsmith
-```
-
-```sh [bun]
-# Install globally
-bun add -g logsmith
-
-# Or install as a development dependency
-bun add -d logsmith
 ```
 
 ```sh [pnpm]
@@ -44,20 +44,26 @@ yarn add -D logsmith
 
 ## Quick Start
 
-After installation, you can immediately start using logsmith:
+After installation, you can immediately start generating changelogs:
 
 ```sh
 # Check current version
 logsmith --version
 
-# Basic version bump
-logsmith patch
+# Generate a changelog and display in console
+logsmith
 
-# Version bump with git commit
-logsmith minor --commit --tag
+# Generate and save to CHANGELOG.md
+logsmith --output CHANGELOG.md
 
-# Interactive version selection
-logsmith prompt
+# Generate with a specific theme
+logsmith --theme github --output CHANGELOG.md
+
+# View repository statistics
+logsmith stats
+
+# List available themes
+logsmith themes
 ```
 
 ## From Source
@@ -83,9 +89,9 @@ bun link
 
 logsmith requires:
 
-- **Bun 1.2+**
-- **Git** (for version control operations)
-- A project with a `package.json` file (or other version files)
+- **Bun 1.2+** _(primary runtime - Node.js support coming soon)_
+- **Git** _(for repository analysis and commit parsing)_
+- A Git repository with conventional commits for best results
 
 ## Verification
 
@@ -95,10 +101,13 @@ Verify your installation:
 # Check logsmith version
 logsmith --version
 
-# Test with dry run
-logsmith patch --dry-run
+# Test changelog generation (dry run to console)
+logsmith --no-output
 
-# Check help
+# Test with verbose logging
+logsmith --verbose --no-output
+
+# View help
 logsmith --help
 ```
 
@@ -128,10 +137,10 @@ Remove logsmith when no longer needed:
 
 ```sh
 # Remove global installation
-bun uninstall -g logsmith
+bun remove -g logsmith
 
 # Remove local installation
-bun uninstall logsmith
+bun remove logsmith
 ```
 
 ## Troubleshooting
@@ -144,15 +153,15 @@ bun uninstall logsmith
 echo $PATH | grep bun
 
 # Reinstall globally
-bun install -g logsmith
+bun add -g logsmith
 ```
 
 **Permission errors (macOS/Linux):**
 ```sh
-# Use a Node version manager (recommended)
-# Or configure npm to use a different directory
-npm config set prefix ~/.local
-export PATH=~/.local/bin:$PATH
+# Install bun properly with install script
+curl -fsSL https://bun.sh/install | bash
+
+# Or use package manager that doesn't require sudo
 ```
 
 **Git not found:**
@@ -161,6 +170,16 @@ export PATH=~/.local/bin:$PATH
 # macOS: xcode-select --install
 # Ubuntu: sudo apt install git
 # Windows: https://git-scm.com/download/win
+```
+
+**No conventional commits found:**
+```sh
+# Logsmith works best with conventional commits
+# Example conventional commit:
+git commit -m "feat: add new feature for user authentication"
+
+# Learn more about conventional commits:
+# https://www.conventionalcommits.org/
 ```
 
 ### Getting Help
@@ -176,7 +195,7 @@ If you encounter issues:
 
 After installation, you might want to:
 
-- [Configure logsmith](/config) to customize your setup
-- [Learn about basic usage](/usage) to start version bumping
-- [Explore Git integration](/features/git-integration) for automated workflows
-- [Set up monorepo support](/features/monorepo-support) for multi-package projects
+- [Configure logsmith](/config) to customize changelog generation
+- [Learn about basic usage](/usage) to start creating changelogs
+- [Explore theming options](/features/theming) for custom styling
+- [Set up repository statistics](/features/repository-insights) for project analytics

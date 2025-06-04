@@ -4,8 +4,8 @@ layout: home
 
 hero:
   name: "logsmith"
-  text: "Modern Version Bumping"
-  tagline: "Powerful semantic versioning with comprehensive Git integration and monorepo support."
+  text: "Modern Changelog Generation"
+  tagline: "Forge beautiful changelogs automatically from conventional commits with comprehensive theming and analytics."
   image: /images/logo-white.png
   actions:
     - theme: brand
@@ -16,24 +16,24 @@ hero:
       link: https://github.com/stacksjs/logsmith
 
 features:
-  - title: "Semantic Versioning"
-    icon: "🔢"
-    details: "Full semantic versioning support with patch, minor, major, and prerelease version bumps."
-  - title: "Git Integration"
-    icon: "🔄"
-    details: "Automated Git workflows with commits, tags, signing, and push operations in a single command."
-  - title: "Multi-File Support"
-    icon: "📦"
-    details: "Update versions across multiple files with intelligent pattern matching and file type detection."
-  - title: "Monorepo Ready"
-    icon: "🏗️"
-    details: "First-class monorepo support with independent or synchronized versioning across packages."
-  - title: "Cross-Platform"
-    icon: "🌐"
-    details: "Works seamlessly on macOS, Linux, and Windows with consistent behavior across platforms."
-  - title: "CI/CD Integration"
+  - title: "Automatic Generation"
     icon: "🚀"
-    details: "Built for automation with GitHub Actions support and comprehensive CI/CD platform integration."
+    details: "Transform conventional commits into beautiful, organized changelogs with zero manual effort."
+  - title: "Multiple Formats"
+    icon: "🎨"
+    details: "Generate changelogs in Markdown, JSON, or HTML with customizable themes and styling options."
+  - title: "Repository Analytics"
+    icon: "📊"
+    details: "Comprehensive statistics with commit frequency, contributor trends, and activity insights."
+  - title: "Rich Theming"
+    icon: "✨"
+    details: "8 built-in themes from minimal to colorful, plus support for custom themes and emojis."
+  - title: "Smart Filtering"
+    icon: "🔍"
+    details: "Advanced filtering by commit types, authors, scopes, and patterns for precise control."
+  - title: "Internationalization"
+    icon: "🌍"
+    details: "Support for 10+ languages with localized commit types and date formatting."
 ---
 
 <Home />
