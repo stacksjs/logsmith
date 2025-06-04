@@ -62,9 +62,8 @@ const sidebar = [
   {
     text: 'Features',
     items: [
-      { text: 'Version Bumping', link: '/features/version-bumping' },
-      { text: 'Git Integration', link: '/features/git-integration' },
-      { text: 'Monorepo Support', link: '/features/monorepo-support' },
+      { text: 'Theming', link: '/features/theming' },
+      { text: 'Repository Insights', link: '/features/repository-insights' },
     ],
   },
   {
