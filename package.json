@@ -1,18 +1,18 @@
 {
-  "name": "bumpx",
+  "name": "logsmith",
   "type": "module",
   "version": "0.0.0",
   "private": true,
   "description": "Like Homebrew, but faster.",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",
-  "homepage": "https://github.com/stacksjs/bumpx#readme",
+  "homepage": "https://github.com/stacksjs/logsmith#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stacksjs/bumpx.git"
+    "url": "git+https://github.com/stacksjs/logsmith.git"
   },
   "bugs": {
-    "url": "https://github.com/stacksjs/bumpx/issues"
+    "url": "https://github.com/stacksjs/logsmith/issues"
   },
   "keywords": ["homebrew", "pkgx", "bun", "package"],
   "scripts": {

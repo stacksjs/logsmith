@@ -346,11 +346,11 @@ TypeScript helper for configuration files.
 
 ## 🤝 Integration with Version Bumping
 
-Logsmith focuses solely on changelog generation. For version bumping functionality, use it together with [`@stacksjs/bumpx`](../bumpx):
+Logsmith focuses solely on changelog generation. For version bumping functionality, use it together with [`@stacksjs/logsmith`](../logsmith):
 
 ```bash
 # First bump the version
-bunx bumpx patch
+bunx logsmith patch
 
 # Then generate changelog
 bunx logsmith --output CHANGELOG.md
@@ -361,7 +361,7 @@ Or use them together in your build scripts:
 ```json
 {
   "scripts": {
-    "release": "bumpx patch && logsmith --output CHANGELOG.md"
+    "release": "logsmith patch && logsmith --output CHANGELOG.md"
   }
 }
 ```

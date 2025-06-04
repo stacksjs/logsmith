@@ -22,7 +22,7 @@ export async function run(): Promise<void> {
     failedInstalls: 0,
     results: [],
     totalTime: 0,
-    bumpxInstalled: false,
+    logsmithInstalled: false,
     bunInstalled: false,
     pkgxInstalled: false,
   }
@@ -30,7 +30,7 @@ export async function run(): Promise<void> {
   try {
     // Get and validate inputs
     const inputs = getActionInputs()
-    core.info('Starting bumpx Installer Action')
+    core.info('Starting logsmith Installer Action')
 
     if (inputs.verbose) {
       core.info(`Inputs: ${JSON.stringify(inputs, null, 2)}`)
@@ -61,14 +61,14 @@ export async function run(): Promise<void> {
       }
     }
 
-    // Install bumpx
-    const bumpxResult = await installBumpx(inputs.bumpxVersion)
-    summary.bumpxInstalled = bumpxResult.success
-    if (!bumpxResult.success) {
+    // Install logsmith
+    const logsmithResult = await installlogsmith(inputs.logsmithVersion)
+    summary.logsmithInstalled = logsmithResult.success
+    if (!logsmithResult.success) {
       throw new ActionError(
-        `bumpx installation failed: ${bumpxResult.error}`,
-        ActionErrorType.BUMPX_INSTALLATION_FAILED,
-        { error: bumpxResult.error, version: inputs.bumpxVersion },
+        `logsmith installation failed: ${logsmithResult.error}`,
+        ActionErrorType.logsmith_INSTALLATION_FAILED,
+        { error: logsmithResult.error, version: inputs.logsmithVersion },
       )
     }
 
@@ -97,12 +97,12 @@ export async function run(): Promise<void> {
     summary.totalTime = Date.now() - startTime
 
     // Set outputs
-    setActionOutputs(summary, bumpxResult.version)
+    setActionOutputs(summary, logsmithResult.version)
 
     // Log summary
     logInstallationSummary(summary)
 
-    core.info(`bumpx installation completed successfully in ${summary.totalTime}ms`)
+    core.info(`logsmith installation completed successfully in ${summary.totalTime}ms`)
   }
   catch (error) {
     summary.totalTime = Date.now() - startTime
@@ -116,8 +116,8 @@ export async function run(): Promise<void> {
 function getActionInputs(): ActionInputs {
   const inputs: ActionInputs = {
     packages: core.getInput('packages', { required: false }) || '',
-    configPath: core.getInput('config-path', { required: false }) || 'bumpx.config.ts',
-    bumpxVersion: core.getInput('bumpx-version', { required: false }) || 'latest',
+    configPath: core.getInput('config-path', { required: false }) || 'logsmith.config.ts',
+    logsmithVersion: core.getInput('logsmith-version', { required: false }) || 'latest',
     installBun: core.getBooleanInput('install-bun', { required: false }) ?? true,
     installPkgx: core.getBooleanInput('install-pkgx', { required: false }) ?? true,
     verbose: core.getBooleanInput('verbose', { required: false }) ?? false,
@@ -126,7 +126,7 @@ function getActionInputs(): ActionInputs {
     envVars: core.getInput('env-vars', { required: false }) || '',
     timeout: Number.parseInt(core.getInput('timeout', { required: false }) || String(DEFAULT_TIMEOUT)),
     cache: core.getBooleanInput('cache', { required: false }) ?? true,
-    cacheKey: core.getInput('cache-key', { required: false }) || 'bumpx-packages',
+    cacheKey: core.getInput('cache-key', { required: false }) || 'logsmith-packages',
   }
 
   // Validate inputs
@@ -236,24 +236,24 @@ async function setupBun(): Promise<PackageInstallResult> {
 }
 
 /**
- * Install bumpx using Bun
+ * Install logsmith using Bun
  */
-async function installBumpx(version: string): Promise<PackageInstallResult> {
+async function installlogsmith(version: string): Promise<PackageInstallResult> {
   const startTime = Date.now()
-  core.info(`Installing bumpx version: ${version}`)
+  core.info(`Installing logsmith version: ${version}`)
 
   try {
-    const packageSpec = version === 'latest' ? 'bumpx' : `bumpx@${version}`
+    const packageSpec = version === 'latest' ? 'logsmith' : `logsmith@${version}`
     await exec.exec('bun', ['install', '-g', packageSpec])
 
     // Verify installation
-    const { stdout } = await exec.getExecOutput('bumpx', ['--version'], { ignoreReturnCode: true })
+    const { stdout } = await exec.getExecOutput('logsmith', ['--version'], { ignoreReturnCode: true })
     const installedVersion = stdout.trim()
 
-    core.info(`bumpx installation completed: ${installedVersion}`)
+    core.info(`logsmith installation completed: ${installedVersion}`)
 
     return {
-      name: 'bumpx',
+      name: 'logsmith',
       success: true,
       installTime: Date.now() - startTime,
       version: installedVersion,
@@ -261,7 +261,7 @@ async function installBumpx(version: string): Promise<PackageInstallResult> {
   }
   catch (error) {
     return {
-      name: 'bumpx',
+      name: 'logsmith',
       success: false,
       installTime: Date.now() - startTime,
       error: error instanceof Error ? error.message : String(error),
@@ -270,7 +270,7 @@ async function installBumpx(version: string): Promise<PackageInstallResult> {
 }
 
 /**
- * Install pkgx using bumpx
+ * Install pkgx using logsmith
  */
 async function installPkgx(verbose: boolean): Promise<PackageInstallResult> {
   const startTime = Date.now()
@@ -280,7 +280,7 @@ async function installPkgx(verbose: boolean): Promise<PackageInstallResult> {
     const options = {
       env: {
         ...process.env,
-        bumpx_VERBOSE: verbose ? 'true' : 'false',
+        logsmith_VERBOSE: verbose ? 'true' : 'false',
         CONTEXT: JSON.stringify(github.context),
       },
     }
@@ -290,7 +290,7 @@ async function installPkgx(verbose: boolean): Promise<PackageInstallResult> {
       args.push('--verbose')
     }
 
-    await exec.exec('bumpx', args, options)
+    await exec.exec('logsmith', args, options)
     core.info('pkgx installation completed')
 
     return {
@@ -342,7 +342,7 @@ async function installSinglePackage(packageName: string, timeout: number, verbos
     const options = {
       env: {
         ...process.env,
-        bumpx_VERBOSE: verbose ? 'true' : 'false',
+        logsmith_VERBOSE: verbose ? 'true' : 'false',
         CONTEXT: JSON.stringify(github.context),
       },
       timeout: timeout * 1000, // Convert to milliseconds
@@ -354,7 +354,7 @@ async function installSinglePackage(packageName: string, timeout: number, verbos
     }
     args.push(packageName)
 
-    await exec.exec('bumpx', args, options)
+    await exec.exec('logsmith', args, options)
 
     return {
       name: packageName,
@@ -375,12 +375,12 @@ async function installSinglePackage(packageName: string, timeout: number, verbos
 /**
  * Set action outputs
  */
-function setActionOutputs(summary: InstallationSummary, bumpxVersion?: string): void {
+function setActionOutputs(summary: InstallationSummary, logsmithVersion?: string): void {
   core.setOutput('success', 'true')
   core.setOutput('packages-installed', String(summary.successfulInstalls))
   core.setOutput('installed-packages', JSON.stringify(summary.results.filter(r => r.success).map(r => r.name)))
   core.setOutput('summary', JSON.stringify(summary))
-  core.setOutput('bumpx-version', bumpxVersion || 'unknown')
+  core.setOutput('logsmith-version', logsmithVersion || 'unknown')
   core.setOutput('bun-version', summary.results.find(r => r.name === 'bun')?.version || 'unknown')
   core.setOutput('pkgx-installed', String(summary.pkgxInstalled))
 }
@@ -396,7 +396,7 @@ function logInstallationSummary(summary: InstallationSummary): void {
   core.info(`Successful installations: ${summary.successfulInstalls}`)
   core.info(`Failed installations: ${summary.failedInstalls}`)
   core.info(`Total time: ${summary.totalTime}ms`)
-  core.info(`bumpx installed: ${summary.bumpxInstalled}`)
+  core.info(`logsmith installed: ${summary.logsmithInstalled}`)
   core.info(`Bun installed: ${summary.bunInstalled}`)
   core.info(`pkgx installed: ${summary.pkgxInstalled}`)
 

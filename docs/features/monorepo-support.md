@@ -1,6 +1,6 @@
 # Monorepo Support
 
-bumpx provides comprehensive support for monorepo projects, allowing you to manage versions across multiple packages with flexible strategies.
+logsmith provides comprehensive support for monorepo projects, allowing you to manage versions across multiple packages with flexible strategies.
 
 ## Overview
 
@@ -11,20 +11,20 @@ Monorepos present unique challenges for version management:
 - Maintaining version consistency across related packages
 - Managing git operations across the entire repository
 
-bumpx handles these scenarios with sophisticated detection and management capabilities.
+logsmith handles these scenarios with sophisticated detection and management capabilities.
 
 ## Package Discovery
 
 ### Automatic Detection
 
-bumpx automatically finds all package.json files in your monorepo:
+logsmith automatically finds all package.json files in your monorepo:
 
 ```bash
 # Find and update all packages recursively
-bumpx patch --recursive
+logsmith patch --recursive
 
 # See what packages would be updated
-bumpx patch --recursive --dry-run --verbose
+logsmith patch --recursive --dry-run --verbose
 ```
 
 ### Manual Package Selection
@@ -33,11 +33,11 @@ Target specific packages:
 
 ```bash
 # Update specific packages
-bumpx patch --files packages/core/package.json,packages/cli/package.json
+logsmith patch --files packages/core/package.json,packages/cli/package.json
 
 # Use glob patterns
-bumpx minor --files "packages/*/package.json"
-bumpx patch --files "apps/*/package.json,libs/*/package.json"
+logsmith minor --files "packages/*/package.json"
+logsmith patch --files "apps/*/package.json,libs/*/package.json"
 ```
 
 ### Exclude Packages
@@ -46,11 +46,11 @@ Skip certain packages from updates:
 
 ```bash
 # Update all except documentation packages
-bumpx patch --files "packages/*/package.json" --exclude "**/docs/**"
+logsmith patch --files "packages/*/package.json" --exclude "**/docs/**"
 
 # Custom selection logic
 find packages -name "package.json" -not -path "*/test-*/*" | \
-  xargs bumpx patch --files
+  xargs logsmith patch --files
 ```
 
 ## Versioning Strategies
@@ -61,10 +61,10 @@ Each package maintains its own version and release cycle:
 
 ```bash
 # Bump each package from its current version
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Shows current versions before bumping
-bumpx minor --recursive --verbose
+logsmith minor --recursive --verbose
 ```
 
 **Example Output:**
@@ -80,10 +80,10 @@ All packages share the same version:
 
 ```bash
 # Set all packages to the same version
-bumpx patch --recursive --current-version 1.0.0
+logsmith patch --recursive --current-version 1.0.0
 
 # Bump all packages to a specific version
-bumpx 2.0.0 --recursive
+logsmith 2.0.0 --recursive
 ```
 
 **Example Output:**
@@ -99,20 +99,20 @@ Combine strategies for different package groups:
 
 ```bash
 # Sync core packages
-bumpx patch --files "packages/core*/package.json" --current-version 1.0.0
+logsmith patch --files "packages/core*/package.json" --current-version 1.0.0
 
 # Independent versioning for apps
-bumpx patch --files "apps/*/package.json"
+logsmith patch --files "apps/*/package.json"
 
 # Tools maintain separate versions
-bumpx minor --files "tools/*/package.json"
+logsmith minor --files "tools/*/package.json"
 ```
 
 ## Workspace Configurations
 
 ### NPM Workspaces
 
-bumpx works seamlessly with NPM workspaces:
+logsmith works seamlessly with NPM workspaces:
 
 ```json
 {
@@ -126,11 +126,11 @@ bumpx works seamlessly with NPM workspaces:
 
 ```bash
 # Update all workspace packages
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Respect workspace configuration
 npm run build --workspaces
-bumpx minor --recursive --execute "npm run build --workspaces"
+logsmith minor --recursive --execute "npm run build --workspaces"
 ```
 
 ### Yarn Workspaces
@@ -149,7 +149,7 @@ Compatible with Yarn workspace configurations:
 
 ```bash
 # Update and build all workspaces
-bumpx patch --recursive --execute "yarn workspaces run build"
+logsmith patch --recursive --execute "yarn workspaces run build"
 ```
 
 ### Pnpm Workspaces
@@ -166,10 +166,10 @@ packages:
 
 ```bash
 # Update all packages
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Run scripts across workspace
-bumpx minor --recursive --execute "pnpm run build --recursive"
+logsmith minor --recursive --execute "pnpm run build --recursive"
 ```
 
 ### Lerna Integration
@@ -177,11 +177,11 @@ bumpx minor --recursive --execute "pnpm run build --recursive"
 Integrate with Lerna-managed repositories:
 
 ```bash
-# Use bumpx instead of lerna version
-bumpx patch --recursive --commit --tag
+# Use logsmith instead of lerna version
+logsmith patch --recursive --commit --tag
 
 # Combine with Lerna publishing
-bumpx minor --recursive --commit --tag --execute "lerna publish from-package"
+logsmith minor --recursive --commit --tag --execute "lerna publish from-package"
 ```
 
 ## Dependency Management
@@ -202,10 +202,10 @@ Handle packages that depend on each other:
 
 ```bash
 # Update all packages, preserving dependency relationships
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Update dependencies to match new versions
-bumpx patch --recursive --execute "npm update @myorg/*"
+logsmith patch --recursive --execute "npm update @myorg/*"
 ```
 
 ### Version Range Updates
@@ -238,8 +238,8 @@ packages.forEach(pkgPath => {
 EOF
 
 # Use in version bump workflow
-NEW_VERSION=$(bumpx patch --dry-run | grep "→" | head -1 | awk '{print $3}')
-bumpx patch --recursive --execute "NEW_VERSION=$NEW_VERSION node scripts/update-deps.js"
+NEW_VERSION=$(logsmith patch --dry-run | grep "→" | head -1 | awk '{print $3}')
+logsmith patch --recursive --execute "NEW_VERSION=$NEW_VERSION node scripts/update-deps.js"
 ```
 
 ## Git Operations in Monorepos
@@ -250,10 +250,10 @@ Create single commits for monorepo releases:
 
 ```bash
 # Single commit for all package updates
-bumpx patch --recursive --commit --message "chore: release all packages to %s"
+logsmith patch --recursive --commit --message "chore: release all packages to %s"
 
 # Include package details in commit
-bumpx minor --recursive --commit --verbose
+logsmith minor --recursive --commit --verbose
 ```
 
 ### Selective Commits
@@ -265,7 +265,7 @@ Commit packages separately:
 for package in packages/*/package.json; do
   dir=$(dirname "$package")
   name=$(basename "$dir")
-  bumpx patch --files "$package" --commit --message "chore($name): release v%s"
+  logsmith patch --files "$package" --commit --message "chore($name): release v%s"
 done
 ```
 
@@ -275,11 +275,11 @@ Different tagging approaches for monorepos:
 
 ```bash
 # Single tag for entire monorepo
-bumpx patch --recursive --current-version 1.0.0 --tag --tag-message "monorepo-v%s"
+logsmith patch --recursive --current-version 1.0.0 --tag --tag-message "monorepo-v%s"
 
 # Package-specific tags
-bumpx patch --files packages/core/package.json --tag --tag-message "core-v%s"
-bumpx patch --files packages/cli/package.json --tag --tag-message "cli-v%s"
+logsmith patch --files packages/core/package.json --tag --tag-message "core-v%s"
+logsmith patch --files packages/cli/package.json --tag --tag-message "cli-v%s"
 ```
 
 ## Release Workflows
@@ -303,7 +303,7 @@ git status --porcelain | wc -l | xargs test 0 -eq
 npm run test --workspaces
 
 # Update versions
-bumpx patch --recursive --commit --tag
+logsmith patch --recursive --commit --tag
 
 # Build all packages
 npm run build --workspaces
@@ -328,7 +328,7 @@ CHANGED_PACKAGES=$(git diff --name-only HEAD~1 | grep "packages/" | cut -d'/' -f
 for package_dir in $CHANGED_PACKAGES; do
   if [ -f "$package_dir/package.json" ]; then
     echo "Releasing $package_dir..."
-    bumpx patch --files "$package_dir/package.json" --commit --tag
+    logsmith patch --files "$package_dir/package.json" --commit --tag
   fi
 done
 
@@ -341,11 +341,11 @@ Create prerelease versions for testing:
 
 ```bash
 # Create canary releases for all packages
-bumpx prerelease --preid canary --recursive --commit
+logsmith prerelease --preid canary --recursive --commit
 
 # Create alpha releases with timestamp
 TIMESTAMP=$(date +%Y%m%d%H%M%S)
-bumpx prerelease --preid "alpha.$TIMESTAMP" --recursive --commit
+logsmith prerelease --preid "alpha.$TIMESTAMP" --recursive --commit
 ```
 
 ## Advanced Configurations
@@ -362,13 +362,13 @@ git diff --name-only HEAD~1 | while read file; do
   if [[ $file == packages/*/package.json ]]; then
     package_dir=$(dirname "$file")
     echo "Updating $package_dir due to changes"
-    bumpx patch --files "$file" --commit
+    logsmith patch --files "$file" --commit
   elif [[ $file == packages/*/* ]]; then
     package_dir=$(echo "$file" | cut -d'/' -f1-2)
     package_json="$package_dir/package.json"
     if [ -f "$package_json" ]; then
       echo "Updating $package_dir due to file changes"
-      bumpx patch --files "$package_json" --commit
+      logsmith patch --files "$package_json" --commit
     fi
   fi
 done
@@ -392,7 +392,7 @@ for package in packages/*/package.json; do
     if [[ "$PACKAGE_VERSION" > "$CORE_VERSION" ]]; then
       echo "Warning: $package version $PACKAGE_VERSION > core version $CORE_VERSION"
       # Optionally fix the constraint
-      bumpx "$CORE_VERSION" --files "$package"
+      logsmith "$CORE_VERSION" --files "$package"
     fi
   fi
 done
@@ -419,7 +419,7 @@ for package_dir in "${PACKAGES[@]}"; do
     cd - > /dev/null
 
     # Update version
-    bumpx patch --files "$package_dir/package.json" --commit
+    logsmith patch --files "$package_dir/package.json" --commit
   fi
 done
 
@@ -433,7 +433,7 @@ git push origin main --tags
 Shared configuration for monorepo:
 
 ```typescript
-// bumpx.config.ts
+// logsmith.config.ts
 export default {
   recursive: true,
   commit: true,
@@ -453,7 +453,7 @@ Or in package.json:
 ```json
 {
   "name": "my-monorepo",
-  "bumpx": {
+  "logsmith": {
     "recursive": true,
     "commit": true,
     "tag": false,
@@ -473,7 +473,7 @@ Or in package.json:
 Different configs for different package types:
 
 ```typescript
-// packages/core/bumpx.config.ts
+// packages/core/logsmith.config.ts
 export default {
   tag: true,
   tagMessage: 'core-v%s',
@@ -482,7 +482,7 @@ export default {
 ```
 
 ```typescript
-// packages/cli/bumpx.config.ts
+// packages/cli/logsmith.config.ts
 export default {
   tag: true,
   tagMessage: 'cli-v%s',
@@ -496,7 +496,7 @@ Or in each package's package.json:
 // packages/core/package.json
 {
   "name": "@myorg/core",
-  "bumpx": {
+  "logsmith": {
     "tag": true,
     "tagMessage": "core-v%s",
     "execute": "npm run build && npm run test:integration"
@@ -537,13 +537,13 @@ Or in each package's package.json:
 find packages -name "package.json" -exec jq '.version' {} \; | sort | uniq -c
 
 # Force consistency
-bumpx patch --recursive --current-version 1.0.0
+logsmith patch --recursive --current-version 1.0.0
 ```
 
 **Missing packages:**
 ```bash
 # Verify package discovery
-bumpx patch --recursive --dry-run --verbose
+logsmith patch --recursive --dry-run --verbose
 
 # Check file patterns
 ls packages/*/package.json
@@ -553,7 +553,7 @@ ls packages/*/package.json
 ```bash
 # Test build before release
 npm run build --workspaces || exit 1
-bumpx patch --recursive --commit
+logsmith patch --recursive --commit
 ```
 
 **Dependency issues:**

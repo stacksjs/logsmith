@@ -1,10 +1,10 @@
 # Cross-Platform Compatibility
 
-bumpx is designed to work seamlessly across different operating systems. This guide covers platform-specific considerations, differences, and best practices.
+logsmith is designed to work seamlessly across different operating systems. This guide covers platform-specific considerations, differences, and best practices.
 
 ## Platform Support
 
-bumpx officially supports:
+logsmith officially supports:
 
 - **macOS** (Intel and Apple Silicon)
 - **Linux** (Ubuntu, CentOS, Alpine, etc.)
@@ -25,13 +25,13 @@ Standard installation using Homebrew or npm:
 
 ```bash
 # Via Homebrew (recommended)
-brew install bumpx
+brew install logsmith
 
 # Via npm
-npm install -g bumpx
+npm install -g logsmith
 
 # Via Bun
-bun add -g bumpx
+bun add -g logsmith
 ```
 
 ### Linux
@@ -41,19 +41,19 @@ Installation varies by distribution:
 ```bash
 # Ubuntu/Debian
 curl -fsSL https://bun.sh/install | bash
-npm install -g bumpx
+npm install -g logsmith
 
 # CentOS/RHEL
 dnf install nodejs npm
-npm install -g bumpx
+npm install -g logsmith
 
 # Alpine Linux
 apk add nodejs npm
-npm install -g bumpx
+npm install -g logsmith
 
 # Arch Linux
 pacman -S nodejs npm
-npm install -g bumpx
+npm install -g logsmith
 ```
 
 ### Windows
@@ -62,27 +62,27 @@ Multiple installation options:
 
 ```powershell
 # Via npm (requires Node.js)
-npm install -g bumpx
+npm install -g logsmith
 
 # Via Chocolatey
-choco install bumpx
+choco install logsmith
 
 # Via Scoop
-scoop install bumpx
+scoop install logsmith
 
 # Via winget
-winget install stacksjs.bumpx
+winget install stacksjs.logsmith
 ```
 
 ## File System Differences
 
 ### Path Separators
 
-bumpx handles path differences automatically:
+logsmith handles path differences automatically:
 
 ```bash
 # Works on all platforms
-bumpx patch --files "packages/*/package.json"
+logsmith patch --files "packages/*/package.json"
 
 # Platform-specific examples (handled internally):
 # Windows: packages\core\package.json
@@ -91,15 +91,15 @@ bumpx patch --files "packages/*/package.json"
 
 ### Line Endings
 
-bumpx preserves existing line endings:
+logsmith preserves existing line endings:
 
 ```bash
 # Configure Git to handle line endings properly
 git config core.autocrlf true    # Windows
 git config core.autocrlf input   # macOS/Linux
 
-# bumpx respects your Git configuration
-bumpx patch --commit
+# logsmith respects your Git configuration
+logsmith patch --commit
 ```
 
 ### File Permissions
@@ -120,7 +120,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ### Shell Compatibility
 
-bumpx works with various shells:
+logsmith works with various shells:
 
 **macOS/Linux:**
 - Bash
@@ -140,19 +140,19 @@ Set up shell integration:
 
 ```bash
 # Bash (.bashrc)
-echo 'eval "$(bumpx completion bash)"' >> ~/.bashrc
+echo 'eval "$(logsmith completion bash)"' >> ~/.bashrc
 
 # Zsh (.zshrc)
-echo 'eval "$(bumpx completion zsh)"' >> ~/.zshrc
+echo 'eval "$(logsmith completion zsh)"' >> ~/.zshrc
 
 # Fish (config.fish)
-echo 'bumpx completion fish | source' >> ~/.config/fish/config.fish
+echo 'logsmith completion fish | source' >> ~/.config/fish/config.fish
 ```
 
 **Windows PowerShell:**
 ```powershell
 # Add to PowerShell profile
-Add-Content $PROFILE 'Invoke-Expression (bumpx completion powershell)'
+Add-Content $PROFILE 'Invoke-Expression (logsmith completion powershell)'
 ```
 
 ## Git Integration
@@ -210,23 +210,23 @@ Cross-platform environment configuration:
 
 **Unix-like systems (.bashrc, .zshrc):**
 ```bash
-export BUMPX_COMMIT=true
-export BUMPX_TAG=true
-export BUMPX_PUSH=false
+export logsmith_COMMIT=true
+export logsmith_TAG=true
+export logsmith_PUSH=false
 ```
 
 **Windows (PowerShell profile):**
 ```powershell
-$env:BUMPX_COMMIT = "true"
-$env:BUMPX_TAG = "true"
-$env:BUMPX_PUSH = "false"
+$env:logsmith_COMMIT = "true"
+$env:logsmith_TAG = "true"
+$env:logsmith_PUSH = "false"
 ```
 
 **Windows (Command Prompt):**
 ```cmd
-set BUMPX_COMMIT=true
-set BUMPX_TAG=true
-set BUMPX_PUSH=false
+set logsmith_COMMIT=true
+set logsmith_TAG=true
+set logsmith_PUSH=false
 ```
 
 ### Persistent Environment Variables
@@ -234,7 +234,7 @@ set BUMPX_PUSH=false
 **Windows (System Properties):**
 ```powershell
 # Via PowerShell (requires admin)
-[System.Environment]::SetEnvironmentVariable("BUMPX_COMMIT", "true", "User")
+[System.Environment]::SetEnvironmentVariable("logsmith_COMMIT", "true", "User")
 
 # Via GUI: System Properties > Environment Variables
 ```
@@ -242,7 +242,7 @@ set BUMPX_PUSH=false
 **macOS/Linux (.bashrc, .zshrc, .profile):**
 ```bash
 # Add to shell profile
-echo 'export BUMPX_COMMIT=true' >> ~/.bashrc
+echo 'export logsmith_COMMIT=true' >> ~/.bashrc
 source ~/.bashrc
 ```
 
@@ -265,7 +265,7 @@ steps:
     with:
       node-version: ${{ matrix.node-version }}
   - run: npm ci
-  - run: bumpx patch --dry-run # Test on all platforms
+  - run: logsmith patch --dry-run # Test on all platforms
 ```
 
 ### Platform-Specific CI
@@ -297,7 +297,7 @@ Native cross-platform support:
 
 ```bash
 # All platforms
-bun add -g bumpx
+bun add -g logsmith
 bun run release
 ```
 
@@ -311,9 +311,9 @@ Create scripts that work everywhere:
 ```json
 {
   "scripts": {
-    "release": "bumpx patch --commit --tag --push",
-    "release:major": "bumpx major --commit --tag --push",
-    "release:minor": "bumpx minor --commit --tag --push"
+    "release": "logsmith patch --commit --tag --push",
+    "release:major": "logsmith major --commit --tag --push",
+    "release:minor": "logsmith minor --commit --tag --push"
   }
 }
 ```
@@ -340,7 +340,7 @@ fi
 npm test
 
 # Create release
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 
 echo "Release completed!"
 ```
@@ -360,7 +360,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Tests failed" }
 
     # Create release
-    & bumpx $ReleaseType --commit --tag --push
+    & logsmith $ReleaseType --commit --tag --push
     if ($LASTEXITCODE -ne 0) { throw "Release failed" }
 
     Write-Host "Release completed!" -ForegroundColor Green
@@ -375,26 +375,26 @@ catch {
 
 ### Configuration Files
 
-bumpx looks for configuration files in standard locations:
+logsmith looks for configuration files in standard locations:
 
 ```bash
-# All platforms - bumpx checks these locations in order:
-# 1. ./bumpx.config.ts
-# 2. ./bumpx.config.js
-# 3. ./bumpx.config.mjs
-# 4. ./bumpx.config.cjs
-# 5. ./.config/bumpx.*
-# 6. ./config/bumpx.*
-# 7. ./package.json (bumpx section)
-# 8. ~/.config/bumpx.* (user home directory)
+# All platforms - logsmith checks these locations in order:
+# 1. ./logsmith.config.ts
+# 2. ./logsmith.config.js
+# 3. ./logsmith.config.mjs
+# 4. ./logsmith.config.cjs
+# 5. ./.config/logsmith.*
+# 6. ./config/logsmith.*
+# 7. ./package.json (logsmith section)
+# 8. ~/.config/logsmith.* (user home directory)
 ```
 
 **Home directory resolution:**
 ```bash
 # Automatically resolved on all platforms:
-# Windows: C:\Users\username\.config\bumpx.ts
-# macOS:   /Users/username/.config/bumpx.ts
-# Linux:   /home/username/.config/bumpx.ts
+# Windows: C:\Users\username\.config\logsmith.ts
+# macOS:   /Users/username/.config/logsmith.ts
+# Linux:   /home/username/.config/logsmith.ts
 ```
 
 ### Glob Patterns
@@ -403,9 +403,9 @@ Cross-platform file matching:
 
 ```bash
 # These patterns work on all platforms:
-bumpx patch --files "packages/*/package.json"
-bumpx patch --files "apps/**/package.json"
-bumpx patch --files "{packages,apps}/*/package.json"
+logsmith patch --files "packages/*/package.json"
+logsmith patch --files "apps/**/package.json"
+logsmith patch --files "{packages,apps}/*/package.json"
 
 # Avoid platform-specific separators in patterns
 # Good: "packages/*/package.json"
@@ -481,14 +481,14 @@ git config --global core.safecrlf warn
 
 **Gatekeeper:**
 ```bash
-# If bumpx is blocked by Gatekeeper
-xattr -d com.apple.quarantine /usr/local/bin/bumpx
+# If logsmith is blocked by Gatekeeper
+xattr -d com.apple.quarantine /usr/local/bin/logsmith
 ```
 
 **Rosetta 2 (Apple Silicon):**
 ```bash
 # Force x86_64 mode if needed
-arch -x86_64 npm install -g bumpx
+arch -x86_64 npm install -g logsmith
 ```
 
 ### Linux-Specific Issues
@@ -530,10 +530,10 @@ apk add --no-cache git nodejs npm
 {
   "scripts": {
     "prerelease": "bun test && bun run build",
-    "release": "bumpx patch --commit --tag --push",
+    "release": "logsmith patch --commit --tag --push",
     "postrelease": "bun publish"
   },
-  "bumpx": {
+  "logsmith": {
     "commit": true,
     "tag": true,
     "push": false,
@@ -544,7 +544,7 @@ apk add --no-cache git nodejs npm
 
 **Or TypeScript configuration:**
 ```typescript
-// bumpx.config.ts
+// logsmith.config.ts
 export default {
   commit: true,
   tag: true,

@@ -1,6 +1,6 @@
 # Automation & CI/CD
 
-This guide covers automating bumpx in continuous integration and deployment workflows, including GitHub Actions, GitLab CI, and other CI/CD platforms.
+This guide covers automating logsmith in continuous integration and deployment workflows, including GitHub Actions, GitLab CI, and other CI/CD platforms.
 
 ## GitHub Actions Integration
 
@@ -61,7 +61,7 @@ jobs:
       - name: Bump version
         run: |
           RELEASE_TYPE="${{ github.event.inputs.release_type || 'patch' }}"
-          bumpx $RELEASE_TYPE --commit --tag --push
+          logsmith $RELEASE_TYPE --commit --tag --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -155,8 +155,8 @@ jobs:
         id: release
         run: |
           TYPE="${{ steps.release-type.outputs.type }}"
-          VERSION=$(bumpx $TYPE --commit --tag --push --dry-run | grep "→" | awk '{print $3}')
-          bumpx $TYPE --commit --tag --push
+          VERSION=$(logsmith $TYPE --commit --tag --push --dry-run | grep "→" | awk '{print $3}')
+          logsmith $TYPE --commit --tag --push
           echo "released=true" >> $GITHUB_OUTPUT
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
@@ -195,9 +195,9 @@ jobs:
           docker push myapp:${{ needs.release.outputs.version }}
 ```
 
-### Using bumpx in GitHub Actions
+### Using logsmith in GitHub Actions
 
-Integrate bumpx directly in your GitHub Actions workflows:
+Integrate logsmith directly in your GitHub Actions workflows:
 
 ```yaml
 # .github/workflows/release.yml
@@ -225,8 +225,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install bumpx
-        run: npm install -g bumpx
+      - name: Install logsmith
+        run: npm install -g logsmith
 
       - name: Configure git
         run: |
@@ -234,7 +234,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
-        run: bumpx patch --commit --tag --push
+        run: logsmith patch --commit --tag --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -278,7 +278,7 @@ release:
     - git config user.email "ci@gitlab.com"
   script:
     - npm test
-    - bumpx patch --commit --tag --push
+    - logsmith patch --commit --tag --push
     - npm run build
   after_script:
     - git push origin --tags
@@ -374,7 +374,7 @@ release:
       else
         RELEASE_TYPE="patch"
       fi
-    - bumpx $RELEASE_TYPE --commit --tag --push
+    - logsmith $RELEASE_TYPE --commit --tag --push
     - npm run build
   artifacts:
     paths:
@@ -431,7 +431,7 @@ stages:
           - script: |
               git config user.name "Azure DevOps"
               git config user.email "devops@company.com"
-              bumpx patch --commit --tag --push
+              logsmith patch --commit --tag --push
           - script: npm run build
           - script: npm publish
             env:
@@ -488,7 +488,7 @@ pipeline {
                     sh '''
                         git config user.name "Jenkins"
                         git config user.email "jenkins@company.com"
-                        bumpx patch --commit --tag --push
+                        logsmith patch --commit --tag --push
                         npm run build
                     '''
                 }
@@ -555,7 +555,7 @@ jobs:
       - run:
           name: Release
           command: |
-            bumpx patch --commit --tag --push
+            logsmith patch --commit --tag --push
             npm run build
       - run:
           name: Publish
@@ -602,7 +602,7 @@ else
 fi
 
 echo "Releasing with type: $RELEASE_TYPE"
-bumpx $RELEASE_TYPE --commit --tag --push
+logsmith $RELEASE_TYPE --commit --tag --push
 ```
 
 ### Semantic Release Integration
@@ -633,7 +633,7 @@ elif echo "$COMMIT_MSG" | grep -qE "^(docs|style|refactor|test|chore)(\(.+\))?: 
 fi
 
 echo "Determined release type: $RELEASE_TYPE"
-bumpx $RELEASE_TYPE --commit --tag --push
+logsmith $RELEASE_TYPE --commit --tag --push
 ```
 
 ### Multi-Environment Deployments
@@ -729,7 +729,7 @@ git config commit.gpgsign true
 git config tag.gpgsign true
 
 # Create signed release
-bumpx patch --commit --tag --sign --push
+logsmith patch --commit --tag --sign --push
 
 # Verify signatures
 git verify-commit HEAD

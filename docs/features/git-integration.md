@@ -1,6 +1,6 @@
 # Git Integration
 
-bumpx provides seamless integration with Git workflows, automating commits, tags, and pushes as part of your version bumping process.
+logsmith provides seamless integration with Git workflows, automating commits, tags, and pushes as part of your version bumping process.
 
 ## Automatic Git Operations
 
@@ -10,25 +10,25 @@ Automate your entire release workflow:
 
 ```bash
 # Create commit for version bump
-bumpx patch --commit
+logsmith patch --commit
 
 # Create commit and tag
-bumpx minor --commit --tag
+logsmith minor --commit --tag
 
 # Full workflow: commit, tag, and push
-bumpx major --commit --tag --push
+logsmith major --commit --tag --push
 ```
 
 ### Git Status Checking
 
-bumpx checks your working directory state before making changes:
+logsmith checks your working directory state before making changes:
 
 ```bash
 # Requires clean working directory
-bumpx patch --commit
+logsmith patch --commit
 
 # Skip git status check (allows dirty working directory)
-bumpx patch --commit --no-git-check
+logsmith patch --commit --no-git-check
 
 # Check what files are staged/modified
 git status
@@ -42,13 +42,13 @@ Create descriptive commits automatically:
 
 ```bash
 # Default commit message: "chore: bump version to 1.2.3"
-bumpx patch --commit
+logsmith patch --commit
 
 # Custom commit message
-bumpx minor --commit --message "release: v%s"
+logsmith minor --commit --message "release: v%s"
 
 # Include additional context
-bumpx patch --commit --message "fix: patch release %s - security updates"
+logsmith patch --commit --message "fix: patch release %s - security updates"
 ```
 
 ### Commit Message Templates
@@ -57,11 +57,11 @@ Use placeholders in your commit messages:
 
 ```bash
 # %s is replaced with the new version
-bumpx patch --commit --message "chore: release v%s"
+logsmith patch --commit --message "chore: release v%s"
 
 # Custom format options
-bumpx minor --commit --message "🚀 Release %s"
-bumpx major --commit --message "BREAKING: Version %s released"
+logsmith minor --commit --message "🚀 Release %s"
+logsmith major --commit --message "BREAKING: Version %s released"
 ```
 
 ### Signed Commits
@@ -70,10 +70,10 @@ Sign your releases with GPG:
 
 ```bash
 # Create signed commit
-bumpx patch --commit --sign
+logsmith patch --commit --sign
 
 # Sign both commit and tag
-bumpx minor --commit --tag --sign
+logsmith minor --commit --tag --sign
 ```
 
 Setup GPG signing:
@@ -95,13 +95,13 @@ Create version tags automatically:
 
 ```bash
 # Create lightweight tag
-bumpx patch --tag
+logsmith patch --tag
 
 # Create annotated tag with message
-bumpx minor --tag --tag-message "Release v%s"
+logsmith minor --tag --tag-message "Release v%s"
 
 # Signed tags for security
-bumpx major --tag --sign
+logsmith major --tag --sign
 ```
 
 ### Tag Naming Conventions
@@ -110,13 +110,13 @@ Customize tag formats:
 
 ```bash
 # Default: "v1.2.3"
-bumpx patch --tag
+logsmith patch --tag
 
 # Custom format: "release-1.2.3"
-bumpx patch --tag --tag-message "release-%s"
+logsmith patch --tag --tag-message "release-%s"
 
 # Semantic format: "v1.2.3 - Bug fixes"
-bumpx patch --tag --tag-message "v%s - Bug fixes and improvements"
+logsmith patch --tag --tag-message "v%s - Bug fixes and improvements"
 ```
 
 ### Tag Management
@@ -143,11 +143,11 @@ Automatically push changes to remote:
 
 ```bash
 # Push commits and tags
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 
 # Push to specific remote
 git remote add origin https://github.com/user/repo.git
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 ```
 
 ### Branch Management
@@ -160,11 +160,11 @@ git branch --show-current
 
 # Ensure you're on the right branch
 git checkout main
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 
 # Release from feature branch
 git checkout feature/release-prep
-bumpx patch --commit --tag
+logsmith patch --commit --tag
 git checkout main
 git merge feature/release-prep
 git push origin main --tags
@@ -180,7 +180,7 @@ Validate versions before committing:
 #!/bin/sh
 # .git/hooks/pre-commit
 echo "Validating version consistency..."
-bumpx --dry-run --verbose
+logsmith --dry-run --verbose
 if [ $? -ne 0 ]; then
     echo "Version validation failed!"
     exit 1
@@ -207,10 +207,10 @@ Bypass hooks when needed:
 
 ```bash
 # Skip all git hooks
-bumpx patch --commit --no-verify
+logsmith patch --commit --no-verify
 
 # Useful for CI/CD environments
-bumpx patch --commit --tag --push --no-verify
+logsmith patch --commit --tag --push --no-verify
 ```
 
 ## Advanced Git Features
@@ -249,11 +249,11 @@ Use with rebase workflows:
 ```bash
 # Interactive rebase before release
 git rebase -i HEAD~5
-bumpx patch --commit --tag
+logsmith patch --commit --tag
 
 # Squash commits then bump version
 git rebase -i --autosquash HEAD~3
-bumpx minor --commit --tag --push
+logsmith minor --commit --tag --push
 ```
 
 ## CI/CD Integration
@@ -291,7 +291,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          bumpx patch --commit --tag --push
+          logsmith patch --commit --tag --push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 ```
@@ -306,7 +306,7 @@ release:
   script:
     - git config user.name "GitLab CI"
     - git config user.email "ci@gitlab.com"
-    - bumpx patch --commit --tag --push
+    - logsmith patch --commit --tag --push
   only:
     - main
 ```
@@ -331,7 +331,7 @@ ssh-keygen -t ed25519 -C "ci@example.com"
 
 ### Repository Setup
 
-Essential Git configuration for bumpx:
+Essential Git configuration for logsmith:
 
 ```bash
 # User configuration
@@ -353,9 +353,9 @@ Create helpful Git aliases:
 ```bash
 # Add to ~/.gitconfig
 [alias]
-    release-patch = "!f() { bumpx patch --commit --tag --push; }; f"
-    release-minor = "!f() { bumpx minor --commit --tag --push; }; f"
-    release-major = "!f() { bumpx major --prompt --commits --commit --tag --push; }; f"
+    release-patch = "!f() { logsmith patch --commit --tag --push; }; f"
+    release-minor = "!f() { logsmith minor --commit --tag --push; }; f"
+    release-major = "!f() { logsmith major --prompt --commits --commit --tag --push; }; f"
 
 # Usage
 git release-patch
@@ -388,7 +388,7 @@ git pull origin main
 npm test
 
 # 3. Version bump with context
-bumpx patch --commits --commit --tag
+logsmith patch --commits --commit --tag
 
 # 4. Push release
 git push origin main --tags
@@ -405,11 +405,11 @@ Align with your branching model:
 ```bash
 # Development on develop branch
 git checkout develop
-bumpx prerelease --preid dev --commit
+logsmith prerelease --preid dev --commit
 
 # Release preparation
 git checkout -b release/1.2.0
-bumpx minor --commit
+logsmith minor --commit
 
 # Final release on main
 git checkout main
@@ -426,7 +426,7 @@ git checkout -b feature/new-feature
 # Ready for release
 git checkout main
 git merge feature/new-feature
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 ```
 
 ### Security Considerations
@@ -435,7 +435,7 @@ Secure your release process:
 
 ```bash
 # Use signed commits for releases
-bumpx patch --commit --tag --sign
+logsmith patch --commit --tag --sign
 
 # Verify signatures
 git log --show-signature
@@ -471,7 +471,7 @@ git diff
 
 # Stash changes temporarily
 git stash
-bumpx patch --commit --tag
+logsmith patch --commit --tag
 git stash pop
 ```
 
@@ -484,7 +484,7 @@ git add .
 git commit --no-edit
 
 # Continue with version bump
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 ```
 
 **Tag conflicts:**
@@ -494,7 +494,7 @@ git tag -d v1.2.3
 git push origin :refs/tags/v1.2.3
 
 # Create new tag
-bumpx patch --tag
+logsmith patch --tag
 ```
 
 ### Debug Git Operations
@@ -504,7 +504,7 @@ Get detailed information about Git operations:
 ```bash
 # Verbose Git operations
 export GIT_TRACE=1
-bumpx patch --commit --tag --verbose
+logsmith patch --commit --tag --verbose
 
 # Check Git configuration
 git config --list

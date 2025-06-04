@@ -1,22 +1,22 @@
 # Version Bumping
 
-bumpx provides comprehensive version bumping capabilities following semantic versioning (semver) standards.
+logsmith provides comprehensive version bumping capabilities following semantic versioning (semver) standards.
 
 ## Semantic Versioning Support
 
-bumpx fully supports semantic versioning with the format `MAJOR.MINOR.PATCH`:
+logsmith fully supports semantic versioning with the format `MAJOR.MINOR.PATCH`:
 
 ### Standard Version Types
 
 ```bash
 # Patch: Bug fixes (1.0.0 → 1.0.1)
-bumpx patch
+logsmith patch
 
 # Minor: New features (1.0.0 → 1.1.0)
-bumpx minor
+logsmith minor
 
 # Major: Breaking changes (1.0.0 → 2.0.0)
-bumpx major
+logsmith major
 ```
 
 ### Prerelease Versions
@@ -25,16 +25,16 @@ Create prerelease versions for testing and staging:
 
 ```bash
 # Prerelease from current version (1.0.0 → 1.0.1-alpha.0)
-bumpx prerelease
+logsmith prerelease
 
 # Prerelease with custom identifier
-bumpx prerelease --preid beta    # → 1.0.1-beta.0
-bumpx prerelease --preid rc      # → 1.0.1-rc.0
+logsmith prerelease --preid beta    # → 1.0.1-beta.0
+logsmith prerelease --preid rc      # → 1.0.1-rc.0
 
 # Prerelease increments
-bumpx premajor --preid alpha     # → 2.0.0-alpha.0
-bumpx preminor --preid beta      # → 1.1.0-beta.0
-bumpx prepatch --preid rc        # → 1.0.1-rc.0
+logsmith premajor --preid alpha     # → 2.0.0-alpha.0
+logsmith preminor --preid beta      # → 1.1.0-beta.0
+logsmith prepatch --preid rc        # → 1.0.1-rc.0
 ```
 
 ### Exact Version Setting
@@ -43,13 +43,13 @@ Set specific versions when needed:
 
 ```bash
 # Set exact version
-bumpx 2.1.0
+logsmith 2.1.0
 
 # Set prerelease version
-bumpx 3.0.0-beta.5
+logsmith 3.0.0-beta.5
 
 # Set version with build metadata
-bumpx 1.2.3+build.123
+logsmith 1.2.3+build.123
 ```
 
 ## Interactive Version Selection
@@ -58,10 +58,10 @@ Use prompt mode for guided version selection:
 
 ```bash
 # Interactive version picker
-bumpx prompt
+logsmith prompt
 
 # With recent commit context
-bumpx prompt --commits
+logsmith prompt --commits
 ```
 
 The interactive mode shows:
@@ -74,22 +74,22 @@ The interactive mode shows:
 
 ### File Detection
 
-bumpx automatically detects version files:
+logsmith automatically detects version files:
 
 ```bash
 # Updates package.json in current directory
-bumpx patch
+logsmith patch
 
 # Recursively find all package.json files
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Specify custom files
-bumpx patch --files package.json,VERSION.txt,src/version.ts
+logsmith patch --files package.json,VERSION.txt,src/version.ts
 ```
 
 ### File Format Support
 
-bumpx supports multiple file formats:
+logsmith supports multiple file formats:
 
 **JSON Files (package.json, manifest.json):**
 ```json
@@ -119,7 +119,7 @@ version: 1.2.3
 
 ### Pattern Matching
 
-bumpx uses intelligent pattern matching to find versions:
+logsmith uses intelligent pattern matching to find versions:
 
 - `"version": "1.2.3"` (JSON)
 - `version = "1.2.3"` (TOML, config files)
@@ -135,7 +135,7 @@ Each package maintains its own version:
 
 ```bash
 # Bump each package from its current version
-bumpx patch --recursive
+logsmith patch --recursive
 ```
 
 ### Synchronized Versioning
@@ -144,7 +144,7 @@ All packages share the same version:
 
 ```bash
 # Set all packages to the same version
-bumpx patch --recursive --current-version 1.0.0
+logsmith patch --recursive --current-version 1.0.0
 ```
 
 ### Selective Updates
@@ -153,27 +153,27 @@ Target specific packages:
 
 ```bash
 # Update specific package directories
-bumpx patch --files packages/core/package.json,packages/cli/package.json
+logsmith patch --files packages/core/package.json,packages/cli/package.json
 
 # Use glob patterns
-bumpx minor --files "packages/*/package.json"
+logsmith minor --files "packages/*/package.json"
 ```
 
 ## Version Validation
 
-bumpx validates versions at every step:
+logsmith validates versions at every step:
 
 ### Current Version Detection
 
 ```bash
 # Automatically detects current version
-bumpx patch
+logsmith patch
 
 # Override if detection fails
-bumpx patch --current-version 1.2.3
+logsmith patch --current-version 1.2.3
 
 # Verbose mode shows detection process
-bumpx patch --verbose
+logsmith patch --verbose
 ```
 
 ### Semver Compliance
@@ -191,10 +191,10 @@ Checks version consistency across files:
 
 ```bash
 # Warns if files have different versions
-bumpx patch --verbose
+logsmith patch --verbose
 
 # Forces consistency with override
-bumpx patch --current-version 1.0.0
+logsmith patch --current-version 1.0.0
 ```
 
 ## Advanced Version Operations
@@ -205,15 +205,15 @@ Skip files that don't need updates:
 
 ```bash
 # Only updates files that match current version
-bumpx patch --current-version 1.0.0
+logsmith patch --current-version 1.0.0
 
 # Dry run to see which files would be updated
-bumpx patch --dry-run --verbose
+logsmith patch --dry-run --verbose
 ```
 
 ### Version Rollback
 
-While bumpx doesn't directly support rollback, you can manually revert:
+While logsmith doesn't directly support rollback, you can manually revert:
 
 ```bash
 # See what version to rollback to
@@ -223,7 +223,7 @@ git log --oneline -5
 git reset --hard HEAD~1
 
 # Or manually set previous version
-bumpx 1.2.2  # if current is 1.2.3
+logsmith 1.2.2  # if current is 1.2.3
 ```
 
 ### Custom Version Logic
@@ -232,27 +232,27 @@ For complex version schemes:
 
 ```bash
 # Build numbers
-bumpx 1.2.3+build.$(date +%Y%m%d)
+logsmith 1.2.3+build.$(date +%Y%m%d)
 
 # Custom prerelease schemes
-bumpx 1.0.0-dev.$(git rev-parse --short HEAD)
+logsmith 1.0.0-dev.$(git rev-parse --short HEAD)
 
 # Date-based versions
-bumpx $(date +%Y.%m.%d)
+logsmith $(date +%Y.%m.%d)
 ```
 
 ## Integration with Build Tools
 
 ### NPM Integration
 
-bumpx works alongside NPM scripts:
+logsmith works alongside NPM scripts:
 
 ```json
 {
   "scripts": {
-    "release:patch": "bumpx patch --commit --tag",
-    "release:minor": "bumpx minor --commit --tag --execute 'npm run build'",
-    "release:major": "bumpx major --prompt --commits --commit --tag --push"
+    "release:patch": "logsmith patch --commit --tag",
+    "release:minor": "logsmith minor --commit --tag --execute 'npm run build'",
+    "release:major": "logsmith major --prompt --commits --commit --tag --push"
   }
 }
 ```
@@ -265,7 +265,7 @@ Automated version bumping in CI:
 # GitHub Actions example
 - name: Bump version
   run: |
-    bumpx patch --commit --tag --push
+    logsmith patch --commit --tag --push
     npm publish
 ```
 
@@ -276,7 +276,7 @@ Pre-commit version validation:
 ```bash
 #!/bin/sh
 # .git/hooks/pre-commit
-bumpx --dry-run --verbose || exit 1
+logsmith --dry-run --verbose || exit 1
 ```
 
 ## Best Practices
@@ -301,7 +301,7 @@ git checkout main
 git merge feature/new-feature
 
 # 4. Version bump with full git workflow
-bumpx minor --commit --tag --push --execute "npm run build"
+logsmith minor --commit --tag --push --execute "npm run build"
 
 # 5. Publish
 npm publish
@@ -312,7 +312,7 @@ npm publish
 Establish consistent practices:
 
 ```typescript
-// bumpx.config.ts - shared team configuration
+// logsmith.config.ts - shared team configuration
 export default {
   commit: true,
   tag: true,
@@ -329,7 +329,7 @@ export default {
 **Version detection fails:**
 ```bash
 # Specify current version manually
-bumpx patch --current-version 1.0.0
+logsmith patch --current-version 1.0.0
 
 # Check file format
 cat package.json | jq .version
@@ -338,16 +338,16 @@ cat package.json | jq .version
 **Inconsistent versions across files:**
 ```bash
 # See which files have different versions
-bumpx patch --dry-run --verbose
+logsmith patch --dry-run --verbose
 
 # Force consistency
-bumpx patch --current-version 1.0.0
+logsmith patch --current-version 1.0.0
 ```
 
 **Invalid version format:**
 ```bash
 # Check current version format
-bumpx --version
+logsmith --version
 
 # Validate semver format
 node -e "console.log(require('semver').valid('1.2.3'))"
@@ -359,8 +359,8 @@ Enable detailed logging:
 
 ```bash
 # See every operation
-bumpx patch --verbose
+logsmith patch --verbose
 
 # Test without changes
-bumpx patch --dry-run --verbose
+logsmith patch --dry-run --verbose
 ```

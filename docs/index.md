@@ -3,7 +3,7 @@
 layout: home
 
 hero:
-  name: "bumpx"
+  name: "logsmith"
   text: "Modern Version Bumping"
   tagline: "Powerful semantic versioning with comprehensive Git integration and monorepo support."
   image: /images/logo-white.png
@@ -13,7 +13,7 @@ hero:
       link: /intro
     - theme: alt
       text: View on GitHub
-      link: https://github.com/stacksjs/bumpx
+      link: https://github.com/stacksjs/logsmith
 
 features:
   - title: "Semantic Versioning"

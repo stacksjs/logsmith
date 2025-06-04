@@ -6,7 +6,7 @@
 <!-- [![npm downloads][npm-downloads-src]][npm-downloads-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-# bumpx
+# logsmith
 
 > A fast, dependency-free version bumping tool similar to bumpp and version-bump-prompt, built for Bun.
 
@@ -25,10 +25,10 @@
 
 ```bash
 # Install globally
-bun install -g @stacksjs/bumpx
+bun install -g @stacksjs/logsmith
 
 # Or use with bunx
-bunx @stacksjs/bumpx patch
+bunx @stacksjs/logsmith patch
 ```
 
 ## Usage
@@ -37,100 +37,100 @@ bunx @stacksjs/bumpx patch
 
 ```bash
 # Bump patch version (1.0.0 → 1.0.1)
-bumpx patch
+logsmith patch
 
 # Bump minor version (1.0.0 → 1.1.0)
-bumpx minor
+logsmith minor
 
 # Bump major version (1.0.0 → 2.0.0)
-bumpx major
+logsmith major
 
 # Bump to specific version
-bumpx 1.2.3
+logsmith 1.2.3
 
 # Interactive version selection
-bumpx prompt
+logsmith prompt
 ```
 
 ### Prerelease Versions
 
 ```bash
 # Bump to prerelease
-bumpx prepatch --preid beta  # 1.0.0 → 1.0.1-beta.0
-bumpx preminor --preid alpha # 1.0.0 → 1.1.0-alpha.0
-bumpx premajor --preid rc    # 1.0.0 → 2.0.0-rc.0
+logsmith prepatch --preid beta  # 1.0.0 → 1.0.1-beta.0
+logsmith preminor --preid alpha # 1.0.0 → 1.1.0-alpha.0
+logsmith premajor --preid rc    # 1.0.0 → 2.0.0-rc.0
 
 # Increment prerelease
-bumpx prerelease  # 1.0.1-beta.0 → 1.0.1-beta.1
+logsmith prerelease  # 1.0.1-beta.0 → 1.0.1-beta.1
 ```
 
 ### Git Integration
 
 ```bash
 # Disable git operations
-bumpx patch --no-commit --no-tag --no-push
+logsmith patch --no-commit --no-tag --no-push
 
 # Custom commit message
-bumpx patch --commit "chore: release v{version}"
+logsmith patch --commit "chore: release v{version}"
 
 # Custom tag name
-bumpx patch --tag "v{version}"
+logsmith patch --tag "v{version}"
 
 # Sign commits and tags
-bumpx patch --sign
+logsmith patch --sign
 
 # Skip git hooks
-bumpx patch --no-verify
+logsmith patch --no-verify
 ```
 
 ### Monorepo Support
 
 ```bash
 # Bump all package.json files recursively
-bumpx patch --recursive
+logsmith patch --recursive
 
 # Bump specific files
-bumpx patch package.json packages/*/package.json
+logsmith patch package.json packages/*/package.json
 ```
 
 ### Advanced Options
 
 ```bash
 # Execute custom commands
-bumpx patch --execute "bun run build" --execute "bun test"
+logsmith patch --execute "bun run build" --execute "bun test"
 
 # Install dependencies after bump
-bumpx patch --install
+logsmith patch --install
 
 # Skip confirmation prompts
-bumpx patch --yes
+logsmith patch --yes
 
 # CI mode (non-interactive, quiet)
-bumpx patch --ci
+logsmith patch --ci
 
 # Print recent commits
-bumpx patch --print-commits
+logsmith patch --print-commits
 
 # Skip git status check
-bumpx patch --no-git-check
+logsmith patch --no-git-check
 ```
 
 ## CI/CD Integration
 
-bumpx is designed to work seamlessly in CI/CD environments:
+logsmith is designed to work seamlessly in CI/CD environments:
 
 ### Quick CI Usage
 
 ```bash
 # CI mode - automatically non-interactive
-bumpx patch --ci
+logsmith patch --ci
 
 # Or with explicit flags
-bumpx patch --yes --quiet
+logsmith patch --yes --quiet
 
 # Auto-detect CI environment
 export CI=true
-bumpx patch  # Automatically enables CI mode
+logsmith patch  # Automatically enables CI mode
 ```
 
 ### GitHub Actions Example
@@ -167,17 +167,17 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Version bump and release
-        run: bunx bumpx ${{ github.event.inputs.release_type }} --ci
+        run: bunx logsmith ${{ github.event.inputs.release_type }} --ci
 ```
 
 For more CI/CD examples and configurations, see [CI.md](./CI.md).
 
 ## Configuration
 
-Create a `bumpx.config.ts` file in your project root:
+Create a `logsmith.config.ts` file in your project root:
 
 ```typescript
-import { defineConfig } from '@stacksjs/bumpx'
+import { defineConfig } from '@stacksjs/logsmith'
 
 export default defineConfig({
   // Git options
@@ -204,7 +204,7 @@ You can also use JSON configuration in `package.json`:
 
 ```json
 {
-  "bumpx": {
+  "logsmith": {
     "commit": true,
     "tag": true,
     "push": true,
@@ -240,10 +240,10 @@ You can also use JSON configuration in `package.json`:
 
 ## Library Usage
 
-You can also use bumpx programmatically:
+You can also use logsmith programmatically:
 
 ```typescript
-import { versionBump } from '@stacksjs/bumpx'
+import { versionBump } from '@stacksjs/logsmith'
 
 await versionBump({
   release: 'patch',
@@ -258,7 +258,7 @@ await versionBump({
 
 ## Changelog
 
-Please see our [releases](https://github.com/stackjs/bumpx/releases) page for information on changes.
+Please see our [releases](https://github.com/stackjs/logsmith/releases) page for information on changes.
 
 ## Contributing
 
@@ -268,7 +268,7 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 For help or discussion:
 
-- [Discussions on GitHub](https://github.com/stacksjs/bumpx/discussions)
+- [Discussions on GitHub](https://github.com/stacksjs/logsmith/discussions)
 - [Join the Stacks Discord Server](https://discord.gg/stacksjs)
 
 ## Postcardware
@@ -282,7 +282,7 @@ Our address: Stacks.js, 12665 Village Ln #2306, Playa Vista, CA 90094, United St
 - [`version-bump-prompt`](https://github.com/JS-DevTools/version-bump-prompt) - for the initial inspiration
 - [Antony Fu](https://github.com/antfu) - for creating [bumpp](https://github.com/antfu-collective/bumpp)
 - [Chris Breuer](https://github.com/chrisbbreuer)
-- [All Contributors](https://github.com/stacksjs/bumpx/graphs/contributors)
+- [All Contributors](https://github.com/stacksjs/logsmith/graphs/contributors)
 
 ## Sponsors
 
@@ -298,10 +298,10 @@ The MIT License (MIT). Please see [LICENSE](LICENSE.md) for more information.
 Made with 💙
 
 <!-- Badges -->
-[npm-version-src]: https://img.shields.io/npm/v/@stacksjs/bumpx?style=flat-square
-[npm-version-href]: https://npmjs.com/package/@stacksjs/bumpx
-[github-actions-src]: https://img.shields.io/github/actions/workflow/status/stacksjs/bumpx/ci.yml?style=flat-square&branch=main
-[github-actions-href]: https://github.com/stacksjs/bumpx/actions?query=workflow%3Aci
+[npm-version-src]: https://img.shields.io/npm/v/@stacksjs/logsmith?style=flat-square
+[npm-version-href]: https://npmjs.com/package/@stacksjs/logsmith
+[github-actions-src]: https://img.shields.io/github/actions/workflow/status/stacksjs/logsmith/ci.yml?style=flat-square&branch=main
+[github-actions-href]: https://github.com/stacksjs/logsmith/actions?query=workflow%3Aci
 
-<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/stacksjs/bumpx/main?style=flat-square
-[codecov-href]: https://codecov.io/gh/stacksjs/bumpx -->
+<!-- [codecov-src]: https://img.shields.io/codecov/c/gh/stacksjs/logsmith/main?style=flat-square
+[codecov-href]: https://codecov.io/gh/stacksjs/logsmith -->

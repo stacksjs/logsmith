@@ -1,20 +1,20 @@
 {
-  "name": "bumpx-installer",
+  "name": "logsmith-installer",
   "version": "1.0.0",
-  "description": "GitHub Action to install packages using bumpx.",
+  "description": "GitHub Action to install packages using logsmith.",
   "author": "Stacks.js <hello@stacks.js.org>",
   "license": "MIT",
-  "homepage": "https://github.com/stacksjs/bumpx#readme",
+  "homepage": "https://github.com/stacksjs/logsmith#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stacksjs/bumpx.git"
+    "url": "git+https://github.com/stacksjs/logsmith.git"
   },
   "bugs": {
-    "url": "https://github.com/stacksjs/bumpx/issues"
+    "url": "https://github.com/stacksjs/logsmith/issues"
   },
   "keywords": [
     "github-action",
-    "bumpx",
+    "logsmith",
     "pkgx",
     "package-manager",
     "ci-cd",
@@ -23,7 +23,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "bumpx-installer": "dist/index.js"
+    "logsmith-installer": "dist/index.js"
   },
   "scripts": {
     "build": "bun run build.ts",

@@ -1,13 +1,13 @@
 # Contributing Guide
 
-Thank you for your interest in contributing to the bumpx Installer! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to the logsmith Installer! This document provides guidelines and instructions for contributing.
 
 ## Development Setup
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/stacksjs/bumpx.git
-   cd bumpx/packages/action
+   git clone https://github.com/stacksjs/logsmith.git
+   cd logsmith/packages/action
    ```
 
 2. **Install dependencies:**

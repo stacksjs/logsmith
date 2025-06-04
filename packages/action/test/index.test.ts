@@ -42,7 +42,7 @@ describe('GitHub Action', () => {
   describe('ActionErrorType enum', () => {
     it('should have all expected error types', () => {
       expect(ActionErrorType.BUN_INSTALLATION_FAILED).toBe(ActionErrorType.BUN_INSTALLATION_FAILED)
-      expect(ActionErrorType.BUMPX_INSTALLATION_FAILED).toBe(ActionErrorType.BUMPX_INSTALLATION_FAILED)
+      expect(ActionErrorType.logsmith_INSTALLATION_FAILED).toBe(ActionErrorType.logsmith_INSTALLATION_FAILED)
       expect(ActionErrorType.PKGX_INSTALLATION_FAILED).toBe(ActionErrorType.PKGX_INSTALLATION_FAILED)
       expect(ActionErrorType.PACKAGE_INSTALLATION_FAILED).toBe(ActionErrorType.PACKAGE_INSTALLATION_FAILED)
       expect(ActionErrorType.DEPENDENCY_DETECTION_FAILED).toBe(ActionErrorType.DEPENDENCY_DETECTION_FAILED)
@@ -66,8 +66,8 @@ describe('GitHub Action', () => {
     it('should validate ActionInputs interface structure', () => {
       const validInputs = {
         packages: 'typescript eslint',
-        configPath: 'bumpx.config.ts',
-        bumpxVersion: 'latest',
+        configPath: 'logsmith.config.ts',
+        logsmithVersion: 'latest',
         installBun: true,
         installPkgx: true,
         verbose: false,
@@ -76,13 +76,13 @@ describe('GitHub Action', () => {
         envVars: '{}',
         timeout: 600,
         cache: true,
-        cacheKey: 'bumpx-packages',
+        cacheKey: 'logsmith-packages',
       }
 
       // Type validation - these should compile without errors
       expect(typeof validInputs.packages).toBe('string')
       expect(typeof validInputs.configPath).toBe('string')
-      expect(typeof validInputs.bumpxVersion).toBe('string')
+      expect(typeof validInputs.logsmithVersion).toBe('string')
       expect(typeof validInputs.installBun).toBe('boolean')
       expect(typeof validInputs.installPkgx).toBe('boolean')
       expect(typeof validInputs.verbose).toBe('boolean')
@@ -127,7 +127,7 @@ describe('GitHub Action', () => {
         failedInstalls: 1,
         results: [],
         totalTime: 5000,
-        bumpxInstalled: true,
+        logsmithInstalled: true,
         bunInstalled: true,
         pkgxInstalled: false,
       }
@@ -137,7 +137,7 @@ describe('GitHub Action', () => {
       expect(summary.failedInstalls).toBe(1)
       expect(Array.isArray(summary.results)).toBe(true)
       expect(summary.totalTime).toBe(5000)
-      expect(summary.bumpxInstalled).toBe(true)
+      expect(summary.logsmithInstalled).toBe(true)
       expect(summary.bunInstalled).toBe(true)
       expect(summary.pkgxInstalled).toBe(false)
     })
@@ -220,12 +220,12 @@ describe('GitHub Action', () => {
   describe('Version handling', () => {
     it('should handle version specifications correctly', () => {
       const getPackageSpec = (version: string) => {
-        return version === 'latest' ? 'bumpx' : `bumpx@${version}`
+        return version === 'latest' ? 'logsmith' : `logsmith@${version}`
       }
 
-      expect(getPackageSpec('latest')).toBe('bumpx')
-      expect(getPackageSpec('0.1.0')).toBe('bumpx@0.1.0')
-      expect(getPackageSpec('1.2.3-beta.1')).toBe('bumpx@1.2.3-beta.1')
+      expect(getPackageSpec('latest')).toBe('logsmith')
+      expect(getPackageSpec('0.1.0')).toBe('logsmith@0.1.0')
+      expect(getPackageSpec('1.2.3-beta.1')).toBe('logsmith@1.2.3-beta.1')
     })
 
     it('should parse version output correctly', () => {
@@ -327,7 +327,7 @@ describe('GitHub Action', () => {
           `Successful installations: ${summary.successfulInstalls}`,
           `Failed installations: ${summary.failedInstalls}`,
           `Total time: ${summary.totalTime}ms`,
-          `bumpx installed: ${summary.bumpxInstalled}`,
+          `logsmith installed: ${summary.logsmithInstalled}`,
           `Bun installed: ${summary.bunInstalled}`,
           `pkgx installed: ${summary.pkgxInstalled}`,
           '='.repeat(50),
@@ -340,7 +340,7 @@ describe('GitHub Action', () => {
         successfulInstalls: 2,
         failedInstalls: 1,
         totalTime: 5000,
-        bumpxInstalled: true,
+        logsmithInstalled: true,
         bunInstalled: true,
         pkgxInstalled: false,
       }
@@ -352,7 +352,7 @@ describe('GitHub Action', () => {
       expect(formatted).toContain('Successful installations: 2')
       expect(formatted).toContain('Failed installations: 1')
       expect(formatted).toContain('Total time: 5000ms')
-      expect(formatted).toContain('bumpx installed: true')
+      expect(formatted).toContain('logsmith installed: true')
       expect(formatted).toContain('Bun installed: true')
       expect(formatted).toContain('pkgx installed: false')
     })
@@ -390,7 +390,7 @@ describe('GitHub Action', () => {
           failedInstalls: results.filter((r: any) => !r.success).length,
           results,
           totalTime: 5000,
-          bumpxInstalled: true,
+          logsmithInstalled: true,
           bunInstalled: inputs.installBun,
           pkgxInstalled: inputs.installPkgx,
         }

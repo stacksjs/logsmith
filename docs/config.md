@@ -1,16 +1,16 @@
 # Configuration
 
-bumpx offers flexible configuration options to customize its behavior for your project and team's workflow.
+logsmith offers flexible configuration options to customize its behavior for your project and team's workflow.
 
 ## Configuration Files
 
 ### Project Configuration
 
-Create a configuration file in your project root for project-specific defaults. bumpx supports multiple configuration file formats:
+Create a configuration file in your project root for project-specific defaults. logsmith supports multiple configuration file formats:
 
 **TypeScript/JavaScript configuration files:**
 ```typescript
-// bumpx.config.ts
+// logsmith.config.ts
 export default {
   commit: true,
   tag: true,
@@ -29,7 +29,7 @@ export default {
 ```
 
 ```javascript
-// bumpx.config.js
+// logsmith.config.js
 module.exports = {
   commit: true,
   tag: true,
@@ -52,7 +52,7 @@ module.exports = {
 {
   "name": "my-project",
   "version": "1.0.0",
-  "bumpx": {
+  "logsmith": {
     "commit": true,
     "tag": true,
     "push": false,
@@ -68,16 +68,16 @@ module.exports = {
 **Alternative config directory locations:**
 ```bash
 # In .config directory
-.config/bumpx.ts
-.config/bumpx.js
-.config/bumpx.mjs
-.config/bumpx.cjs
+.config/logsmith.ts
+.config/logsmith.js
+.config/logsmith.mjs
+.config/logsmith.cjs
 
 # In config directory
-config/bumpx.ts
-config/bumpx.js
-config/bumpx.mjs
-config/bumpx.cjs
+config/logsmith.ts
+config/logsmith.js
+config/logsmith.mjs
+config/logsmith.cjs
 ```
 
 ### Global Configuration
@@ -85,7 +85,7 @@ config/bumpx.cjs
 Create a global configuration in your home directory:
 
 ```typescript
-// ~/.config/bumpx.config.ts
+// ~/.config/logsmith.config.ts
 export default {
   sign: true,
   push: false,
@@ -99,7 +99,7 @@ Or in package.json within a global npm project:
 
 ```json
 {
-  "bumpx": {
+  "logsmith": {
     "sign": true,
     "push": false,
     "verbose": true,
@@ -113,28 +113,28 @@ Or in package.json within a global npm project:
 
 Configuration is applied in this order (later options override earlier ones):
 
-1. Global configuration (`~/.config/bumpx.config.*` or global package.json)
+1. Global configuration (`~/.config/logsmith.config.*` or global package.json)
 2. Project configuration (local config files or package.json)
 3. Command line arguments
 4. Environment variables
 
 ### Supported Configuration File Names
 
-bumpx looks for configuration files in this order:
+logsmith looks for configuration files in this order:
 
-1. `bumpx.config.ts`
-2. `bumpx.config.js`
-3. `bumpx.config.mjs`
-4. `bumpx.config.cjs`
-5. `.config/bumpx.config.ts`
-6. `.config/bumpx.config.js`
-7. `.config/bumpx.config.mjs`
-8. `.config/bumpx.config.cjs`
-9. `config/bumpx.config.ts`
-10. `config/bumpx.config.js`
-11. `config/bumpx.config.mjs`
-12. `config/bumpx.config.cjs`
-13. `package.json` (bumpx key)
+1. `logsmith.config.ts`
+2. `logsmith.config.js`
+3. `logsmith.config.mjs`
+4. `logsmith.config.cjs`
+5. `.config/logsmith.config.ts`
+6. `.config/logsmith.config.js`
+7. `.config/logsmith.config.mjs`
+8. `.config/logsmith.config.cjs`
+9. `config/logsmith.config.ts`
+10. `config/logsmith.config.js`
+11. `config/logsmith.config.mjs`
+12. `config/logsmith.config.cjs`
+13. `package.json` (logsmith key)
 
 ## Configuration Options
 
@@ -335,16 +335,16 @@ bumpx looks for configuration files in this order:
 
 ## Environment Variables
 
-You can also configure bumpx using environment variables:
+You can also configure logsmith using environment variables:
 
 ```bash
 # Set default behavior via environment variables
-export BUMPX_COMMIT=true
-export BUMPX_TAG=true
-export BUMPX_PUSH=false
-export BUMPX_SIGN=true
-export BUMPX_MESSAGE="chore: release v%s"
-export BUMPX_VERBOSE=true
+export logsmith_COMMIT=true
+export logsmith_TAG=true
+export logsmith_PUSH=false
+export logsmith_SIGN=true
+export logsmith_MESSAGE="chore: release v%s"
+export logsmith_VERBOSE=true
 ```
 
 ## Configuration Examples
@@ -450,13 +450,13 @@ Use different configurations for different scenarios:
 
 ```bash
 # Development releases
-bumpx prerelease --config bumpx.config.dev.ts
+logsmith prerelease --config logsmith.config.dev.ts
 
 # Production releases
-bumpx minor --config bumpx.config.prod.ts
+logsmith minor --config logsmith.config.prod.ts
 
 # Hotfix releases
-bumpx patch --config bumpx.config.hotfix.ts
+logsmith patch --config logsmith.config.hotfix.ts
 ```
 
 ### Team Configuration
@@ -464,7 +464,7 @@ bumpx patch --config bumpx.config.hotfix.ts
 Share configuration across your team by committing configuration files:
 
 ```typescript
-// bumpx.config.ts - committed to version control
+// logsmith.config.ts - committed to version control
 export default {
   commit: true,
   tag: true,
@@ -511,7 +511,7 @@ For users migrating from `bumpp`:
 
 ## Validation
 
-bumpx validates your configuration and will warn about:
+logsmith validates your configuration and will warn about:
 
 - Invalid option combinations
 - Malformed message templates
@@ -522,7 +522,7 @@ To validate your configuration:
 
 ```bash
 # Test configuration without making changes
-bumpx patch --dry-run --verbose
+logsmith patch --dry-run --verbose
 ```
 
 ## Best Practices
@@ -541,10 +541,10 @@ bumpx patch --dry-run --verbose
 **Config not loading:**
 ```bash
 # Check config file syntax (for TypeScript/JavaScript files)
-npx tsc --noEmit bumpx.config.ts
+npx tsc --noEmit logsmith.config.ts
 
 # Use explicit config file
-bumpx patch --config ./my-config.ts
+logsmith patch --config ./my-config.ts
 ```
 
 **Git operations failing:**
@@ -563,5 +563,5 @@ git commit --allow-empty -m "test commit"
 ls -la package.json packages/*/package.json
 
 # Use verbose mode to see file resolution
-bumpx patch --dry-run --verbose
+logsmith patch --dry-run --verbose
 ```

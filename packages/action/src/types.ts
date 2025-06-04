@@ -1,5 +1,5 @@
 /**
- * Input parameters for the bumpx-installer GitHub Action
+ * Input parameters for the logsmith-installer GitHub Action
  */
 export interface ActionInputs {
   /**
@@ -9,16 +9,16 @@ export interface ActionInputs {
   packages: string
 
   /**
-   * Path to bumpx config file
-   * Default: "bumpx.config.ts"
+   * Path to logsmith config file
+   * Default: "logsmith.config.ts"
    */
   configPath: string
 
   /**
-   * Version of bumpx to install
+   * Version of logsmith to install
    * Default: "latest"
    */
-  bumpxVersion: string
+  logsmithVersion: string
 
   /**
    * Whether to install Bun if not already present
@@ -70,7 +70,7 @@ export interface ActionInputs {
 
   /**
    * Cache key prefix for package caching
-   * Default: "bumpx-packages"
+   * Default: "logsmith-packages"
    */
   cacheKey: string
 }
@@ -180,9 +180,9 @@ export interface InstallationSummary {
   totalTime: number
 
   /**
-   * Whether bumpx was installed successfully
+   * Whether logsmith was installed successfully
    */
-  bumpxInstalled: boolean
+  logsmithInstalled: boolean
 
   /**
    * Whether Bun was installed successfully
@@ -225,9 +225,9 @@ export interface ActionOutputs {
   detectedDependencies: string
 
   /**
-   * Version of bumpx that was installed
+   * Version of logsmith that was installed
    */
-  bumpxVersion: string
+  logsmithVersion: string
 
   /**
    * Version of Bun that was installed or detected
@@ -245,7 +245,7 @@ export interface ActionOutputs {
  */
 export enum ActionErrorType {
   BUN_INSTALLATION_FAILED = 'BUN_INSTALLATION_FAILED',
-  BUMPX_INSTALLATION_FAILED = 'BUMPX_INSTALLATION_FAILED',
+  logsmith_INSTALLATION_FAILED = 'logsmith_INSTALLATION_FAILED',
   PKGX_INSTALLATION_FAILED = 'PKGX_INSTALLATION_FAILED',
   PACKAGE_INSTALLATION_FAILED = 'PACKAGE_INSTALLATION_FAILED',
   DEPENDENCY_DETECTION_FAILED = 'DEPENDENCY_DETECTION_FAILED',

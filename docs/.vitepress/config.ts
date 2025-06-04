@@ -21,7 +21,7 @@ const nav = [
   { text: 'News', link: 'https://stacksjs.org/news' },
   {
     text: 'Changelog',
-    link: 'https://github.com/stacksjs/bumpx/blob/main/CHANGELOG.md',
+    link: 'https://github.com/stacksjs/logsmith/blob/main/CHANGELOG.md',
   },
   // { text: 'Blog', link: 'https://updates.ow3.org' },
   {
@@ -77,12 +77,12 @@ const sidebar = [
   { text: 'API Reference', link: '/api/reference' },
 ]
 const description = 'A powerful, modern version bumping tool with comprehensive Git integration and monorepo support.'
-const title = 'bumpx | Modern Version Bumping Tool'
+const title = 'logsmith | Modern Version Bumping Tool'
 
 export default withPwa(
   defineConfig({
     lang: 'en-US',
-    title: 'bumpx',
+    title: 'logsmith',
     description,
     metaChunk: true,
     cleanUrls: true,
@@ -97,7 +97,7 @@ export default withPwa(
       ['meta', { name: 'author', content: 'Stacks.js, Inc.' }],
       ['meta', {
         name: 'tags',
-        content: 'bumpx, stacksjs, version bumping, semantic versioning, git integration, monorepo, release management',
+        content: 'logsmith, stacksjs, version bumping, semantic versioning, git integration, monorepo, release management',
       }],
 
       ['meta', { property: 'og:type', content: 'website' }],
@@ -105,9 +105,9 @@ export default withPwa(
       ['meta', { property: 'og:title', content: title }],
       ['meta', { property: 'og:description', content: description }],
 
-      ['meta', { property: 'og:site_name', content: 'bumpx' }],
+      ['meta', { property: 'og:site_name', content: 'logsmith' }],
       ['meta', { property: 'og:image', content: './images/og-image.jpg' }],
-      ['meta', { property: 'og:url', content: 'https://bumpx.sh/' }],
+      ['meta', { property: 'og:url', content: 'https://logsmith.sh/' }],
       // ['script', { 'src': 'https://cdn.usefathom.com/script.js', 'data-site': '', 'data-spa': 'auto', 'defer': '' }],
       ...analyticsHead,
     ],
@@ -125,7 +125,7 @@ export default withPwa(
       sidebar,
 
       editLink: {
-        pattern: 'https://github.com/stacksjs/bumpx/edit/main/docs/:path',
+        pattern: 'https://github.com/stacksjs/logsmith/edit/main/docs/:path',
         text: 'Edit this page on GitHub',
       },
 
@@ -137,7 +137,7 @@ export default withPwa(
       socialLinks: [
         { icon: 'twitter', link: 'https://twitter.com/stacksjs' },
         { icon: 'bluesky', link: 'https://bsky.app/profile/chrisbreuer.dev' },
-        { icon: 'github', link: 'https://github.com/stacksjs/bumpx' },
+        { icon: 'github', link: 'https://github.com/stacksjs/logsmith' },
         { icon: 'discord', link: 'https://discord.gg/stacksjs' },
       ],
 

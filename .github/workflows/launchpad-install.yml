@@ -1,4 +1,4 @@
-name: bumpx Install
+name: logsmith Install
 
 on:
   workflow_call:
@@ -9,10 +9,10 @@ on:
         type: string
         default: ''
       config-path:
-        description: Path to bumpx config file
+        description: Path to logsmith config file
         required: false
         type: string
-        default: bumpx.config.ts
+        default: logsmith.config.ts
       use-dev:
         description: Whether to install the dev package
         required: false
@@ -38,17 +38,17 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Install bumpx
-        run: bun install -g bumpx
+      - name: Install logsmith
+        run: bun install -g logsmith
 
       - name: Install pkgx
-        run: bumpx pkgx --verbose
+        run: logsmith pkgx --verbose
 
       - name: Install dev package (if required)
         if: ${{ inputs.use-dev }}
-        run: bumpx dev --verbose
+        run: logsmith dev --verbose
         env:
-          bumpx_VERBOSE: true
+          logsmith_VERBOSE: true
           CONTEXT: ${{ github.context }}
 
       - name: Install dependencies from config (Unix)
@@ -57,12 +57,12 @@ jobs:
           if [ -f "${{ inputs.config-path }}" ]; then
             PACKAGES=$(grep -o '"[^"]*"' "${{ inputs.config-path }}" | tr -d '"' | tr '\n' ' ')
             if [ ! -z "$PACKAGES" ]; then
-              bumpx install --verbose $PACKAGES
+              logsmith install --verbose $PACKAGES
             fi
           fi
         shell: bash
         env:
-          bumpx_VERBOSE: true
+          logsmith_VERBOSE: true
           CONTEXT: ${{ github.context }}
 
       - name: Install dependencies from config (Windows)
@@ -72,17 +72,17 @@ jobs:
             $content = Get-Content "${{ inputs.config-path }}" -Raw
             $packages = [regex]::Matches($content, '"([^"]*)"') | ForEach-Object { $_.Groups[1].Value }
             if ($packages) {
-              bumpx install --verbose $packages
+              logsmith install --verbose $packages
             }
           }
         shell: pwsh
         env:
-          bumpx_VERBOSE: true
+          logsmith_VERBOSE: true
           CONTEXT: ${{ github.context }}
 
       - name: Install specified dependencies
         if: ${{ inputs.packages != '' }}
-        run: bumpx install --verbose ${{ inputs.packages }}
+        run: logsmith install --verbose ${{ inputs.packages }}
         env:
-          bumpx_VERBOSE: true
+          logsmith_VERBOSE: true
           CONTEXT: ${{ github.context }}

@@ -1,12 +1,12 @@
-<p align="center"><img src="https://github.com/stacksjs/bumpx/blob/main/.github/art/cover.jpg?raw=true" alt="Social Card of bumpx"></p>
+<p align="center"><img src="https://github.com/stacksjs/logsmith/blob/main/.github/art/cover.jpg?raw=true" alt="Social Card of logsmith"></p>
 
 # Introduction
 
 > A powerful, modern version bumping tool with comprehensive Git integration and monorepo support.
 
-## What is bumpx?
+## What is logsmith?
 
-bumpx is a version management tool that simplifies the process of bumping versions across your projects. It focuses on:
+logsmith is a version management tool that simplifies the process of bumping versions across your projects. It focuses on:
 
 - **Semantic versioning** with full semver compliance
 - **Git workflow automation** with commits, tags, and pushing
@@ -14,7 +14,7 @@ bumpx is a version management tool that simplifies the process of bumping versio
 - **Monorepo support** with flexible versioning strategies
 - **Cross-platform compatibility** on macOS, Linux, and Windows
 
-Whether you're managing a single package or a complex monorepo, bumpx provides the tools you need to automate your release process with confidence and consistency.
+Whether you're managing a single package or a complex monorepo, logsmith provides the tools you need to automate your release process with confidence and consistency.
 
 ## Key Features
 
@@ -30,7 +30,7 @@ Whether you're managing a single package or a complex monorepo, bumpx provides t
 
 ## How It Works
 
-bumpx automates your entire version bumping workflow:
+logsmith automates your entire version bumping workflow:
 
 1. **Detects current versions** across your project files
 2. **Calculates new versions** based on semantic versioning rules
@@ -43,48 +43,48 @@ All of this happens in a single command, with full transparency and control over
 
 ## Quick Example
 
-Here's how simple version bumping becomes with bumpx:
+Here's how simple version bumping becomes with logsmith:
 
 ```bash
-# Install bumpx
-npm install -g bumpx
+# Install logsmith
+npm install -g logsmith
 
 # Basic version bump
-bumpx patch
+logsmith patch
 # 1.0.0 → 1.0.1
 
 # Version bump with Git workflow
-bumpx minor --commit --tag --push
+logsmith minor --commit --tag --push
 # 1.0.1 → 1.1.0, creates commit and tag, pushes to remote
 
 # Interactive version selection
-bumpx prompt --commits
+logsmith prompt --commits
 # Shows recent commits and version options
 
 # Monorepo version management
-bumpx patch --recursive
+logsmith patch --recursive
 # Updates all packages in your monorepo
 
 # Custom files and post-bump actions
-bumpx major --files "package.json,VERSION.txt,src/version.ts" \
+logsmith major --files "package.json,VERSION.txt,src/version.ts" \
            --commit --tag \
            --execute "bun run build && bun test"
 
 # Prerelease versions
-bumpx prerelease --preid beta --commit --tag
+logsmith prerelease --preid beta --commit --tag
 # 1.1.0 → 1.1.1-beta.0
 
 # Dry run to preview changes
-bumpx minor --dry-run --verbose
+logsmith minor --dry-run --verbose
 # Shows what would be changed without making changes
 ```
 
 ## Configuration
 
-Configure bumpx to match your workflow:
+Configure logsmith to match your workflow:
 
 ```typescript
-// bumpx.config.ts
+// logsmith.config.ts
 export default {
   commit: true,
   tag: true,
@@ -99,7 +99,7 @@ Or in package.json:
 
 ```json
 {
-  "bumpx": {
+  "logsmith": {
     "commit": true,
     "tag": true,
     "message": "chore: release v%s"
@@ -107,9 +107,9 @@ Or in package.json:
 }
 ```
 
-## Why Choose bumpx?
+## Why Choose logsmith?
 
-bumpx offers significant advantages over manual version management and other tools:
+logsmith offers significant advantages over manual version management and other tools:
 
 - **Comprehensive**: Handles files, Git operations, and post-bump actions
 - **Reliable**: Extensive validation and error handling prevent mistakes
@@ -122,31 +122,31 @@ bumpx offers significant advantages over manual version management and other too
 
 ### Single Package Release
 ```bash
-bumpx patch --commit --tag --push
+logsmith patch --commit --tag --push
 ```
 
 ### Feature Release with Testing
 ```bash
-bumpx minor --commit --tag --execute "bun run build && bun test" --push
+logsmith minor --commit --tag --execute "bun run build && bun test" --push
 ```
 
 ### Monorepo Synchronized Release
 ```bash
-bumpx major --recursive --current-version 1.0.0 --commit --tag
+logsmith major --recursive --current-version 1.0.0 --commit --tag
 ```
 
 ### CI/CD Automation
 ```bash
-bumpx patch --commit --tag --push --no-verify --execute "bun run deploy"
+logsmith patch --commit --tag --push --no-verify --execute "bun run deploy"
 ```
 
 ## Next Steps
 
 Ready to streamline your version management? Check out these guides:
 
-- [Installation Guide](./install.md) — Install bumpx on your system
+- [Installation Guide](./install.md) — Install logsmith on your system
 - [Basic Usage](./usage.md) — Learn the essential commands
-- [Configuration](./config.md) — Customize bumpx for your workflow
+- [Configuration](./config.md) — Customize logsmith for your workflow
 - [Git Integration](./features/git-integration.md) — Automate your Git workflows
 - [Monorepo Support](./features/monorepo-support.md) — Manage multiple packages
 
@@ -154,7 +154,7 @@ Ready to streamline your version management? Check out these guides:
 
 For help, discussion about best practices, or any other conversation that would benefit from being searchable:
 
-[Discussions on GitHub](https://github.com/stacksjs/bumpx/discussions)
+[Discussions on GitHub](https://github.com/stacksjs/logsmith/discussions)
 
 For casual chit-chat with others using this package:
 
@@ -178,11 +178,11 @@ We would like to extend our thanks to the following sponsors for funding Stacks 
 - [`version-bump-prompt`](https://github.com/JS-DevTools/version-bump-prompt) - for the initial inspiration
 - [Antony Fu](https://github.com/antfu) - for creating [bumpp](https://github.com/antfu-collective/bumpp)
 - [Chris Breuer](https://github.com/chrisbbreuer)
-- [All Contributors](https://github.com/stacksjs/bumpx/graphs/contributors)
+- [All Contributors](https://github.com/stacksjs/logsmith/graphs/contributors)
 
 ## License
 
-The MIT License (MIT). Please see [LICENSE](https://github.com/stacksjs/bumpx/tree/main/LICENSE.md) for more information.
+The MIT License (MIT). Please see [LICENSE](https://github.com/stacksjs/logsmith/tree/main/LICENSE.md) for more information.
 
 Made with 💙
 
