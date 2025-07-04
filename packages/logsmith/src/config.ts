@@ -1,6 +1,5 @@
-import type { LogsmithConfig, LogsmithOptions } from './types'
+import type { LogsmithConfig } from './types'
 import process from 'node:process'
-// @ts-expect-error - bunfig types have an issue atm but functionality works properly
 import { loadConfig } from 'bunfig'
 
 export const defaultConfig: LogsmithConfig = {
@@ -73,24 +72,11 @@ export const defaultConfig: LogsmithConfig = {
   },
 }
 
-/**
- * Load logsmith configuration with overrides
- */
-export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promise<LogsmithConfig> {
-  const loadedConfig = await loadConfig({
-    name: 'logsmith',
-    defaultConfig,
-  })
-
-  // Merge configurations with proper precedence: overrides > loaded > defaults
-  const config: LogsmithConfig = {
-    ...defaultConfig,
-    ...loadedConfig,
-    ...overrides,
-  }
-
-  return config
-}
+// eslint-disable-next-line antfu/no-top-level-await
+export const config: LogsmithConfig = await loadConfig({
+  name: 'logsmith',
+  defaultConfig,
+})
 
 /**
  * Define configuration helper for TypeScript config files

@@ -1,6 +1,5 @@
 import type { ActionInputs, ActionSummary, ChangelogResult, CommitResult, ReleaseResult } from './types'
 import * as fs from 'node:fs/promises'
-import * as path from 'node:path'
 import * as process from 'node:process'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
