@@ -6,11 +6,11 @@ describe('GitHub Action', () => {
     it('should create ActionError with message and type', () => {
       const error = new ActionError(
         'Test error message',
-        ActionErrorType.BUN_INSTALLATION_FAILED,
+        ActionErrorType.LOGSMITH_INSTALLATION_FAILED,
       )
 
       expect(error.message).toBe('Test error message')
-      expect(error.type).toBe(ActionErrorType.BUN_INSTALLATION_FAILED)
+      expect(error.type).toBe(ActionErrorType.LOGSMITH_INSTALLATION_FAILED)
       expect(error.name).toBe('ActionError')
       expect(error.details).toBeUndefined()
     })
@@ -41,11 +41,11 @@ describe('GitHub Action', () => {
 
   describe('ActionErrorType enum', () => {
     it('should have all expected error types', () => {
-      expect(ActionErrorType.BUN_INSTALLATION_FAILED).toBe(ActionErrorType.BUN_INSTALLATION_FAILED)
-      expect(ActionErrorType.logsmith_INSTALLATION_FAILED).toBe(ActionErrorType.logsmith_INSTALLATION_FAILED)
-      expect(ActionErrorType.PKGX_INSTALLATION_FAILED).toBe(ActionErrorType.PKGX_INSTALLATION_FAILED)
-      expect(ActionErrorType.PACKAGE_INSTALLATION_FAILED).toBe(ActionErrorType.PACKAGE_INSTALLATION_FAILED)
-      expect(ActionErrorType.DEPENDENCY_DETECTION_FAILED).toBe(ActionErrorType.DEPENDENCY_DETECTION_FAILED)
+      expect(ActionErrorType.LOGSMITH_INSTALLATION_FAILED).toBe(ActionErrorType.LOGSMITH_INSTALLATION_FAILED)
+      expect(ActionErrorType.LOGSMITH_NOT_AVAILABLE).toBe(ActionErrorType.LOGSMITH_NOT_AVAILABLE)
+      expect(ActionErrorType.CHANGELOG_GENERATION_FAILED).toBe(ActionErrorType.CHANGELOG_GENERATION_FAILED)
+      expect(ActionErrorType.RELEASE_CREATION_FAILED).toBe(ActionErrorType.RELEASE_CREATION_FAILED)
+      expect(ActionErrorType.COMMIT_FAILED).toBe(ActionErrorType.COMMIT_FAILED)
       expect(ActionErrorType.CONFIG_PARSING_FAILED).toBe(ActionErrorType.CONFIG_PARSING_FAILED)
       expect(ActionErrorType.TIMEOUT_EXCEEDED).toBe(ActionErrorType.TIMEOUT_EXCEEDED)
       expect(ActionErrorType.UNSUPPORTED_PLATFORM).toBe(ActionErrorType.UNSUPPORTED_PLATFORM)
@@ -254,7 +254,7 @@ describe('GitHub Action', () => {
           return ActionErrorType.UNSUPPORTED_PLATFORM
         }
         else {
-          return ActionErrorType.PACKAGE_INSTALLATION_FAILED
+          return ActionErrorType.LOGSMITH_INSTALLATION_FAILED
         }
       }
 
@@ -262,7 +262,7 @@ describe('GitHub Action', () => {
       expect(categorizeError(new Error('Network unreachable'))).toBe(ActionErrorType.NETWORK_ERROR)
       expect(categorizeError(new Error('Permission denied'))).toBe(ActionErrorType.INSUFFICIENT_PERMISSIONS)
       expect(categorizeError(new Error('Unsupported platform'))).toBe(ActionErrorType.UNSUPPORTED_PLATFORM)
-      expect(categorizeError(new Error('Package not found'))).toBe(ActionErrorType.PACKAGE_INSTALLATION_FAILED)
+      expect(categorizeError(new Error('Package not found'))).toBe(ActionErrorType.LOGSMITH_INSTALLATION_FAILED)
     })
 
     it('should handle installation results correctly', () => {
