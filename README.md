@@ -177,7 +177,6 @@ Logsmith can be configured using a `logsmith.config.ts` file:
 import { defineConfig } from 'logsmith'
 
 export default defineConfig({
-  verbose: true,
   output: 'CHANGELOG.md',
 
   // Changelog options
@@ -197,6 +196,8 @@ export default defineConfig({
 
   // Repository configuration
   repo: 'https://github.com/your-org/your-repo',
+
+  verbose: true,
 })
 ```
 
