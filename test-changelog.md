@@ -15,7 +15,6 @@
 
 - Chris <chrisbreuer93@gmail.com>
 
-
 ### 🧹 Chores
 
 - wip ([9b6a34a](https://github.com/stacksjs/logsmith/commit/9b6a34a))
