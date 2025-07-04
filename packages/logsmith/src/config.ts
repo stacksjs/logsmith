@@ -1,4 +1,4 @@
-import type { LogsmithConfig } from './types'
+import type { LogsmithConfig, LogsmithOptions } from './types'
 import process from 'node:process'
 import { loadConfig } from 'bunfig'
 
@@ -77,6 +77,25 @@ export const config: LogsmithConfig = await loadConfig({
   name: 'logsmith',
   defaultConfig,
 })
+
+/**
+ * Load logsmith configuration with overrides
+ */
+export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promise<LogsmithConfig> {
+  const loadedConfig = await loadConfig({
+    name: 'logsmith',
+    defaultConfig,
+  })
+
+  // Merge configurations with proper precedence: overrides > loaded > defaults
+  const config: LogsmithConfig = {
+    ...defaultConfig,
+    ...loadedConfig,
+    ...overrides,
+  }
+
+  return config
+}
 
 /**
  * Define configuration helper for TypeScript config files
