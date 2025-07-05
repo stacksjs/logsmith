@@ -13,6 +13,7 @@ const config: ESLintConfig = stacks({
   ignores: [
     'fixtures/**',
     'docs/api/reference.md',
+    '**/*.md',
   ],
 })
 
