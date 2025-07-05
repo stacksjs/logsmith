@@ -30,33 +30,33 @@
 Generate a changelog and display in console:
 
 ```bash
-npx logsmith
+bunx logsmith
 ```
 
 Generate a changelog and save to CHANGELOG.md:
 
 ```bash
-npx logsmith --output CHANGELOG.md
+bunx logsmith --output CHANGELOG.md
 ```
 
 Generate changelog from specific commit range:
 
 ```bash
-npx logsmith --from v1.0.0 --to HEAD
+bunx logsmith --from v1.0.0 --to HEAD
 ```
 
 Generate changelog in different formats:
 
 ```bash
 # JSON format
-npx logsmith --format json --output changelog.json
+bunx logsmith --format json --output changelog.json
 
 # HTML format
-npx logsmith --format html --output changelog.html
+bunx logsmith --format html --output changelog.html
 
 # Auto-detect format from file extension
-npx logsmith --output changelog.json  # Automatically uses JSON format
-npx logsmith --output changelog.html  # Automatically uses HTML format
+bunx logsmith --output changelog.json  # Automatically uses JSON format
+bunx logsmith --output changelog.html  # Automatically uses HTML format
 ```
 
 ### Programmatic Usage
