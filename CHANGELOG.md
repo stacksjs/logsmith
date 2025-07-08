@@ -1,4 +1,17 @@
 
+## v0.1.1...main
+
+[compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.1...main)
+
+### 🏡 Chore
+
+- Wip ([ad543b9](https://github.com/stacksjs/logsmith/commit/ad543b9))
+- Wip ([2b54ffa](https://github.com/stacksjs/logsmith/commit/2b54ffa))
+
+### ❤️ Contributors
+
+- Chris ([@chrisbbreuer](https://github.com/chrisbbreuer))
+
 ## v0.1.0...main
 
 [compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...main)
