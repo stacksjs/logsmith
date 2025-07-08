@@ -6,6 +6,6 @@ await Bun.build({
   target: 'bun',
   format: 'esm',
   splitting: true,
-  minify: true,
+  minify: false, // TODO: re-implement later
   plugins: [dts()],
 })

@@ -31,6 +31,7 @@
   "module": "./dist/src/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
+    "@stacksjs/logsmith": "./dist/bin/cli.js",
     "logsmith": "./dist/bin/cli.js"
   },
   "files": [
