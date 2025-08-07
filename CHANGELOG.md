@@ -1,4 +1,16 @@
 
+## v0.1.2...main
+
+[compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.2...main)
+
+### 🏡 Chore
+
+- Wip ([fb46e85](https://github.com/stacksjs/logsmith/commit/fb46e85))
+
+### ❤️ Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+
 ## v0.1.1...main
 
 [compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.1...main)
