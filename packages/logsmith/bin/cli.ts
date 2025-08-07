@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import type { LogsmithOptions, RepositoryStats } from '../src/types'
 import process from 'node:process'
 import { CAC } from 'cac'

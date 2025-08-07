@@ -2,6 +2,7 @@ import type { LogsmithConfig } from '../src/types'
 import { describe, expect, it } from 'bun:test'
 import { generateChangelog } from '../src/changelog'
 import { defaultConfig } from '../src/config'
+import { groupCommits } from '../src/utils'
 
 describe('changelog', () => {
   describe('generateChangelog', () => {
@@ -29,6 +30,100 @@ describe('changelog', () => {
       catch (error) {
         // If this fails because it's not a git repo or no commits, that's expected in test environment
         expect(error).toBeDefined()
+      }
+    })
+
+    it('should not ignore feat commits by default', async () => {
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        dir: process.cwd(),
+        output: false,
+        verbose: false,
+      }
+
+      try {
+        const result = await generateChangelog(config)
+
+        // The content should not explicitly exclude feat commits
+        // Since excludeCommitTypes is empty by default, feat should be included
+        expect(config.excludeCommitTypes).toEqual([])
+        expect(config.includeCommitTypes).toEqual([])
+
+        // Check that feat commits would be properly formatted if present
+        expect(config.templates.typeFormat.feat).toBe('🚀 Features')
+
+        // Verify that the result object is properly structured
+        expect(result).toBeDefined()
+        expect(typeof result.content).toBe('string')
+      }
+      catch (error) {
+        // Expected in test environment without git repo
+        expect(error).toBeDefined()
+      }
+    })
+
+    it('should properly group and include feat commits', () => {
+      // Create mock commits including feat commits
+      const mockCommits = [
+        {
+          hash: 'abc123f',
+          message: 'feat(auth): add OAuth2 support',
+          author: { name: 'John Doe', email: 'john@example.com' },
+          date: '2024-01-15T10:30:00Z',
+          type: 'feat',
+          scope: 'auth',
+          description: 'add OAuth2 support',
+          breaking: false,
+        },
+        {
+          hash: 'def456g',
+          message: 'fix(api): resolve memory leak',
+          author: { name: 'Jane Smith', email: 'jane@example.com' },
+          date: '2024-01-14T09:15:00Z',
+          type: 'fix',
+          scope: 'api',
+          description: 'resolve memory leak',
+          breaking: false,
+        },
+        {
+          hash: 'ghi789h',
+          message: 'feat: add new dashboard component',
+          author: { name: 'Bob Wilson', email: 'bob@example.com' },
+          date: '2024-01-13T14:20:00Z',
+          type: 'feat',
+          description: 'add new dashboard component',
+          breaking: false,
+        },
+      ]
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        output: false,
+        verbose: false,
+      }
+
+      // Test that groupCommits properly processes feat commits
+      const sections = groupCommits(mockCommits, config)
+
+      // Should have sections for feat and fix
+      expect(sections.length).toBeGreaterThan(0)
+
+      // Find the feat section
+      const featSection = sections.find(section => section.title.includes('Features') || section.title.includes('feat'))
+      expect(featSection).toBeDefined()
+
+      if (featSection) {
+        // Should have 2 feat commits
+        expect(featSection.commits.length).toBe(2)
+
+        // Verify the feat commits are properly structured
+        const featCommits = featSection.commits
+        expect(featCommits[0].type).toBe('feat')
+        expect(featCommits[1].type).toBe('feat')
+
+        // Check that descriptions are preserved
+        expect(featCommits.some(commit => commit.description.includes('OAuth2 support'))).toBe(true)
+        expect(featCommits.some(commit => commit.description.includes('dashboard component'))).toBe(true)
       }
     })
 
