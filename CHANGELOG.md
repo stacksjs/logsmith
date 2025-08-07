@@ -1,4 +1,16 @@
 
+## v0.1.3...main
+
+[compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.3...main)
+
+### 🏡 Chore
+
+- Downgrade bun version on release ([271b639](https://github.com/stacksjs/logsmith/commit/271b639))
+
+### ❤️ Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+
 ## v0.1.2...main
 
 [compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.2...main)
