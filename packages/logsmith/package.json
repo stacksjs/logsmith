@@ -62,12 +62,12 @@
   "dependencies": {
     "bunfig": "^0.10.1"
   },
-  "lint-staged": {
-    "*.{js,ts}": "bunx --bun eslint . --fix"
-  },
   "devDependencies": {
     "@stacksjs/bumpx": "^0.1.2",
     "@stacksjs/gitlint": "^0.1.5",
     "bun-git-hooks": "^0.2.19"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "bunx --bun eslint . --fix"
   }
 }
