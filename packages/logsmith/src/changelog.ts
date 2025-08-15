@@ -126,7 +126,7 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
         }
 
         // Apply markdown linting to fix any formatting issues
-        const lintedContent = lintMarkdown(finalContent, config)
+        const lintedContent = await lintMarkdown(finalContent, config)
         writeFileSync(outputPath, lintedContent)
       }
 

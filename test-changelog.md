@@ -1,4 +1,14 @@
 # Changelog
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.6...HEAD)
+
+### 🐛 Bug Fixes
+
+- resolve ESM __require error by using dynamic imports for markdownlint ([9e5b810](https://github.com/stacksjs/logsmith/commit/9e5b810))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.4...HEAD)
 
 ### 🔧 Chores

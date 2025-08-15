@@ -2,7 +2,6 @@ import type { ChangelogEntry, ChangelogSection, CommitFrequency, CommitInfo, Con
 import { execSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
 import process from 'node:process'
-import markdownlint from 'markdownlint'
 import { formatDate, getCommitTypeFormatWithTheme, getLabel } from './i18n'
 import { getThemeEmoji, getHtmlStyles as getThemeHtmlStyles } from './themes'
 
@@ -743,13 +742,16 @@ function calculateTypeDistribution(
 /**
  * Lint and fix markdown content using markdownlint
  */
-export function lintMarkdown(content: string, config: LogsmithConfig): string {
+export async function lintMarkdown(content: string, config: LogsmithConfig): Promise<string> {
   // If markdown linting is disabled, return content as-is
   if (!config.markdownLint) {
     return content
   }
 
   try {
+    // Dynamically import markdownlint to avoid bundling issues
+    const { default: markdownlint } = await import('markdownlint')
+
     // Prepare markdownlint options
     const options = {
       strings: {
