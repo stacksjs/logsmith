@@ -1,4 +1,14 @@
 # Changelog
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.4...HEAD)
+
+### 🔧 Chores
+
+- update logsmith defaults ([2ceeb42](https://github.com/stacksjs/logsmith/commit/2ceeb42))
+- wip ([aebdf52](https://github.com/stacksjs/logsmith/commit/aebdf52))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
 
 ### 🧹 Chores
 

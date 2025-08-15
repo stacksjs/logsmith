@@ -1,4 +1,17 @@
 
+## v0.1.4...main
+
+[compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.4...main)
+
+### 🏡 Chore
+
+- Wip ([aebdf52](https://github.com/stacksjs/logsmith/commit/aebdf52))
+- Update logsmith defaults ([2ceeb42](https://github.com/stacksjs/logsmith/commit/2ceeb42))
+
+### ❤️ Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
 ## v0.1.3...main
 
 [compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.3...main)
