@@ -17,7 +17,7 @@ cli
   .option('--from <ref>', 'Start commit reference (default: latest git tag)')
   .option('--to <ref>', 'End commit reference (default: HEAD)')
   .option('--dir <dir>', 'Path to git repository (default: current directory)')
-  .option('--output <file>', 'Changelog file name (default: CHANGELOG.md). Use --no-output to write to console only')
+  .option('--output [file]', 'Changelog file name (default: CHANGELOG.md). Use --no-output to write to console only')
   .option('--format <format>', 'Output format: markdown, json, html (default: markdown)')
   .option('--language <lang>', 'Language for changelog: en, es, fr, de, zh, ja, ko, ru, pt, it (default: en)')
   .option('--theme <theme>', 'Theme for styling: default, minimal, github, gitmoji, unicode, simple, colorful, corporate (default: default)')
@@ -79,7 +79,7 @@ cli
           actualFormat = 'html'
         }
       }
-      else if (!outputFile && format !== 'markdown') {
+      else if (!outputFile) {
         // Auto-generate output filename based on format
         const extensions = { json: 'json', html: 'html', markdown: 'md' }
         outputFile = `CHANGELOG.${extensions[format as keyof typeof extensions]}`

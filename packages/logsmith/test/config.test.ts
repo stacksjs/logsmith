@@ -9,7 +9,7 @@ describe('config', () => {
       expect(defaultConfig.output).toBe('CHANGELOG.md')
       expect(defaultConfig.format).toBe('markdown')
       expect(defaultConfig.language).toBe('en')
-      expect(defaultConfig.theme).toBe('default')
+      expect(defaultConfig.theme).toBe('github') // Updated from 'default' to 'github'
       expect(defaultConfig.to).toBe('HEAD')
       expect(defaultConfig.clean).toBe(false)
       expect(defaultConfig.groupBreakingChanges).toBe(true)
@@ -18,9 +18,11 @@ describe('config', () => {
       expect(defaultConfig.linkifyPRs).toBe(true)
     })
 
-    it('should have empty arrays for filter options', () => {
+    it('should have expected arrays for filter options', () => {
       expect(Array.isArray(defaultConfig.excludeAuthors)).toBe(true)
-      expect(defaultConfig.excludeAuthors).toHaveLength(0)
+      expect(defaultConfig.excludeAuthors).toHaveLength(2) // Updated: now includes bot exclusions
+      expect(defaultConfig.excludeAuthors).toContain('dependabot[bot]')
+      expect(defaultConfig.excludeAuthors).toContain('github-actions[bot]')
       expect(Array.isArray(defaultConfig.includeAuthors)).toBe(true)
       expect(defaultConfig.includeAuthors).toHaveLength(0)
       expect(Array.isArray(defaultConfig.excludeCommitTypes)).toBe(true)
@@ -40,7 +42,7 @@ describe('config', () => {
 
     it('should have sensible numeric defaults', () => {
       expect(defaultConfig.minCommitsForSection).toBe(1)
-      expect(defaultConfig.maxCommitsPerSection).toBe(0) // unlimited
+      expect(defaultConfig.maxCommitsPerSection).toBe(50) // Updated from 0 (unlimited) to 50
       expect(defaultConfig.maxDescriptionLength).toBe(0) // unlimited
     })
   })

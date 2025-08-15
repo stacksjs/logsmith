@@ -7,14 +7,14 @@ export const defaultConfig: LogsmithConfig = {
   output: 'CHANGELOG.md',
   format: 'markdown',
   language: 'en',
-  theme: 'default',
+  theme: 'github', // Changed from 'default' to 'github'
   from: undefined, // Will be determined from git tags
   to: 'HEAD',
   dir: process.cwd(),
 
   // Changelog options
   clean: false,
-  excludeAuthors: [],
+  excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'], // Added default bot exclusions
   includeAuthors: [],
   excludeEmail: false,
   hideAuthorEmail: false,
@@ -23,7 +23,7 @@ export const defaultConfig: LogsmithConfig = {
   excludeCommitTypes: [],
   includeCommitTypes: [],
   minCommitsForSection: 1,
-  maxCommitsPerSection: 0, // 0 = unlimited
+  maxCommitsPerSection: 50, // Changed from 0 (unlimited) to 50
   excludeScopes: [],
   includeScopes: [],
   excludeMessages: [],

@@ -1,4 +1,23 @@
 # Changelog
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.4...HEAD)
+
+### 🔧 Chores
+
+- wip ([aebdf52](https://github.com/stacksjs/logsmith/commit/aebdf52))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.4...HEAD)
+
+### 🔧 Chores
+
+- wip ([aebdf52](https://github.com/stacksjs/logsmith/commit/aebdf52))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
 
 ### 🧹 Chores
 
