@@ -70,6 +70,20 @@ const config: LogsmithConfig = defineConfig({
     breakingChangeFormat: '### ⚠️ BREAKING CHANGES\n\n{{description}}',
     dateFormat: 'YYYY-MM-DD',
   },
+
+  // Markdown linting options
+  markdownLint: true,
+  markdownLintRules: {
+    // Disable MD041 (first line should be a top-level heading) since we may not have H1
+    MD041: false,
+    // Disable MD013 (line length) to be more permissive with long URLs
+    MD013: false,
+    // Allow HTML elements that are commonly used
+    MD033: {
+      allowed_elements: ['details', 'summary', 'br']
+    }
+  },
+  markdownLintConfig: undefined,
 })
 
 export default config

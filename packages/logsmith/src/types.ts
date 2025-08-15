@@ -415,6 +415,14 @@ export interface LogsmithConfig {
     /** Template for date formatting in headers */
     dateFormat: string
   }
+
+  // Markdown linting options
+  /** Whether to enable markdown linting and auto-fixing */
+  markdownLint: boolean
+  /** Custom markdownlint rules configuration */
+  markdownLintRules?: Record<string, any>
+  /** Path to markdownlint configuration file */
+  markdownLintConfig?: string
 }
 
 /**

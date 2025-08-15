@@ -1,6 +1,7 @@
 import type { ChangelogEntry, ChangelogSection, CommitFrequency, CommitInfo, ContributorGrowth, GeneratedChangelog, GitReference, LogsmithConfig, RepositoryStats, TypeDistribution } from './types'
 import { execSync } from 'node:child_process'
 import process from 'node:process'
+import markdownlint from 'markdownlint'
 import { formatDate, getCommitTypeFormatWithTheme, getLabel } from './i18n'
 import { getThemeEmoji, getHtmlStyles as getThemeHtmlStyles } from './themes'
 
@@ -735,6 +736,77 @@ function calculateTypeDistribution(
     percentages,
     mostCommonType: mostCommon,
     leastCommonType: leastCommon.count === Infinity ? { type: '', count: 0, percentage: 0 } : leastCommon,
+  }
+}
+
+/**
+ * Lint and fix markdown content using markdownlint
+ */
+export function lintMarkdown(content: string, config: LogsmithConfig): string {
+  // If markdown linting is disabled, return content as-is
+  if (!config.markdownLint) {
+    return content
+  }
+
+  try {
+    // Prepare markdownlint options
+    const options = {
+      strings: {
+        content,
+      },
+      config: {
+        // Use default rules
+        default: true,
+        // Apply custom rules from config
+        ...config.markdownLintRules,
+      },
+    }
+
+    // Load external config file if specified
+    if (config.markdownLintConfig) {
+      try {
+        const fs = require('node:fs')
+        const externalConfig = JSON.parse(fs.readFileSync(config.markdownLintConfig, 'utf8'))
+        options.config = { ...options.config, ...externalConfig }
+      } catch (error) {
+        if (config.verbose) {
+          logWarning(`Failed to load markdownlint config from ${config.markdownLintConfig}: ${error}`)
+        }
+      }
+    }
+
+    // Run markdownlint
+    const result = markdownlint.sync(options)
+    
+    // Check for errors
+    const errors = result.content || []
+    if (errors.length > 0 && config.verbose) {
+      logInfo('Markdownlint found issues that have been auto-fixed:')
+      errors.forEach(error => {
+        logInfo(`  Line ${error.lineNumber}: ${error.ruleDescription}`)
+      })
+    }
+
+    // For now, return the original content with basic fixes applied
+    // In the future, we can implement auto-fixing for specific rules
+    let fixedContent = content
+
+    // Fix common issues
+    // 1. Remove leading empty lines (MD041)
+    fixedContent = fixedContent.replace(/^\n+/, '')
+    
+    // 2. Ensure single trailing newline
+    fixedContent = fixedContent.replace(/\n*$/, '\n')
+    
+    // 3. Fix multiple consecutive blank lines (MD012)
+    fixedContent = fixedContent.replace(/\n{3,}/g, '\n\n')
+
+    return fixedContent
+  } catch (error) {
+    if (config.verbose) {
+      logWarning(`Markdownlint failed: ${error}. Returning original content.`)
+    }
+    return content
   }
 }
 

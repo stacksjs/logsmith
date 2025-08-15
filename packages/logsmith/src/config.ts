@@ -70,6 +70,20 @@ export const defaultConfig: LogsmithConfig = {
       revert: '⏪ Reverts',
     },
   },
+
+  // Markdown linting options
+  markdownLint: true,
+  markdownLintRules: {
+    // Disable MD041 (first line should be a top-level heading) since we may not have H1
+    MD041: false,
+    // Disable MD013 (line length) to be more permissive with long URLs
+    MD013: false,
+    // Allow HTML elements that are commonly used
+    MD033: {
+      allowed_elements: ['details', 'summary', 'br']
+    }
+  },
+  markdownLintConfig: undefined,
 }
 
 // eslint-disable-next-line antfu/no-top-level-await

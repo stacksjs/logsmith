@@ -10,6 +10,7 @@ import {
   getRepositoryUrl,
   groupCommits,
   isGitRepository,
+  lintMarkdown,
   logError,
   logInfo,
   logSuccess,
@@ -97,12 +98,12 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
         writeFileSync(outputPath, changelogContent)
       }
       else {
-        // For markdown, handle merging with existing content
-        let existingContent = ''
+        // For markdown, handle merging with existing content and apply linting
+        let finalContent = ''
 
         // Read existing changelog if it exists
         if (existsSync(outputPath)) {
-          existingContent = readFileSync(outputPath, 'utf-8')
+          const existingContent = readFileSync(outputPath, 'utf-8')
 
           // If we're updating an existing changelog, prepend new content
           const headerRegex = /^# /m
@@ -111,24 +112,22 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           if (match) {
             // Insert new changelog after the main header
             const insertIndex = existingContent.indexOf('\n', match.index!) + 1
-            const updatedContent
-              = `${existingContent.slice(0, insertIndex)
-              }\n${
-                changelogContent
-              }\n${
-                existingContent.slice(insertIndex)}`
-            writeFileSync(outputPath, updatedContent)
+            // Fix: Remove extra newlines that were causing the empty first line issue
+            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n${existingContent.slice(insertIndex)}`
           }
           else {
             // No main header found, prepend everything
-            writeFileSync(outputPath, `${changelogContent}\n\n${existingContent}`)
+            finalContent = `${changelogContent}\n\n${existingContent}`
           }
         }
         else {
           // Create new changelog with header
-          const fullContent = `# Changelog\n\n${changelogContent}`
-          writeFileSync(outputPath, fullContent)
+          finalContent = `# Changelog\n\n${changelogContent}`
         }
+
+        // Apply markdown linting to fix any formatting issues
+        const lintedContent = lintMarkdown(finalContent, config)
+        writeFileSync(outputPath, lintedContent)
       }
 
       if (verbose) {

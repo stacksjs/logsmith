@@ -37,6 +37,7 @@ cli
   .option('--include-body', 'Include commit body in changelog entries')
   .option('--no-linkify', 'Don\'t linkify issues and PRs')
   .option('--max-length <number>', 'Maximum description length (0 = unlimited)', { type: [Number] })
+  .option('--no-markdown-lint', 'Disable markdown linting and auto-fixing')
   .option('--verbose', 'Enable verbose logging')
   .example('logsmith')
   .example('logsmith --from v1.0.0 --to HEAD')
@@ -110,6 +111,7 @@ cli
         linkifyIssues: options.linkify !== false,
         linkifyPRs: options.linkify !== false,
         maxDescriptionLength: options.maxLength || 0,
+        markdownLint: options.markdownLint !== false,
         verbose: options.verbose || false,
       }
 

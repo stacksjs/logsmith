@@ -60,7 +60,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "bunfig": "^0.10.1"
+    "bunfig": "^0.10.1",
+    "markdownlint": "^0.34.0"
   },
   "devDependencies": {
     "@stacksjs/bumpx": "^0.1.2",
