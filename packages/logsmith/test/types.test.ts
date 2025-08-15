@@ -280,6 +280,11 @@ describe('types', () => {
           breakingChangeFormat: '- **{{description}}**',
           dateFormat: '_{{date}}_',
         },
+        markdownLint: true,
+        markdownLintRules: {
+          MD041: false,
+        },
+        markdownLintConfig: undefined,
       }
 
       // Test core properties

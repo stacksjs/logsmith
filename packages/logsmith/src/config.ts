@@ -80,8 +80,8 @@ export const defaultConfig: LogsmithConfig = {
     MD013: false,
     // Allow HTML elements that are commonly used
     MD033: {
-      allowed_elements: ['details', 'summary', 'br']
-    }
+      allowed_elements: ['details', 'summary', 'br'],
+    },
   },
   markdownLintConfig: undefined,
 }

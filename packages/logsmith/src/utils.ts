@@ -1,5 +1,6 @@
 import type { ChangelogEntry, ChangelogSection, CommitFrequency, CommitInfo, ContributorGrowth, GeneratedChangelog, GitReference, LogsmithConfig, RepositoryStats, TypeDistribution } from './types'
 import { execSync } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import process from 'node:process'
 import markdownlint from 'markdownlint'
 import { formatDate, getCommitTypeFormatWithTheme, getLabel } from './i18n'
@@ -765,10 +766,10 @@ export function lintMarkdown(content: string, config: LogsmithConfig): string {
     // Load external config file if specified
     if (config.markdownLintConfig) {
       try {
-        const fs = require('node:fs')
-        const externalConfig = JSON.parse(fs.readFileSync(config.markdownLintConfig, 'utf8'))
+        const externalConfig = JSON.parse(readFileSync(config.markdownLintConfig, 'utf8'))
         options.config = { ...options.config, ...externalConfig }
-      } catch (error) {
+      }
+      catch (error) {
         if (config.verbose) {
           logWarning(`Failed to load markdownlint config from ${config.markdownLintConfig}: ${error}`)
         }
@@ -777,12 +778,12 @@ export function lintMarkdown(content: string, config: LogsmithConfig): string {
 
     // Run markdownlint
     const result = markdownlint.sync(options)
-    
+
     // Check for errors
     const errors = result.content || []
     if (errors.length > 0 && config.verbose) {
       logInfo('Markdownlint found issues that have been auto-fixed:')
-      errors.forEach(error => {
+      errors.forEach((error) => {
         logInfo(`  Line ${error.lineNumber}: ${error.ruleDescription}`)
       })
     }
@@ -794,15 +795,16 @@ export function lintMarkdown(content: string, config: LogsmithConfig): string {
     // Fix common issues
     // 1. Remove leading empty lines (MD041)
     fixedContent = fixedContent.replace(/^\n+/, '')
-    
+
     // 2. Ensure single trailing newline
     fixedContent = fixedContent.replace(/\n*$/, '\n')
-    
+
     // 3. Fix multiple consecutive blank lines (MD012)
     fixedContent = fixedContent.replace(/\n{3,}/g, '\n\n')
 
     return fixedContent
-  } catch (error) {
+  }
+  catch (error) {
     if (config.verbose) {
       logWarning(`Markdownlint failed: ${error}. Returning original content.`)
     }
