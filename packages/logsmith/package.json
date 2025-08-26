@@ -64,7 +64,7 @@
     "markdownlint": "^0.34.0"
   },
   "devDependencies": {
-    "@stacksjs/bumpx": "^0.1.2",
+    "@stacksjs/bumpx": "^0.1.17",
     "@stacksjs/gitlint": "^0.1.5",
     "bun-git-hooks": "^0.2.19"
   },
