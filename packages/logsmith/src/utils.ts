@@ -529,7 +529,7 @@ export function logSuccess(message: string): void {
  * Log info message
  */
 export function logInfo(message: string): void {
-  log(`${symbols.info} ${message}`, 'blue')
+  log(`${symbols.info} ${message}`, 'gray')
 }
 
 /**
