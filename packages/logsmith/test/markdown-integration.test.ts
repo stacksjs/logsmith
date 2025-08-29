@@ -8,7 +8,7 @@ import { lintMarkdown } from '../src/utils'
 describe('markdown linting integration', () => {
   describe('end-to-end markdown linting', () => {
     it('should apply linting when generating changelog to file', async () => {
-      const testOutputPath = 'test/test-output-changelog.md'
+      const testOutputPath = './test/test-output-changelog.md'
 
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
@@ -291,7 +291,7 @@ Multiple blank lines`
 
   describe('author exclusion integration', () => {
     it('should exclude bot authors from contributors section', async () => {
-      const testOutputPath = 'test/test-authors-exclusion.md'
+      const testOutputPath = './test/test-authors-exclusion.md'
 
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
@@ -342,7 +342,7 @@ Multiple blank lines`
     })
 
     it('should respect custom excludeAuthors configuration', async () => {
-      const testOutputPath = 'test/test-custom-authors-exclusion.md'
+      const testOutputPath = './test/test-custom-authors-exclusion.md'
 
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
