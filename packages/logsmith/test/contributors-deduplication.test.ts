@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'bun:test'
-import { getContributors } from '../src/utils'
-import { defaultConfig } from '../src/config'
 import type { CommitInfo } from '../src/types'
+import { describe, expect, it } from 'bun:test'
+import { defaultConfig } from '../src/config'
+import { getContributors } from '../src/utils'
 
 describe('contributors deduplication', () => {
   it('should deduplicate contributors by name when they have different emails', () => {

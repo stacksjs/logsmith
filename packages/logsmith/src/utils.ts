@@ -754,8 +754,8 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
 
   try {
     // Dynamically import markdownlint to avoid bundling issues
-    const markdownlintModule = await import('markdownlint')
-    const markdownlint = (markdownlintModule as any).default || markdownlintModule
+    const _markdownlintModule = await import('markdownlint')
+    const _markdownlint = (_markdownlintModule as any).default || _markdownlintModule
 
     // Prepare markdownlint options
     const options = {
@@ -783,9 +783,8 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
       }
     }
 
-    // Run markdownlint - disable for now since it's causing issues
-    // const result = (markdownlint as any).sync ? (markdownlint as any).sync(options) : markdownlint(options)
-    const result = { content: [] } // Return empty result to skip linting
+    // Run markdownlint
+    const result = (_markdownlint as any).sync ? (_markdownlint as any).sync(options) : (_markdownlint as any)(options)
 
     // Check for errors
     const errors = result.content || []

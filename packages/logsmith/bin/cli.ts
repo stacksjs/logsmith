@@ -56,7 +56,6 @@ cli
       // Parse positional arguments like "from v1.0.0 to v2.0.0"
       let fromRef = options.from
       let toRef = options.to || 'HEAD'
-      
       if (args.length >= 4 && args[0] === 'from' && args[2] === 'to') {
         fromRef = args[1]
         toRef = args[3]
