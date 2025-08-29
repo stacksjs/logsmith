@@ -5,6 +5,13 @@
 - Adelino Ngomacha <adelinob335@gmail.com>
 - github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.8...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+- github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+
 ## v0.1.5...main
 
 [compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.5...main)
