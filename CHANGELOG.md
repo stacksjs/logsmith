@@ -1,3 +1,9 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.10...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.9...HEAD)
 
 ### Contributors
