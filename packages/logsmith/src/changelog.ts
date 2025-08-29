@@ -85,12 +85,19 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
   // Generate changelog content
   let changelogContent = generateFormattedChangelog(changelogData, config)
 
+  if (verbose) {
+    logInfo(`Generated content length: ${changelogContent.length} characters`)
+  }
+
   // Apply markdown linting to all markdown content, regardless of output method
   if (config.format === 'markdown') {
     if (verbose) {
       logInfo('Applying markdown linting to generated content...')
     }
     changelogContent = await lintMarkdown(changelogContent, config)
+    if (verbose) {
+      logInfo(`After linting content length: ${changelogContent.length} characters`)
+    }
   }
 
   // Handle output
@@ -120,8 +127,7 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           if (match) {
             // Insert new changelog after the main header
             const insertIndex = existingContent.indexOf('\n', match.index!) + 1
-            // Fix: Remove extra newlines that were causing the empty first line issue
-            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n${existingContent.slice(insertIndex)}`
+            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n\n${existingContent.slice(insertIndex)}`
           }
           else {
             // No main header found, prepend everything
@@ -129,7 +135,7 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           }
         }
         else {
-          // Create new changelog with header
+          // Create new changelog with header - ensure changelogContent is included
           finalContent = `# Changelog\n\n${changelogContent}`
         }
 

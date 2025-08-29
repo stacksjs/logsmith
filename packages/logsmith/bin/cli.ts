@@ -53,6 +53,15 @@ cli
   .example('logsmith --theme gitmoji --output CHANGELOG.md')
   .action(async (args: string[], options: any) => {
     try {
+      // Parse positional arguments like "from v1.0.0 to v2.0.0"
+      let fromRef = options.from
+      let toRef = options.to || 'HEAD'
+      
+      if (args.length >= 4 && args[0] === 'from' && args[2] === 'to') {
+        fromRef = args[1]
+        toRef = args[3]
+      }
+
       // Validate format option
       const validFormats = ['markdown', 'json', 'html']
       const format = options.format || 'markdown'
@@ -88,8 +97,8 @@ cli
 
       // Parse options
       const cliOptions: LogsmithOptions = {
-        from: options.from,
-        to: options.to || 'HEAD',
+        from: fromRef,
+        to: toRef,
         dir: options.dir || process.cwd(),
         output: outputFile !== undefined ? outputFile : 'CHANGELOG.md',
         format: actualFormat as any,
@@ -133,7 +142,7 @@ cli
       const result = await generateChangelog(config)
 
       // Output to console if no file output
-      if (config.output === false) {
+      if (config.output === false && result.content) {
         console.log(result.content)
       }
 
