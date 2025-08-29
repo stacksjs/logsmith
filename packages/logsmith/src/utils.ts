@@ -440,7 +440,7 @@ export function generateChangelogContent(
  * Get contributors from commits
  */
 export function getContributors(commits: CommitInfo[], config: LogsmithConfig): string[] {
-  const contributors = new Set<string>()
+  const contributorMap = new Map<string, string>()
 
   for (const commit of commits) {
     const { name, email } = commit.author
@@ -457,11 +457,15 @@ export function getContributors(commits: CommitInfo[], config: LogsmithConfig): 
       }
     }
 
-    const contributor = config.hideAuthorEmail ? name : `${name} <${email}>`
-    contributors.add(contributor)
+    // Use name as key to deduplicate by author name
+    // If we already have this author, keep the first email we encountered
+    if (!contributorMap.has(name)) {
+      const contributor = config.hideAuthorEmail ? name : `${name} <${email}>`
+      contributorMap.set(name, contributor)
+    }
   }
 
-  return Array.from(contributors).sort()
+  return Array.from(contributorMap.values()).sort()
 }
 
 /**
