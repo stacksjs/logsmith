@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith",
   "type": "module",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": true,
   "description": "Forge beautiful changelog automatically.",
   "author": "Chris Breuer <chris@stacksjs.org>",
@@ -14,7 +14,12 @@
   "bugs": {
     "url": "https://github.com/stacksjs/logsmith/issues"
   },
-  "keywords": ["homebrew", "pkgx", "bun", "package"],
+  "keywords": [
+    "homebrew",
+    "pkgx",
+    "bun",
+    "package"
+  ],
   "scripts": {
     "build": "for dir in packages/*; do if [ -f \"$dir/package.json\" ]; then echo \"Building $dir\" && bun run --cwd $dir build; fi; done",
     "test": "bun test",
