@@ -247,12 +247,12 @@ describe('changelog', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         // Verify that the result is defined and content is a string
         expect(result).toBeDefined()
         expect(typeof result.content).toBe('string')
         expect(result.format).toBe('markdown')
-        
+
         // The content should be processed (even if linting currently falls back to original)
         // This test verifies that the linting integration doesn't break the flow
         expect(result.content.length).toBeGreaterThanOrEqual(0)
@@ -275,10 +275,10 @@ describe('changelog', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result).toBeDefined()
         expect(result.format).toBe('json')
-        
+
         // For JSON format, content should be valid JSON
         if (result.content) {
           expect(() => JSON.parse(result.content)).not.toThrow()
@@ -302,10 +302,10 @@ describe('changelog', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result).toBeDefined()
         expect(result.format).toBe('html')
-        
+
         // For HTML format, content should contain HTML structure
         if (result.content) {
           expect(result.content).toContain('<!DOCTYPE html>')
@@ -341,7 +341,7 @@ describe('changelog', () => {
       try {
         const resultWithLinting = await generateChangelog(configWithLinting)
         const resultWithoutLinting = await generateChangelog(configWithoutLinting)
-        
+
         // Both should work regardless of linting setting
         expect(resultWithLinting).toBeDefined()
         expect(resultWithoutLinting).toBeDefined()
@@ -366,7 +366,7 @@ describe('changelog', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         // Verify that even console-only output gets linting applied
         expect(result).toBeDefined()
         expect(result.outputPath).toBeUndefined()

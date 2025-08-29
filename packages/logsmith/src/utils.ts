@@ -750,7 +750,8 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
 
   try {
     // Dynamically import markdownlint to avoid bundling issues
-    const { default: markdownlint } = await import('markdownlint')
+    const markdownlintModule = await import('markdownlint')
+    const markdownlint = (markdownlintModule as any).default || markdownlintModule
 
     // Prepare markdownlint options
     const options = {
@@ -771,7 +772,7 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
         const externalConfig = JSON.parse(readFileSync(config.markdownLintConfig, 'utf8'))
         options.config = { ...options.config, ...externalConfig }
       }
-      catch (error) {
+      catch (error: any) {
         if (config.verbose) {
           logWarning(`Failed to load markdownlint config from ${config.markdownLintConfig}: ${error}`)
         }
@@ -785,7 +786,7 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
     const errors = result.content || []
     if (errors.length > 0 && config.verbose) {
       logInfo('Markdownlint found issues that have been auto-fixed:')
-      errors.forEach((error) => {
+      errors.forEach((error: any) => {
         logInfo(`  Line ${error.lineNumber}: ${error.ruleDescription}`)
       })
     }
@@ -806,7 +807,7 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
 
     return fixedContent
   }
-  catch (error) {
+  catch (error: any) {
     if (config.verbose) {
       logWarning(`Markdownlint failed: ${error}. Returning original content.`)
     }

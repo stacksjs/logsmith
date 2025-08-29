@@ -9,7 +9,7 @@ describe('markdown linting integration', () => {
   describe('end-to-end markdown linting', () => {
     it('should apply linting when generating changelog to file', async () => {
       const testOutputPath = 'test/test-output-changelog.md'
-      
+
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
         unlinkSync(testOutputPath)
@@ -26,12 +26,12 @@ describe('markdown linting integration', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         // Verify the result structure
         expect(result).toBeDefined()
         expect(result.format).toBe('markdown')
         expect(result.outputPath).toContain(testOutputPath)
-        
+
         // Verify the file was created and contains expected content
         if (existsSync(testOutputPath)) {
           const fileContent = readFileSync(testOutputPath, 'utf-8')
@@ -64,13 +64,13 @@ describe('markdown linting integration', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         // Verify that console output gets linting applied
         expect(result).toBeDefined()
         expect(result.format).toBe('markdown')
         expect(result.outputPath).toBeUndefined()
         expect(typeof result.content).toBe('string')
-        
+
         // Content should be processed (even if linting currently falls back)
         expect(result.content.length).toBeGreaterThanOrEqual(0)
       }
@@ -82,7 +82,7 @@ describe('markdown linting integration', () => {
 
     it('should merge with existing changelog and apply linting', async () => {
       const testOutputPath = 'test/test-merge-changelog.md'
-      
+
       // Create an existing changelog with formatting issues
       const existingContent = `# Changelog
 
@@ -107,10 +107,10 @@ describe('markdown linting integration', () => {
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result).toBeDefined()
         expect(result.format).toBe('markdown')
-        
+
         // Verify the file was updated and should have linting applied
         if (existsSync(testOutputPath)) {
           const updatedContent = readFileSync(testOutputPath, 'utf-8')
@@ -150,7 +150,7 @@ This content should not be immediately after the heading
 `
 
       const result = await lintMarkdown(problematicContent, config)
-      
+
       // Should return the content (potentially fixed or unchanged if markdownlint fails)
       expect(typeof result).toBe('string')
       expect(result.length).toBeGreaterThan(0)
@@ -169,7 +169,7 @@ Content with formatting issues
 Multiple blank lines`
 
       const result = await lintMarkdown(content, config)
-      
+
       // Should return unchanged when linting is disabled
       expect(result).toBe(content)
     })
@@ -181,7 +181,7 @@ Multiple blank lines`
       }
 
       const result = await lintMarkdown('', config)
-      
+
       expect(typeof result).toBe('string')
     })
 
@@ -200,7 +200,7 @@ Multiple blank lines`
 `
 
       const result = await lintMarkdown(malformedContent, config)
-      
+
       // Should not throw and return a string
       expect(typeof result).toBe('string')
       expect(result.length).toBeGreaterThan(0)
@@ -220,9 +220,9 @@ Multiple blank lines`
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result.format).toBe('json')
-        
+
         // JSON content should not be processed through markdown linting
         if (result.content) {
           expect(() => JSON.parse(result.content)).not.toThrow()
@@ -246,9 +246,9 @@ Multiple blank lines`
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result.format).toBe('html')
-        
+
         // HTML content should not be processed through markdown linting
         if (result.content) {
           expect(result.content).toContain('<!DOCTYPE html>')
@@ -264,9 +264,9 @@ Multiple blank lines`
   describe('test data validation', () => {
     it('should have test changelog data file in correct location', () => {
       const testChangelogPath = 'test/test-changelog.md'
-      
+
       expect(existsSync(testChangelogPath)).toBe(true)
-      
+
       const content = readFileSync(testChangelogPath, 'utf-8')
       expect(content).toContain('# Changelog')
       expect(content.length).toBeGreaterThan(0)
@@ -276,7 +276,7 @@ Multiple blank lines`
   describe('author exclusion integration', () => {
     it('should exclude bot authors from contributors section', async () => {
       const testOutputPath = 'test/test-authors-exclusion.md'
-      
+
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
         unlinkSync(testOutputPath)
@@ -295,17 +295,17 @@ Multiple blank lines`
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result).toBeDefined()
         expect(result.format).toBe('markdown')
-        
+
         // Verify the file was created
         if (existsSync(testOutputPath)) {
           const fileContent = readFileSync(testOutputPath, 'utf-8')
-          
+
           // Should contain changelog content
           expect(fileContent).toContain('# Changelog')
-          
+
           // If there are contributors, they should NOT include bot authors
           if (fileContent.includes('### Contributors')) {
             expect(fileContent).not.toContain('dependabot[bot]')
@@ -327,7 +327,7 @@ Multiple blank lines`
 
     it('should respect custom excludeAuthors configuration', async () => {
       const testOutputPath = 'test/test-custom-authors-exclusion.md'
-      
+
       // Clean up any existing test file
       if (existsSync(testOutputPath)) {
         unlinkSync(testOutputPath)
@@ -346,17 +346,17 @@ Multiple blank lines`
 
       try {
         const result = await generateChangelog(config)
-        
+
         expect(result).toBeDefined()
         expect(result.format).toBe('markdown')
-        
+
         // Verify the file was created
         if (existsSync(testOutputPath)) {
           const fileContent = readFileSync(testOutputPath, 'utf-8')
-          
+
           // Should contain changelog content
           expect(fileContent).toContain('# Changelog')
-          
+
           // If there are contributors, they should NOT include excluded authors
           if (fileContent.includes('### Contributors')) {
             expect(fileContent).not.toContain('John Doe')
@@ -381,7 +381,7 @@ Multiple blank lines`
       expect(defaultConfig.excludeAuthors).toContain('dependabot[bot]')
       expect(defaultConfig.excludeAuthors).toContain('github-actions[bot]')
       expect(defaultConfig.excludeAuthors).toHaveLength(2)
-      
+
       // Verify the config structure
       expect(Array.isArray(defaultConfig.excludeAuthors)).toBe(true)
       expect(typeof defaultConfig.excludeAuthors[0]).toBe('string')

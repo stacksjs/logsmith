@@ -103,7 +103,7 @@ export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promi
 
   // Filter out undefined values from overrides to avoid overriding defaults
   const filteredOverrides = Object.fromEntries(
-    Object.entries(overrides).filter(([, value]) => value !== undefined)
+    Object.entries(overrides).filter(([, value]) => value !== undefined),
   ) as LogsmithOptions
 
   // Merge configurations with proper precedence: overrides > loaded > defaults
