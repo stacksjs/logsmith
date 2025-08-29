@@ -290,6 +290,143 @@ describe('utils', () => {
       expect(contributors).toContain('John Doe')
       expect(contributors).toContain('Jane Smith')
     })
+
+    it('should exclude default bot authors by default', () => {
+      const mockCommitsWithBots: CommitInfo[] = [
+        {
+          hash: 'bot123',
+          message: 'chore: update dependencies',
+          author: { name: 'dependabot[bot]', email: 'dependabot@github.com' },
+          date: '2024-01-01',
+          type: 'chore',
+          description: 'update dependencies',
+        },
+        {
+          hash: 'bot456',
+          message: 'ci: update workflow',
+          author: { name: 'github-actions[bot]', email: 'github-actions@github.com' },
+          date: '2024-01-01',
+          type: 'ci',
+          description: 'update workflow',
+        },
+        {
+          hash: 'human789',
+          message: 'feat: add new feature',
+          author: { name: 'John Doe', email: 'john@example.com' },
+          date: '2024-01-01',
+          type: 'feat',
+          description: 'add new feature',
+        },
+      ]
+
+      const config = { ...defaultConfig }
+      const contributors = getContributors(mockCommitsWithBots, config)
+
+      // Should exclude both bot authors
+      expect(contributors).toHaveLength(1)
+      expect(contributors).toContain('John Doe <john@example.com>')
+      expect(contributors).not.toContain('dependabot[bot] <dependabot@github.com>')
+      expect(contributors).not.toContain('github-actions[bot] <github-actions@github.com>')
+    })
+
+    it('should exclude authors by exact name match', () => {
+      const mockCommitsWithExactNames: CommitInfo[] = [
+        {
+          hash: 'exact1',
+          message: 'chore: update deps',
+          author: { name: 'dependabot[bot]', email: 'dependabot@github.com' },
+          date: '2024-01-01',
+          type: 'chore',
+          description: 'update deps',
+        },
+        {
+          hash: 'exact2',
+          message: 'ci: fix workflow',
+          author: { name: 'github-actions[bot]', email: 'github-actions@github.com' },
+          date: '2024-01-01',
+          type: 'ci',
+          description: 'fix workflow',
+        },
+      ]
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'],
+      }
+      const contributors = getContributors(mockCommitsWithExactNames, config)
+
+      // Should exclude all bot authors
+      expect(contributors).toHaveLength(0)
+    })
+
+    it('should exclude authors by email match', () => {
+      const mockCommitsWithEmails: CommitInfo[] = [
+        {
+          hash: 'email1',
+          message: 'chore: update package',
+          author: { name: 'Some Bot', email: 'dependabot@github.com' },
+          date: '2024-01-01',
+          type: 'chore',
+          description: 'update package',
+        },
+        {
+          hash: 'email2',
+          message: 'ci: run tests',
+          author: { name: 'Another Bot', email: 'github-actions@github.com' },
+          date: '2024-01-01',
+          type: 'ci',
+          description: 'run tests',
+        },
+      ]
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        excludeAuthors: ['dependabot@github.com', 'github-actions@github.com'],
+      }
+      const contributors = getContributors(mockCommitsWithEmails, config)
+
+      // Should exclude by email match
+      expect(contributors).toHaveLength(0)
+    })
+
+    it('should handle case-sensitive author exclusion', () => {
+      const mockCommitsWithCaseVariations: CommitInfo[] = [
+        {
+          hash: 'case1',
+          message: 'chore: update deps',
+          author: { name: 'Dependabot[bot]', email: 'dependabot@github.com' }, // Different case
+          date: '2024-01-01',
+          type: 'chore',
+          description: 'update deps',
+        },
+        {
+          hash: 'case2',
+          message: 'ci: fix workflow',
+          author: { name: 'GitHub-Actions[bot]', email: 'github-actions@github.com' }, // Different case
+          date: '2024-01-01',
+          type: 'ci',
+          description: 'fix workflow',
+        },
+      ]
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'],
+      }
+      const contributors = getContributors(mockCommitsWithCaseVariations, config)
+
+      // Should NOT exclude due to case mismatch (exact match required)
+      expect(contributors).toHaveLength(2)
+      expect(contributors).toContain('Dependabot[bot] <dependabot@github.com>')
+      expect(contributors).toContain('GitHub-Actions[bot] <github-actions@github.com>')
+    })
+
+    it('should verify default config has correct excludeAuthors', () => {
+      // Verify that the default config has the expected bot exclusions
+      expect(defaultConfig.excludeAuthors).toContain('dependabot[bot]')
+      expect(defaultConfig.excludeAuthors).toContain('github-actions[bot]')
+      expect(defaultConfig.excludeAuthors).toHaveLength(2)
+    })
   })
 
   describe('analyzeCommits', () => {

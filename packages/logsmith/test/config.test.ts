@@ -31,6 +31,65 @@ describe('config', () => {
       expect(defaultConfig.includeCommitTypes).toHaveLength(0)
     })
 
+    it('should properly handle author exclusion configuration', () => {
+      // Test that the default config has the correct bot exclusions
+      expect(defaultConfig.excludeAuthors).toContain('dependabot[bot]')
+      expect(defaultConfig.excludeAuthors).toContain('github-actions[bot]')
+      
+      // Test that the config can be overridden
+      const customConfig: LogsmithConfig = {
+        ...defaultConfig,
+        excludeAuthors: ['custom-bot', 'another-bot'],
+      }
+      
+      expect(customConfig.excludeAuthors).toContain('custom-bot')
+      expect(customConfig.excludeAuthors).toContain('another-bot')
+      expect(customConfig.excludeAuthors).not.toContain('dependabot[bot]')
+      expect(customConfig.excludeAuthors).not.toContain('github-actions[bot]')
+    })
+
+    it('should preserve default excludeAuthors when overrides contain undefined values', async () => {
+      // Test that undefined values in overrides don't override defaults
+      const overridesWithUndefined: LogsmithOptions = {
+        verbose: true,
+        excludeAuthors: undefined, // This should NOT override the default
+        output: 'CUSTOM.md',
+      }
+
+      const config = await loadLogsmithConfig(overridesWithUndefined)
+      
+      // Should preserve default excludeAuthors
+      expect(config.excludeAuthors).toContain('dependabot[bot]')
+      expect(config.excludeAuthors).toContain('github-actions[bot]')
+      expect(config.excludeAuthors).toHaveLength(2)
+      
+      // Other overrides should still work
+      expect(config.verbose).toBe(true)
+      expect(config.output).toBe('CUSTOM.md')
+    })
+
+    it('should properly override excludeAuthors when explicitly provided', async () => {
+      // Test that explicit values properly override defaults
+      const overridesWithExplicitAuthors: LogsmithOptions = {
+        verbose: true,
+        excludeAuthors: ['explicit-bot', 'another-explicit-bot'],
+        output: 'CUSTOM.md',
+      }
+
+      const config = await loadLogsmithConfig(overridesWithExplicitAuthors)
+      
+      // Should use the explicit excludeAuthors
+      expect(config.excludeAuthors).toContain('explicit-bot')
+      expect(config.excludeAuthors).toContain('another-explicit-bot')
+      expect(config.excludeAuthors).toHaveLength(2)
+      expect(config.excludeAuthors).not.toContain('dependabot[bot]')
+      expect(config.excludeAuthors).not.toContain('github-actions[bot]')
+      
+      // Other overrides should still work
+      expect(config.verbose).toBe(true)
+      expect(config.output).toBe('CUSTOM.md')
+    })
+
     it('should have proper template formats', () => {
       expect(defaultConfig.templates.commitFormat).toContain('{{description}}')
       expect(defaultConfig.templates.groupFormat).toContain('{{title}}')

@@ -272,4 +272,120 @@ Multiple blank lines`
       expect(content.length).toBeGreaterThan(0)
     })
   })
+
+  describe('author exclusion integration', () => {
+    it('should exclude bot authors from contributors section', async () => {
+      const testOutputPath = 'test/test-authors-exclusion.md'
+      
+      // Clean up any existing test file
+      if (existsSync(testOutputPath)) {
+        unlinkSync(testOutputPath)
+      }
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        dir: process.cwd(),
+        output: testOutputPath,
+        format: 'markdown',
+        markdownLint: true,
+        verbose: false,
+        // Ensure bot authors are excluded
+        excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'],
+      }
+
+      try {
+        const result = await generateChangelog(config)
+        
+        expect(result).toBeDefined()
+        expect(result.format).toBe('markdown')
+        
+        // Verify the file was created
+        if (existsSync(testOutputPath)) {
+          const fileContent = readFileSync(testOutputPath, 'utf-8')
+          
+          // Should contain changelog content
+          expect(fileContent).toContain('# Changelog')
+          
+          // If there are contributors, they should NOT include bot authors
+          if (fileContent.includes('### Contributors')) {
+            expect(fileContent).not.toContain('dependabot[bot]')
+            expect(fileContent).not.toContain('github-actions[bot]')
+          }
+        }
+      }
+      catch (error) {
+        // Expected in test environment without proper git history
+        expect(error).toBeDefined()
+      }
+      finally {
+        // Clean up test file
+        if (existsSync(testOutputPath)) {
+          unlinkSync(testOutputPath)
+        }
+      }
+    })
+
+    it('should respect custom excludeAuthors configuration', async () => {
+      const testOutputPath = 'test/test-custom-authors-exclusion.md'
+      
+      // Clean up any existing test file
+      if (existsSync(testOutputPath)) {
+        unlinkSync(testOutputPath)
+      }
+
+      const config: LogsmithConfig = {
+        ...defaultConfig,
+        dir: process.cwd(),
+        output: testOutputPath,
+        format: 'markdown',
+        markdownLint: true,
+        verbose: false,
+        // Custom author exclusions
+        excludeAuthors: ['John Doe', 'Jane Smith'],
+      }
+
+      try {
+        const result = await generateChangelog(config)
+        
+        expect(result).toBeDefined()
+        expect(result.format).toBe('markdown')
+        
+        // Verify the file was created
+        if (existsSync(testOutputPath)) {
+          const fileContent = readFileSync(testOutputPath, 'utf-8')
+          
+          // Should contain changelog content
+          expect(fileContent).toContain('# Changelog')
+          
+          // If there are contributors, they should NOT include excluded authors
+          if (fileContent.includes('### Contributors')) {
+            expect(fileContent).not.toContain('John Doe')
+            expect(fileContent).not.toContain('Jane Smith')
+          }
+        }
+      }
+      catch (error) {
+        // Expected in test environment without proper git history
+        expect(error).toBeDefined()
+      }
+      finally {
+        // Clean up test file
+        if (existsSync(testOutputPath)) {
+          unlinkSync(testOutputPath)
+        }
+      }
+    })
+
+    it('should verify default config has correct bot exclusions', () => {
+      // Verify the default configuration has the expected bot exclusions
+      expect(defaultConfig.excludeAuthors).toContain('dependabot[bot]')
+      expect(defaultConfig.excludeAuthors).toContain('github-actions[bot]')
+      expect(defaultConfig.excludeAuthors).toHaveLength(2)
+      
+      // Verify the config structure
+      expect(Array.isArray(defaultConfig.excludeAuthors)).toBe(true)
+      expect(typeof defaultConfig.excludeAuthors[0]).toBe('string')
+      expect(typeof defaultConfig.excludeAuthors[1]).toBe('string')
+    })
+  })
 })

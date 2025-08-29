@@ -96,7 +96,7 @@ cli
         language: options.language || 'en',
         theme: theme as any,
         clean: options.clean || false,
-        excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : [],
+        excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : undefined,
         includeAuthors: options.includeAuthors ? options.includeAuthors.split(',').map((s: string) => s.trim()) : [],
         hideAuthorEmail: options.hideAuthorEmail || false,
         excludeCommitTypes: options.excludeTypes ? options.excludeTypes.split(',').map((s: string) => s.trim()) : [],
