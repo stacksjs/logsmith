@@ -83,7 +83,15 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
   }
 
   // Generate changelog content
-  const changelogContent = generateFormattedChangelog(changelogData, config)
+  let changelogContent = generateFormattedChangelog(changelogData, config)
+
+  // Apply markdown linting to all markdown content, regardless of output method
+  if (config.format === 'markdown') {
+    if (verbose) {
+      logInfo('Applying markdown linting to generated content...')
+    }
+    changelogContent = await lintMarkdown(changelogContent, config)
+  }
 
   // Handle output
   let outputPath: string | undefined
@@ -125,7 +133,10 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           finalContent = `# Changelog\n\n${changelogContent}`
         }
 
-        // Apply markdown linting to fix any formatting issues
+        // Apply markdown linting to the final merged content to ensure proper formatting
+        if (verbose) {
+          logInfo('Applying markdown linting to final merged content...')
+        }
         const lintedContent = await lintMarkdown(finalContent, config)
         writeFileSync(outputPath, lintedContent)
       }
