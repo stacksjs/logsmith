@@ -1,3 +1,10 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.14...HEAD)
+
+### Contributors
+
+- Chris <chrisbreuer93@gmail.com>
+
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.13...HEAD)
 
 ### Contributors
