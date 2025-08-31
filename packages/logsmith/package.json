@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith",
   "type": "module",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "Forge beautiful changelog automatically.",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",
@@ -60,11 +60,11 @@
     "test": "bun test"
   },
   "dependencies": {
-    "bunfig": "^0.14.1",
+    "bunfig": "^0.15.0",
     "markdownlint": "^0.38.0"
   },
   "devDependencies": {
-    "@stacksjs/bumpx": "^0.1.2",
+    "@stacksjs/bumpx": "^0.1.38",
     "@stacksjs/gitlint": "^0.1.5",
     "bun-git-hooks": "^0.2.19"
   },
