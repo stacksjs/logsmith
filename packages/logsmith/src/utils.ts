@@ -786,7 +786,7 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
   if (config.verbose) {
     logWarning('Markdownlint library has compilation issues. Applying basic fixes only.')
   }
-  
+
   let fixedContent = content
 
   // Apply basic markdown fixes manually
@@ -799,7 +799,8 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
   // 3. Ensure single trailing newline only if content has meaningful content
   if (fixedContent.trim().length > 0) {
     fixedContent = fixedContent.replace(/\n*$/, '\n')
-  } else {
+  }
+  else {
     // If content is only whitespace, normalize to empty string
     fixedContent = ''
   }

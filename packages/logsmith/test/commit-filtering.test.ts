@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'bun:test'
 import type { CommitInfo, LogsmithConfig } from '../src/types'
+import { describe, expect, it } from 'bun:test'
 import { defaultConfig } from '../src/config'
 import { groupCommits } from '../src/utils'
 
@@ -55,14 +55,14 @@ describe('Commit Filtering', () => {
     }
 
     const sections = groupCommits(mockCommits, config)
-    
+
     // Should have sections for feat, fix, chore, and docs
     expect(sections.length).toBeGreaterThanOrEqual(4)
-    
+
     const choreSection = sections.find(s => s.title.includes('Chores'))
     expect(choreSection).toBeDefined()
     expect(choreSection?.commits.length).toBe(2) // Both chore commits including 'wip'
-    
+
     const wipCommit = choreSection?.commits.find(c => c.description === 'wip')
     expect(wipCommit).toBeDefined()
     expect(wipCommit?.type).toBe('chore')
@@ -77,10 +77,10 @@ describe('Commit Filtering', () => {
     }
 
     const sections = groupCommits(mockCommits, config)
-    
+
     const choreSection = sections.find(s => s.title.includes('Chores'))
     expect(choreSection).toBeDefined()
-    
+
     const wipCommit = choreSection?.commits.find(c => c.description === 'wip')
     expect(wipCommit).toBeDefined()
     expect(wipCommit?.hash).toBe('jkl012')
