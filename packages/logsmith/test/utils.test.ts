@@ -539,8 +539,8 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      // Currently, markdownlint is failing to load properly, so content is returned unchanged
-      expect(result).toBe(content)
+      // Should apply basic fixes: remove leading empty lines, ensure single trailing newline
+      expect(result).toBe('# Changelog\n\nSome content here\n')
     })
 
     it('should handle the specific issue mentioned by user: content after heading without empty line', async () => {
@@ -555,8 +555,8 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      // Currently returns unchanged due to markdownlint import issues
-      expect(result).toBe(content)
+      // Should apply basic fixes: ensure single trailing newline
+      expect(result).toBe('# Changelog\nThis content should not be immediately after the heading\n')
     })
 
     it('should handle content with leading empty lines', async () => {
@@ -569,8 +569,8 @@ describe('utils', () => {
       const content = '\n\n\n# Changelog\n\nSome content'
       const result = await lintMarkdown(content, config)
 
-      // Currently returns unchanged due to markdownlint import issues
-      expect(result).toBe(content)
+      // Should apply basic fixes: remove leading empty lines, ensure single trailing newline
+      expect(result).toBe('# Changelog\n\nSome content\n')
     })
 
     it('should handle content with multiple trailing newlines', async () => {
@@ -583,8 +583,8 @@ describe('utils', () => {
       const content = '# Changelog\n\nSome content\n\n\n'
       const result = await lintMarkdown(content, config)
 
-      // Currently returns unchanged due to markdownlint import issues
-      expect(result).toBe(content)
+      // Should apply basic fixes: ensure single trailing newline
+      expect(result).toBe('# Changelog\n\nSome content\n')
     })
 
     it('should handle content with multiple consecutive blank lines', async () => {
@@ -597,8 +597,8 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      // Currently returns unchanged due to markdownlint import issues
-      expect(result).toBe(content)
+      // Should apply basic fixes: fix multiple consecutive blank lines, ensure single trailing newline
+      expect(result).toBe('# Changelog\n\nSome content\n\nMore content\n')
     })
 
     it('should handle empty content gracefully', async () => {
@@ -611,7 +611,7 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      expect(result).toBe(content)
+      expect(result).toBe('')
     })
 
     it('should handle content with only whitespace', async () => {
@@ -624,7 +624,8 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      expect(result).toBe(content)
+      // Should remove leading empty lines and normalize to empty string
+      expect(result).toBe('')
     })
 
     it('should handle error gracefully when markdownlint import fails', async () => {
@@ -637,8 +638,8 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      // Should return original content when linting fails
-      expect(result).toBe(content)
+      // Should apply basic fixes: ensure single trailing newline
+      expect(result).toBe('# Valid markdown content\n')
     })
 
     it('should handle external markdownlint config file gracefully', async () => {
@@ -653,7 +654,7 @@ describe('utils', () => {
       const result = await lintMarkdown(content, config)
 
       // Should return original content since markdownlint is currently failing
-      expect(result).toBe(content)
+      expect(result).toBe('# Changelog\n\nContent here\n')
     })
 
     it('should handle custom markdownlint rules configuration', async () => {
@@ -669,14 +670,13 @@ describe('utils', () => {
 
       const result = await lintMarkdown(content, config)
 
-      // Currently returns unchanged since markdownlint library is not working properly
-      expect(result).toBe(content)
+      // Should apply basic fixes: fix multiple consecutive blank lines, ensure single trailing newline
+      expect(result).toBe('# Changelog\n\nContent with multiple blank lines\n')
     })
 
     it('should verify that markdown linting is intended to fix formatting issues', async () => {
       // This test documents the intended behavior when markdownlint works properly
       const content = '\n\n# Changelog\n\n\n\nSome content\n\n\n\nMore content\n\n\n'
-
       // Manual application of the fixes that should happen:
       let expectedResult = content
       // 1. Remove leading empty lines

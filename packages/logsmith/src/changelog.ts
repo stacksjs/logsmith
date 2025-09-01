@@ -62,6 +62,14 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
   // Group commits by type
   const sections = groupCommits(commits, config)
 
+  if (verbose) {
+    logInfo(`Found ${commits.length} commits`)
+    logInfo(`Generated ${sections.length} sections`)
+    sections.forEach((section, index) => {
+      logInfo(`Section ${index + 1}: "${section.title}" with ${section.commits.length} commits`)
+    })
+  }
+
   // Get contributors
   const contributors = getContributors(commits, config)
 
@@ -87,17 +95,18 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
 
   if (verbose) {
     logInfo(`Generated content length: ${changelogContent.length} characters`)
+    logInfo(`Generated content preview: ${changelogContent.substring(0, 200)}...`)
   }
 
-  // Apply markdown linting to all markdown content, regardless of output method
-  if (config.format === 'markdown') {
-    if (verbose) {
-      logInfo('Applying markdown linting to generated content...')
-    }
-    changelogContent = await lintMarkdown(changelogContent, config)
-    if (verbose) {
-      logInfo(`After linting content length: ${changelogContent.length} characters`)
-    }
+  // Apply markdown linting to generated content
+  if (verbose) {
+    logInfo('Applying markdown linting to generated content...')
+  }
+  changelogContent = await lintMarkdown(changelogContent, config)
+
+  if (verbose) {
+    logInfo(`After linting content length: ${changelogContent.length} characters`)
+    logInfo(`After linting preview: ${changelogContent.substring(0, 200)}...`)
   }
 
   // Handle output
