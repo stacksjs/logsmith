@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith",
   "type": "module",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Forge beautiful changelog automatically.",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",

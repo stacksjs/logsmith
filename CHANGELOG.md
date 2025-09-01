@@ -1,9 +1,18 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.15...HEAD)
+
+### 🧹 Chores
+
+- update way to generate logs ([c0ea9a5](https://github.com/stacksjs/logsmith/commit/c0ea9a5))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.14...HEAD)
 
 ### Contributors
 
 - Chris <chrisbreuer93@gmail.com>
-
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.13...HEAD)
 
