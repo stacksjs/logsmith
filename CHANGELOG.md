@@ -1,3 +1,13 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.17...HEAD)
+
+### 🧹 Chores
+
+- re-enable splitting ([9150e59](https://github.com/stacksjs/logsmith/commit/9150e59))
+
+### Contributors
+
+- Chris <chrisbreuer93@gmail.com>
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.16...HEAD)
 
 ### 🧹 Chores
