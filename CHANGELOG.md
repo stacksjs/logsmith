@@ -1,3 +1,24 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.16...HEAD)
+
+### 🧹 Chores
+
+- release v0.1.17 ([1c4b795](https://github.com/stacksjs/logsmith/commit/1c4b795))
+- wip ([ea029a9](https://github.com/stacksjs/logsmith/commit/ea029a9))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.16...HEAD)
+
+### 🧹 Chores
+
+- wip ([ea029a9](https://github.com/stacksjs/logsmith/commit/ea029a9))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.15...HEAD)
 
 ### 🧹 Chores
