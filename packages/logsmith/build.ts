@@ -5,6 +5,8 @@ await Bun.build({
   outdir: './dist',
   target: 'node',
   format: 'esm',
+  // @ts-expect-error this exists, unsure why it is an issue
+  splitting: true,
   minify: false, // TODO: re-implement later
   plugins: [dts()],
 })
