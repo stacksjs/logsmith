@@ -1,3 +1,133 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.17...HEAD)
+
+### 🧹 Chores
+
+- re-enable splitting ([9150e59](https://github.com/stacksjs/logsmith/commit/9150e59))
+
+### Contributors
+
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.16...HEAD)
+
+### 🧹 Chores
+
+- release v0.1.17 ([1c4b795](https://github.com/stacksjs/logsmith/commit/1c4b795))
+- wip ([ea029a9](https://github.com/stacksjs/logsmith/commit/ea029a9))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.16...HEAD)
+
+### 🧹 Chores
+
+- wip ([ea029a9](https://github.com/stacksjs/logsmith/commit/ea029a9))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.15...HEAD)
+
+### 🧹 Chores
+
+- update way to generate logs ([c0ea9a5](https://github.com/stacksjs/logsmith/commit/c0ea9a5))
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.14...HEAD)
+
+### Contributors
+
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.13...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.12...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.11...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.10...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.9...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...v0.1.8)
+
+### Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+- Adelino Ngomacha <adelinob335@gmail.com>
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...v0.1.8)
+
+### Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+- Adelino Ngomacha <adelinob335@gmail.com>
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...v0.1.8)
+
+### Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+- Adelino Ngomacha <adelinob335@gmail.com>
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...v0.1.8)
+
+### Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+- Adelino Ngomacha <adelinob335@gmail.com>
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.0...v0.1.8)
+
+### Contributors
+
+- Adelino Ngomacha <Adelinob335@gmail.com>
+- Adelino Ngomacha <adelinob335@gmail.com>
+- Chris <chrisbreuer93@gmail.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.8...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+- github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.8...HEAD)
+
+### Contributors
+
+- Adelino Ngomacha <adelinob335@gmail.com>
+- github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
 
 ## v0.1.5...main
 
@@ -101,7 +231,6 @@
 
 ## ...main
 
-
 ### 🏡 Chore
 
 - Initial commit ([e7a0ac8](https://github.com/stacksjs/logsmith/commit/e7a0ac8))
@@ -122,4 +251,3 @@
 ### ❤️ Contributors
 
 - Chris ([@chrisbbreuer](https://github.com/chrisbbreuer))
-

@@ -53,6 +53,14 @@ cli
   .example('logsmith --theme gitmoji --output CHANGELOG.md')
   .action(async (args: string[], options: any) => {
     try {
+      // Parse positional arguments like "from v1.0.0 to v2.0.0"
+      let fromRef = options.from
+      let toRef = options.to || 'HEAD'
+      if (args.length >= 4 && args[0] === 'from' && args[2] === 'to') {
+        fromRef = args[1]
+        toRef = args[3]
+      }
+
       // Validate format option
       const validFormats = ['markdown', 'json', 'html']
       const format = options.format || 'markdown'
@@ -88,23 +96,23 @@ cli
 
       // Parse options
       const cliOptions: LogsmithOptions = {
-        from: options.from,
-        to: options.to || 'HEAD',
+        from: fromRef,
+        to: toRef,
         dir: options.dir || process.cwd(),
         output: outputFile !== undefined ? outputFile : 'CHANGELOG.md',
         format: actualFormat as any,
         language: options.language || 'en',
         theme: theme as any,
         clean: options.clean || false,
-        excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : [],
+        excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : undefined,
         includeAuthors: options.includeAuthors ? options.includeAuthors.split(',').map((s: string) => s.trim()) : [],
         hideAuthorEmail: options.hideAuthorEmail || false,
         excludeCommitTypes: options.excludeTypes ? options.excludeTypes.split(',').map((s: string) => s.trim()) : [],
         includeCommitTypes: options.includeTypes ? options.includeTypes.split(',').map((s: string) => s.trim()) : [],
         excludeScopes: options.excludeScopes ? options.excludeScopes.split(',').map((s: string) => s.trim()) : [],
         includeScopes: options.includeScopes ? options.includeScopes.split(',').map((s: string) => s.trim()) : [],
-        minCommitsForSection: options.minCommits || 1,
-        maxCommitsPerSection: options.maxCommits || 0,
+        minCommitsForSection: options['min-commits'] || 1,
+        maxCommitsPerSection: options['max-commits'] || 0,
         includeDates: options.dates !== false,
         groupBreakingChanges: options.breakingGroup !== false,
         includeCommitBody: options.includeBody || false,
@@ -133,7 +141,7 @@ cli
       const result = await generateChangelog(config)
 
       // Output to console if no file output
-      if (config.output === false) {
+      if (config.output === false && result.content) {
         console.log(result.content)
       }
 
