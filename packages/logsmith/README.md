@@ -26,34 +26,34 @@ Forge beautiful changelogs automatically using conventional commits.
 Generate a changelog and display in console:
 
 ```bash
-bunx logsmith
-```
+logsmith
+```text
 
 Generate a changelog and save to CHANGELOG.md:
 
 ```bash
-bunx logsmith --output CHANGELOG.md
-```
+logsmith --output CHANGELOG.md
+```text
 
 Generate changelog from specific commit range:
 
 ```bash
-bunx logsmith --from v1.0.0 --to HEAD
-```
+logsmith --from v1.0.0 --to HEAD
+```text
 
 Generate changelog in different formats:
 
 ```bash
 # JSON format
-bunx logsmith --format json --output changelog.json
+logsmith --format json --output changelog.json
 
 # HTML format
-bunx logsmith --format html --output changelog.html
+logsmith --format html --output changelog.html
 
 # Auto-detect format from file extension
-bunx logsmith --output changelog.json  # Automatically uses JSON format
-bunx logsmith --output changelog.html  # Automatically uses HTML format
-```
+logsmith --output changelog.json  # Automatically uses JSON format
+logsmith --output changelog.html  # Automatically uses HTML format
+```text
 
 ### Programmatic Usage
 
@@ -72,7 +72,7 @@ const result = await generateChangelog({
 
 console.log(result.content) // Changelog content
 console.log(result.outputPath) // Path where changelog was written
-```
+```text
 
 ## 📖 CLI Commands
 
@@ -83,6 +83,7 @@ logsmith [options]
 ```
 
 **Core Options:**
+
 - `--from <ref>` - Start commit reference (default: latest git tag)
 - `--to <ref>` - End commit reference (default: HEAD)
 - `--dir <dir>` - Path to git repository (default: current directory)
@@ -92,11 +93,13 @@ logsmith [options]
 - `--verbose` - Enable verbose logging
 
 **Author Filtering:**
+
 - `--exclude-authors <authors>` - Skip contributors (comma-separated)
 - `--include-authors <authors>` - Include only specific contributors (comma-separated)
 - `--hide-author-email` - Do not include author email in changelog
 
 **Advanced Filtering:**
+
 - `--exclude-types <types>` - Exclude commit types (comma-separated)
 - `--include-types <types>` - Include only specific commit types (comma-separated)
 - `--exclude-scopes <scopes>` - Exclude commit scopes (comma-separated)
@@ -106,6 +109,7 @@ logsmith [options]
 - `--max-length <number>` - Maximum description length (0 = unlimited)
 
 **Formatting Options:**
+
 - `--no-dates` - Hide dates from changelog
 - `--no-breaking-group` - Don't group breaking changes separately
 - `--include-body` - Include commit body in changelog entries
@@ -120,6 +124,7 @@ logsmith stats [options]
 Analyze your repository and display comprehensive statistics with trend analysis.
 
 **Options:**
+
 - `--from <ref>` - Start commit reference (default: latest git tag)
 - `--to <ref>` - End commit reference (default: HEAD)
 - `--dir <dir>` - Path to git repository (default: current directory)
@@ -127,7 +132,8 @@ Analyze your repository and display comprehensive statistics with trend analysis
 - `--verbose` - Enable verbose logging
 
 **Example Output:**
-```
+
+```text
 📊 Repository Statistics
 ─────────────────────────
 Range: v1.0.0 → HEAD
@@ -235,7 +241,7 @@ interface LogsmithConfig {
 
 Logsmith parses conventional commits and groups them by type:
 
-```
+```text
 feat: add new authentication system
 fix: resolve memory leak in parser
 docs: update API documentation
@@ -252,7 +258,7 @@ chore: update development tools
 
 Breaking changes are detected and highlighted:
 
-```
+```text
 feat!: remove deprecated API endpoints
 feat: add new feature
 
@@ -334,6 +340,7 @@ Beautiful web-ready format with modern styling:
 Generate changelog content with optional file output.
 
 **Returns:**
+
 ```typescript
 interface ChangelogResult {
   content: string // Generated changelog content
@@ -347,14 +354,14 @@ TypeScript helper for configuration files.
 
 ## 🤝 Integration with Version Bumping
 
-Logsmith focuses solely on changelog generation. For version bumping functionality, use it together with [`@stacksjs/logsmith`](../logsmith):
+Logsmith focuses solely on changelog generation. For version bumping functionality, use it together with [`@stacksjs/bumpx`](https://github.com/stacksjs/bumpx):
 
 ```bash
 # First bump the version
-bunx logsmith patch
+bunx bumpx patch
 
 # Then generate changelog
-bunx logsmith --output CHANGELOG.md
+logsmith --output CHANGELOG.md
 ```
 
 Or use them together in your build scripts:

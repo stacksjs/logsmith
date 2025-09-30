@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith",
   "type": "module",
-  "version": "0.1.8",
+  "version": "0.1.18",
   "private": true,
   "description": "Forge beautiful changelog automatically.",
   "author": "Chris Breuer <chris@stacksjs.org>",
@@ -14,15 +14,20 @@
   "bugs": {
     "url": "https://github.com/stacksjs/logsmith/issues"
   },
-  "keywords": ["homebrew", "pkgx", "bun", "package"],
+  "keywords": [
+    "homebrew",
+    "pkgx",
+    "bun",
+    "package"
+  ],
   "scripts": {
     "build": "for dir in packages/*; do if [ -f \"$dir/package.json\" ]; then echo \"Building $dir\" && bun run --cwd $dir build; fi; done",
     "test": "bun test",
     "fresh": "bunx rimraf node_modules/ bun.lock && bun i",
     "lint": "bunx --bun eslint .",
     "lint:fix": "bunx --bun eslint . --fix",
-    "changelog": "bunx logsmith --verbose",
-    "changelog:generate": "bunx logsmith --output CHANGELOG.md",
+    "changelog": "./logsmith --verbose",
+    "changelog:generate": "./logsmith --output CHANGELOG.md",
     "release": "bun run changelog:generate && bunx bumpx prompt --recursive",
     "postinstall": "bunx git-hooks",
     "dev:docs": "bun --bun vitepress dev docs",
@@ -31,16 +36,16 @@
     "typecheck": "bun --bun tsc --noEmit"
   },
   "devDependencies": {
-    "@stacksjs/bumpx": "^0.1.17",
+    "@stacksjs/bumpx": "^0.1.84",
     "@stacksjs/docs": "^0.70.23",
     "@stacksjs/eslint-config": "^4.14.0-beta.3",
     "@stacksjs/gitlint": "^0.1.5",
     "@stacksjs/logsmith": "workspace:*",
-    "@types/bun": "^1.2.18",
-    "buddy-bot": "^0.8.9",
+    "@types/bun": "^1.2.23",
+    "buddy-bot": "^0.9.7",
     "bun-git-hooks": "^0.2.19",
-    "bun-plugin-dtsx": "^0.9.5",
-    "typescript": "^5.8.3"
+    "bun-plugin-dtsx": "0.9.5",
+    "typescript": "^5.9.2"
   },
   "overrides": {
     "unconfig": "0.3.10"

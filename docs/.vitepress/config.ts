@@ -75,8 +75,8 @@ const sidebar = [
   },
   { text: 'API Reference', link: '/api/reference' },
 ]
-const description = 'A powerful, modern version bumping tool with comprehensive Git integration and monorepo support.'
-const title = 'logsmith | Modern Version Bumping Tool'
+const description = 'A modern changelog generator that turns conventional commits into beautiful releases with theming, JSON/HTML formats, and repository insights.'
+const title = 'logsmith | Modern Changelog Generator'
 
 export default withPwa(
   defineConfig({
@@ -105,7 +105,7 @@ export default withPwa(
       ['meta', { property: 'og:description', content: description }],
 
       ['meta', { property: 'og:site_name', content: 'logsmith' }],
-      ['meta', { property: 'og:image', content: './images/og-image.jpg' }],
+      ['meta', { property: 'og:image', content: './images/og-image.png' }],
       ['meta', { property: 'og:url', content: 'https://logsmith.sh/' }],
       // ['script', { 'src': 'https://cdn.usefathom.com/script.js', 'data-site': '', 'data-spa': 'auto', 'defer': '' }],
       ...analyticsHead,

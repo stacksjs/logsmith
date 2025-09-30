@@ -1,6 +1,5 @@
 import type { ChangelogEntry, ChangelogSection, CommitFrequency, CommitInfo, ContributorGrowth, GeneratedChangelog, GitReference, LogsmithConfig, RepositoryStats, TypeDistribution } from './types'
 import { execSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
 import process from 'node:process'
 import { formatDate, getCommitTypeFormatWithTheme, getLabel } from './i18n'
 import { getThemeEmoji, getHtmlStyles as getThemeHtmlStyles } from './themes'
@@ -212,12 +211,27 @@ export function groupCommits(commits: CommitInfo[], config: LogsmithConfig): Cha
   const groups: Record<string, ChangelogEntry[]> = {}
   const breakingChanges: ChangelogEntry[] = []
 
+  if (config.verbose) {
+    logInfo(`Processing ${commits.length} commits for grouping`)
+  }
+
   for (const commit of commits) {
     const type = commit.type || 'misc'
 
+    if (config.verbose) {
+      logInfo(`Processing commit: ${commit.hash} - ${type}: ${commit.description}`)
+    }
+
     // Apply filtering
     if (shouldExcludeCommit(commit, config)) {
+      if (config.verbose) {
+        logInfo(`Excluding commit ${commit.hash} due to filtering rules`)
+      }
       continue
+    }
+
+    if (config.verbose) {
+      logInfo(`Including commit ${commit.hash} in section "${type}"`)
     }
 
     const truncatedDescription = config.maxDescriptionLength > 0 && commit.description.length > config.maxDescriptionLength
@@ -250,6 +264,14 @@ export function groupCommits(commits: CommitInfo[], config: LogsmithConfig): Cha
   const sections: ChangelogSection[] = []
   const typeFormat = getCommitTypeFormatWithTheme(config.language, config.theme)
 
+  if (config.verbose) {
+    logInfo(`Groups created: ${Object.keys(groups).join(', ')}`)
+    Object.entries(groups).forEach(([type, commits]) => {
+      logInfo(`Group "${type}": ${commits.length} commits`)
+    })
+    logInfo(`minCommitsForSection: ${config.minCommitsForSection}`)
+  }
+
   // Add breaking changes section first if we have any
   if (breakingChanges.length > 0 && config.groupBreakingChanges) {
     const breakingEmoji = getThemeEmoji('breaking', config.theme)
@@ -267,10 +289,17 @@ export function groupCommits(commits: CommitInfo[], config: LogsmithConfig): Cha
   const typeOrder = ['feat', 'fix', 'perf', 'refactor', 'docs', 'style', 'test', 'build', 'ci', 'chore', 'revert']
 
   for (const type of typeOrder) {
+    if (config.verbose) {
+      logInfo(`Checking type "${type}": exists=${!!groups[type]}, count=${groups[type]?.length || 0}, minRequired=${config.minCommitsForSection}`)
+    }
     if (groups[type] && groups[type].length >= config.minCommitsForSection) {
       const commits = config.maxCommitsPerSection > 0
         ? groups[type].slice(0, config.maxCommitsPerSection)
         : groups[type]
+
+      if (config.verbose) {
+        logInfo(`Adding section "${type}" with ${commits.length} commits, title: "${typeFormat[type] || type}"`)
+      }
 
       sections.push({
         title: typeFormat[type] || type,
@@ -381,8 +410,8 @@ export function generateChangelogContent(
       // Choose format based on whether it's a breaking change
       const isBreakingSection = section.title === getLabel('breakingChanges', config.language)
       const templateFormat = commit.breaking && isBreakingSection
-        ? config.templates.breakingChangeFormat
-        : config.templates.commitFormat
+        ? config.templates?.breakingChangeFormat || '- **{{scope}}{{description}}** ([{{hash}}]({{repoUrl}}/commit/{{hash}}))'
+        : config.templates?.commitFormat || '- {{scope}}{{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}}))'
 
       let line = templateFormat
         .replace(/\{\{description\}\}/g, commit.description)
@@ -440,7 +469,7 @@ export function generateChangelogContent(
  * Get contributors from commits
  */
 export function getContributors(commits: CommitInfo[], config: LogsmithConfig): string[] {
-  const contributors = new Set<string>()
+  const contributorMap = new Map<string, string>()
 
   for (const commit of commits) {
     const { name, email } = commit.author
@@ -457,11 +486,15 @@ export function getContributors(commits: CommitInfo[], config: LogsmithConfig): 
       }
     }
 
-    const contributor = config.hideAuthorEmail ? name : `${name} <${email}>`
-    contributors.add(contributor)
+    // Use name as key to deduplicate by author name
+    // If we already have this author, keep the first email we encountered
+    if (!contributorMap.has(name)) {
+      const contributor = config.hideAuthorEmail ? name : `${name} <${email}>`
+      contributorMap.set(name, contributor)
+    }
   }
 
-  return Array.from(contributors).sort()
+  return Array.from(contributorMap.values()).sort()
 }
 
 /**
@@ -529,7 +562,7 @@ export function logSuccess(message: string): void {
  * Log info message
  */
 export function logInfo(message: string): void {
-  log(`${symbols.info} ${message}`, 'blue')
+  log(`${symbols.info} ${message}`, 'gray')
 }
 
 /**
@@ -748,70 +781,31 @@ export async function lintMarkdown(content: string, config: LogsmithConfig): Pro
     return content
   }
 
-  try {
-    // Dynamically import markdownlint to avoid bundling issues
-    const { default: markdownlint } = await import('markdownlint')
+  // For now, skip markdownlint entirely to avoid compilation issues
+  // and just apply basic fixes manually
+  if (config.verbose) {
+    logWarning('Markdownlint library has compilation issues. Applying basic fixes only.')
+  }
 
-    // Prepare markdownlint options
-    const options = {
-      strings: {
-        content,
-      },
-      config: {
-        // Use default rules
-        default: true,
-        // Apply custom rules from config
-        ...config.markdownLintRules,
-      },
-    }
+  let fixedContent = content
 
-    // Load external config file if specified
-    if (config.markdownLintConfig) {
-      try {
-        const externalConfig = JSON.parse(readFileSync(config.markdownLintConfig, 'utf8'))
-        options.config = { ...options.config, ...externalConfig }
-      }
-      catch (error) {
-        if (config.verbose) {
-          logWarning(`Failed to load markdownlint config from ${config.markdownLintConfig}: ${error}`)
-        }
-      }
-    }
+  // Apply basic markdown fixes manually
+  // 1. Remove leading empty lines (MD041)
+  fixedContent = fixedContent.replace(/^\n+/, '')
 
-    // Run markdownlint
-    const result = markdownlint.sync(options)
+  // 2. Fix multiple consecutive blank lines (MD012)
+  fixedContent = fixedContent.replace(/\n{3,}/g, '\n\n')
 
-    // Check for errors
-    const errors = result.content || []
-    if (errors.length > 0 && config.verbose) {
-      logInfo('Markdownlint found issues that have been auto-fixed:')
-      errors.forEach((error) => {
-        logInfo(`  Line ${error.lineNumber}: ${error.ruleDescription}`)
-      })
-    }
-
-    // For now, return the original content with basic fixes applied
-    // In the future, we can implement auto-fixing for specific rules
-    let fixedContent = content
-
-    // Fix common issues
-    // 1. Remove leading empty lines (MD041)
-    fixedContent = fixedContent.replace(/^\n+/, '')
-
-    // 2. Ensure single trailing newline
+  // 3. Ensure single trailing newline only if content has meaningful content
+  if (fixedContent.trim().length > 0) {
     fixedContent = fixedContent.replace(/\n*$/, '\n')
-
-    // 3. Fix multiple consecutive blank lines (MD012)
-    fixedContent = fixedContent.replace(/\n{3,}/g, '\n\n')
-
-    return fixedContent
   }
-  catch (error) {
-    if (config.verbose) {
-      logWarning(`Markdownlint failed: ${error}. Returning original content.`)
-    }
-    return content
+  else {
+    // If content is only whitespace, normalize to empty string
+    fixedContent = ''
   }
+
+  return fixedContent
 }
 
 /**
