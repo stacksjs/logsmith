@@ -2,6 +2,7 @@ antfu
 biomejs
 booleanish
 bumpp
+bumpx
 bunfig
 bunx
 changelogen
@@ -17,6 +18,7 @@ deps
 destructurable
 dtsx
 entrypoints
+gitlint
 heroicons
 iconify
 lockb

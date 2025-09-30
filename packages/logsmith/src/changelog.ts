@@ -62,6 +62,14 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
   // Group commits by type
   const sections = groupCommits(commits, config)
 
+  if (verbose) {
+    logInfo(`Found ${commits.length} commits`)
+    logInfo(`Generated ${sections.length} sections`)
+    sections.forEach((section, index) => {
+      logInfo(`Section ${index + 1}: "${section.title}" with ${section.commits.length} commits`)
+    })
+  }
+
   // Get contributors
   const contributors = getContributors(commits, config)
 
@@ -83,7 +91,23 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
   }
 
   // Generate changelog content
-  const changelogContent = generateFormattedChangelog(changelogData, config)
+  let changelogContent = generateFormattedChangelog(changelogData, config)
+
+  if (verbose) {
+    logInfo(`Generated content length: ${changelogContent.length} characters`)
+    logInfo(`Generated content preview: ${changelogContent.substring(0, 200)}...`)
+  }
+
+  // Apply markdown linting to generated content
+  if (verbose) {
+    logInfo('Applying markdown linting to generated content...')
+  }
+  changelogContent = await lintMarkdown(changelogContent, config)
+
+  if (verbose) {
+    logInfo(`After linting content length: ${changelogContent.length} characters`)
+    logInfo(`After linting preview: ${changelogContent.substring(0, 200)}...`)
+  }
 
   // Handle output
   let outputPath: string | undefined
@@ -112,8 +136,7 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           if (match) {
             // Insert new changelog after the main header
             const insertIndex = existingContent.indexOf('\n', match.index!) + 1
-            // Fix: Remove extra newlines that were causing the empty first line issue
-            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n${existingContent.slice(insertIndex)}`
+            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n\n${existingContent.slice(insertIndex)}`
           }
           else {
             // No main header found, prepend everything
@@ -121,11 +144,14 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           }
         }
         else {
-          // Create new changelog with header
+          // Create new changelog with header - ensure changelogContent is included
           finalContent = `# Changelog\n\n${changelogContent}`
         }
 
-        // Apply markdown linting to fix any formatting issues
+        // Apply markdown linting to the final merged content to ensure proper formatting
+        if (verbose) {
+          logInfo('Applying markdown linting to final merged content...')
+        }
         const lintedContent = await lintMarkdown(finalContent, config)
         writeFileSync(outputPath, lintedContent)
       }

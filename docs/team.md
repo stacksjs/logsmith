@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD022 MD033 -->
+
 ---
 layout: page
 title: Meet the Team
@@ -19,14 +21,14 @@ import { core, contributors } from './_data/team'
   <VPTeamPageTitle>
     <template #title>Meet the Team</template>
     <template #lead>
-      logsmith is developed and maintained by a dedicated team passionate about creating better developer tools.
+      Logsmith is developed and maintained by a small team and a growing community of contributors.
     </template>
   </VPTeamPageTitle>
   <VPTeamMembers :members="core" />
   <VPTeamPageSection>
     <template #title>Contributors</template>
     <template #lead>
-      Thank you to all the amazing people who have contributed to logsmith.
+      Thank you to everyone who has contributed code, documentation, and ideas.
     </template>
     <template #members>
       <VPTeamMembers size="small" :members="contributors" />
