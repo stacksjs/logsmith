@@ -243,7 +243,7 @@ export function groupCommits(commits: CommitInfo[], config: LogsmithConfig): Cha
       scope: commit.scope,
       description: truncatedDescription,
       hash: commit.hash,
-      author: config.hideAuthorEmail ? commit.author.name : `${commit.author.name} <${commit.author.email}>`,
+      author: formatAuthorWithGitHub(commit.author.name, commit.author.email, config.hideAuthorEmail),
       breaking: commit.breaking,
       references: commit.references,
     }
@@ -466,6 +466,46 @@ export function generateChangelogContent(
 }
 
 /**
+ * Extract GitHub username from git email
+ * Supports common patterns like:
+ * - username@users.noreply.github.com
+ * - 12345+username@users.noreply.github.com
+ * - username@github.com
+ */
+export function extractGitHubUsername(email: string): string | undefined {
+  // Pattern: username@users.noreply.github.com or 12345+username@users.noreply.github.com
+  const noreplyMatch = email.match(/(?:\d+\+)?([^@]+)@users\.noreply\.github\.com/)
+  if (noreplyMatch) {
+    return noreplyMatch[1]
+  }
+
+  // Pattern: username@github.com
+  const githubMatch = email.match(/^([^@]+)@github\.com$/)
+  if (githubMatch) {
+    return githubMatch[1]
+  }
+
+  return undefined
+}
+
+/**
+ * Format author with optional GitHub link
+ */
+export function formatAuthorWithGitHub(name: string, email: string, hideEmail: boolean): string {
+  const username = extractGitHubUsername(email)
+
+  if (username) {
+    // Author has a GitHub username - wrap in italic markdown
+    const displayName = hideEmail ? name : `${name} <${email}>`
+    return `_[${displayName}](https://github.com/${username})_`
+  }
+
+  // No GitHub username found, return plain text in italic
+  const plainText = hideEmail ? name : `${name} <${email}>`
+  return `_${plainText}_`
+}
+
+/**
  * Get contributors from commits
  */
 export function getContributors(commits: CommitInfo[], config: LogsmithConfig): string[] {
@@ -489,7 +529,7 @@ export function getContributors(commits: CommitInfo[], config: LogsmithConfig): 
     // Use name as key to deduplicate by author name
     // If we already have this author, keep the first email we encountered
     if (!contributorMap.has(name)) {
-      const contributor = config.hideAuthorEmail ? name : `${name} <${email}>`
+      const contributor = formatAuthorWithGitHub(name, email, config.hideAuthorEmail)
       contributorMap.set(name, contributor)
     }
   }
@@ -959,7 +999,7 @@ export function generateHtmlChangelog(
 
       // Author
       if (commit.author) {
-        lines.push(`            <span class="commit-author">${getLabel('by', config.language)} ${escapeHtml(commit.author)}</span>`)
+        lines.push(`            <span class="commit-author">${getLabel('by', config.language)} ${markdownLinkToHtml(commit.author)}</span>`)
       }
 
       lines.push(`          </li>`)
@@ -976,7 +1016,7 @@ export function generateHtmlChangelog(
     lines.push(`      <h3 class="contributors-title">${getLabel('contributors', config.language)}</h3>`)
     lines.push(`      <ul class="contributors-list">`)
     for (const contributor of changelog.contributors) {
-      lines.push(`        <li class="contributor-item">${escapeHtml(contributor)}</li>`)
+      lines.push(`        <li class="contributor-item">${markdownLinkToHtml(contributor)}</li>`)
     }
     lines.push(`      </ul>`)
     lines.push(`    </footer>`)
@@ -1154,6 +1194,16 @@ function getHtmlStyles(): string {
       color: #586069;
       font-size: 0.9rem;
       margin-left: 0.5rem;
+      font-style: italic;
+    }
+
+    .commit-author a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+
+    .commit-author a:hover {
+      text-decoration: underline;
     }
 
     .contributors-section {
@@ -1181,6 +1231,16 @@ function getHtmlStyles(): string {
       padding: 0.4rem 0.8rem;
       border-radius: 20px;
       font-size: 0.9rem;
+    }
+
+    .contributor-item a {
+      color: #0366d6;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contributor-item a:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
@@ -1217,4 +1277,16 @@ function escapeHtml(text: string): string {
   }
 
   return text.replace(/[&<>"']/g, match => htmlEscapes[match])
+}
+
+/**
+ * Convert markdown link to HTML link
+ * Converts [text](url) to <a href="url">text</a>
+ */
+function markdownLinkToHtml(text: string): string {
+  // Match markdown link pattern: [text](url)
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g
+  return text.replace(linkPattern, (_, linkText, url) => {
+    return `<a href="${escapeHtml(url)}">${escapeHtml(linkText)}</a>`
+  })
 }

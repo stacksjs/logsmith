@@ -2,7 +2,7 @@
 
 import type { LogsmithOptions, RepositoryStats } from '../src/types'
 import process from 'node:process'
-import { CAC } from 'cac'
+import { CLI } from '@stacksjs/clapp'
 import { version } from '../package.json'
 import { generateChangelog } from '../src/changelog'
 import { loadLogsmithConfig } from '../src/config'
@@ -10,7 +10,7 @@ import { getLabel } from '../src/i18n'
 import { getAvailableThemes } from '../src/themes'
 import { analyzeCommits, colors, logError, logInfo } from '../src/utils'
 
-const cli = new CAC('logsmith')
+const cli = new CLI('logsmith')
 
 cli
   .command('[...args]', 'Generate changelog')
