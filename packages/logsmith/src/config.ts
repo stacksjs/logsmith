@@ -52,9 +52,9 @@ export const defaultConfig: LogsmithConfig = {
 
   // Templates and formatting
   templates: {
-    commitFormat: '- {{scope}}{{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}}))',
+    commitFormat: '- {{scope}}{{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}})) _(by {{author}})_',
     groupFormat: '### {{title}}',
-    breakingChangeFormat: '- **{{scope}}{{description}}** ([{{hash}}]({{repoUrl}}/commit/{{hash}}))',
+    breakingChangeFormat: '- **{{scope}}{{description}}** ([{{hash}}]({{repoUrl}}/commit/{{hash}})) _(by {{author}})_',
     dateFormat: '_{{date}}_',
     typeFormat: {
       feat: '🚀 Features',

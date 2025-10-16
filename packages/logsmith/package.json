@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith",
   "type": "module",
-  "version": "0.1.18",
+  "version": "0.2.0",
   "description": "Forge beautiful changelog automatically.",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",
@@ -62,6 +62,6 @@
   "dependencies": {
     "@stacksjs/clapp": "^0.2.0",
     "bunfig": "^0.15.0",
-    "markdownlint": "^0.39.0"
+    "markdownlint": "^0.38.0"
   }
 }

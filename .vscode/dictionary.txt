@@ -22,6 +22,7 @@ gitlint
 heroicons
 iconify
 lockb
+logsmith
 openweb
 outdir
 pausable
