@@ -457,7 +457,7 @@ export function generateChangelogContent(
     lines.push(`### ${getLabel('contributors', config.language)}`)
     lines.push('')
     for (const contributor of changelog.contributors) {
-      lines.push(`- ${contributor}`)
+      lines.push(`- _${contributor}_`)
     }
     lines.push('')
   }
@@ -495,14 +495,14 @@ export function formatAuthorWithGitHub(name: string, email: string, hideEmail: b
   const username = extractGitHubUsername(email)
 
   if (username) {
-    // Author has a GitHub username - wrap in italic markdown
+    // Author has a GitHub username - create markdown link
     const displayName = hideEmail ? name : `${name} <${email}>`
-    return `_[${displayName}](https://github.com/${username})_`
+    return `[${displayName}](https://github.com/${username})`
   }
 
-  // No GitHub username found, return plain text in italic
+  // No GitHub username found, return plain text
   const plainText = hideEmail ? name : `${name} <${email}>`
-  return `_${plainText}_`
+  return plainText
 }
 
 /**

@@ -253,8 +253,8 @@ describe('utils', () => {
       const contributors = getContributors(mockCommits, config)
 
       expect(contributors).toHaveLength(2)
-      expect(contributors).toContain('_John Doe <john@example.com>_')
-      expect(contributors).toContain('_Jane Smith <jane@example.com>_')
+      expect(contributors).toContain('John Doe <john@example.com>')
+      expect(contributors).toContain('Jane Smith <jane@example.com>')
     })
 
     it('should exclude authors when configured', () => {
@@ -265,7 +265,7 @@ describe('utils', () => {
       const contributors = getContributors(mockCommits, config)
 
       expect(contributors).toHaveLength(1)
-      expect(contributors).toContain('_Jane Smith <jane@example.com>_')
+      expect(contributors).toContain('Jane Smith <jane@example.com>')
     })
 
     it('should include only specified authors when configured', () => {
@@ -276,7 +276,7 @@ describe('utils', () => {
       const contributors = getContributors(mockCommits, config)
 
       expect(contributors).toHaveLength(1)
-      expect(contributors).toContain('_Jane Smith <jane@example.com>_')
+      expect(contributors).toContain('Jane Smith <jane@example.com>')
     })
 
     it('should hide email when configured', () => {
@@ -287,8 +287,8 @@ describe('utils', () => {
       const contributors = getContributors(mockCommits, config)
 
       expect(contributors).toHaveLength(2)
-      expect(contributors).toContain('_John Doe_')
-      expect(contributors).toContain('_Jane Smith_')
+      expect(contributors).toContain('John Doe')
+      expect(contributors).toContain('Jane Smith')
     })
 
     it('should exclude default bot authors by default', () => {
@@ -324,9 +324,9 @@ describe('utils', () => {
 
       // Should exclude both bot authors
       expect(contributors).toHaveLength(1)
-      expect(contributors).toContain('_John Doe <john@example.com>_')
-      expect(contributors).not.toContain('_[dependabot[bot] <dependabot@github.com>](https://github.com/dependabot)_')
-      expect(contributors).not.toContain('_[github-actions[bot] <github-actions@github.com>](https://github.com/github-actions)_')
+      expect(contributors).toContain('John Doe <john@example.com>')
+      expect(contributors).not.toContain('[dependabot[bot] <dependabot@github.com>](https://github.com/dependabot)')
+      expect(contributors).not.toContain('[github-actions[bot] <github-actions@github.com>](https://github.com/github-actions)')
     })
 
     it('should exclude authors by exact name match', () => {
@@ -417,8 +417,8 @@ describe('utils', () => {
 
       // Should NOT exclude due to case mismatch (exact match required)
       expect(contributors).toHaveLength(2)
-      expect(contributors).toContain('_[Dependabot[bot] <dependabot@github.com>](https://github.com/dependabot)_')
-      expect(contributors).toContain('_[GitHub-Actions[bot] <github-actions@github.com>](https://github.com/github-actions)_')
+      expect(contributors).toContain('[Dependabot[bot] <dependabot@github.com>](https://github.com/dependabot)')
+      expect(contributors).toContain('[GitHub-Actions[bot] <github-actions@github.com>](https://github.com/github-actions)')
     })
 
     it('should verify default config has correct excludeAuthors', () => {
