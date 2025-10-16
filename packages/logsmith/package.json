@@ -60,15 +60,8 @@
     "test": "bun test"
   },
   "dependencies": {
+    "@stacksjs/clapp": "^0.2.0",
     "bunfig": "^0.15.0",
     "markdownlint": "^0.39.0"
-  },
-  "devDependencies": {
-    "@stacksjs/bumpx": "^0.1.84",
-    "@stacksjs/gitlint": "^0.1.5",
-    "bun-git-hooks": "^0.2.19"
-  },
-  "lint-staged": {
-    "*.{js,ts}": "bunx --bun eslint . --fix"
   }
 }
