@@ -62,6 +62,6 @@
   "dependencies": {
     "@stacksjs/clapp": "^0.2.0",
     "bunfig": "^0.15.0",
-    "markdownlint": "^0.38.0"
+    "pickier": "^0.1.7"
   }
 }
