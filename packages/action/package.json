@@ -1,0 +1,38 @@
+{
+  "name": "@stacksjs/logsmith-action",
+  "type": "module",
+  "version": "0.2.0",
+  "description": "GitHub Action to generate beautiful changelogs automatically from conventional commits",
+  "author": "Chris Breuer <chris@stacksjs.org>",
+  "license": "MIT",
+  "homepage": "https://github.com/stacksjs/logsmith#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stacksjs/logsmith.git",
+    "directory": "packages/action"
+  },
+  "bugs": {
+    "url": "https://github.com/stacksjs/logsmith/issues"
+  },
+  "keywords": [
+    "github-action",
+    "changelog",
+    "logsmith",
+    "conventional-commits",
+    "automation"
+  ],
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "action.yml"
+  ],
+  "scripts": {
+    "build": "bun --bun build.ts",
+    "prepublishOnly": "bun run build"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "@actions/github": "^6.0.0",
+    "@stacksjs/logsmith": "workspace:*"
+  }
+}

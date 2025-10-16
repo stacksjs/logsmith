@@ -35,7 +35,6 @@
     "logsmith": "./dist/bin/cli.js"
   },
   "files": [
-    "README.md",
     "dist"
   ],
   "scripts": {

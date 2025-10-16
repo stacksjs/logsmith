@@ -18,6 +18,7 @@
 - 📊 **Repository statistics** with comprehensive trend analysis
 - ⚙️ **Highly configurable** with TypeScript config files
 - 🔧 **CLI and programmatic API** for all use cases
+- 🤖 **GitHub Action** for automated changelog generation
 - 📝 **Conventional commits** parsing and analysis
 - 👥 **Author filtering and management**
 - 🔗 **Git repository integration** with compare URLs
@@ -77,6 +78,32 @@ const result = await generateChangelog({
 console.log(result.content) // Changelog content
 console.log(result.outputPath) // Path where changelog was written
 ```text
+
+### GitHub Action
+
+Use Logsmith in your GitHub workflows:
+
+```yaml
+name: Generate Changelog
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: stacksjs/logsmith-action@v0.2.0
+        with:
+          output: 'CHANGELOG.md'
+          theme: 'github'
+```
+
+See the [GitHub Action documentation](https://github.com/stacksjs/logsmith/tree/main/packages/action#readme) for more details.
 
 ## CLI Commands
 

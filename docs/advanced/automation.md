@@ -14,6 +14,20 @@ Logsmith excels in automated environments because it:
 
 ## GitHub Actions
 
+::: tip Use the Official GitHub Action
+For the easiest GitHub Actions integration, use the official [Logsmith GitHub Action](/github-action). The examples below show manual CLI usage, but the action provides a simpler, more maintainable approach.
+
+```yaml
+- uses: stacksjs/logsmith-action@v0.2.0
+  with:
+    theme: 'github'
+    output: 'CHANGELOG.md'
+```
+
+[View full GitHub Action documentation →](/github-action)
+:::
+
+
 ### Basic Changelog Generation
 
 ```yaml
