@@ -62,6 +62,6 @@
   "dependencies": {
     "@stacksjs/clapp": "^0.2.0",
     "bunfig": "^0.15.0",
-    "markdownlint": "^0.38.0"
+    "markdownlint": "^0.39.0"
   }
 }
