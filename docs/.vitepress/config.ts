@@ -67,6 +67,12 @@ const sidebar = [
     ],
   },
   {
+    text: 'Integrations',
+    items: [
+      { text: 'GitHub Action', link: '/github-action' },
+    ],
+  },
+  {
     text: 'Advanced',
     items: [
       { text: 'Automation & CI/CD', link: '/advanced/automation' },

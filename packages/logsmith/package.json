@@ -35,7 +35,6 @@
     "logsmith": "./dist/bin/cli.js"
   },
   "files": [
-    "README.md",
     "dist"
   ],
   "scripts": {
@@ -62,6 +61,6 @@
   "dependencies": {
     "@stacksjs/clapp": "^0.2.0",
     "bunfig": "^0.15.0",
-    "markdownlint": "^0.39.0"
+    "pickier": "^0.1.7"
   }
 }
