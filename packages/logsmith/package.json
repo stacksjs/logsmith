@@ -60,7 +60,7 @@
   },
   "dependencies": {
     "@stacksjs/clapp": "^0.2.0",
-    "bunfig": "^0.15.1",
+    "bunfig": "^0.15.2",
     "pickier": "^0.1.7"
   }
 }
