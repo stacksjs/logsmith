@@ -1,10 +1,9 @@
-import * as core from '@actions/core'
-import * as github from '@actions/github'
-import { generateChangelog } from '@stacksjs/logsmith'
 import type { LogsmithOptions } from '@stacksjs/logsmith'
-import { loadLogsmithConfig } from '@stacksjs/logsmith'
 import { readFileSync } from 'node:fs'
 import process from 'node:process'
+import * as core from '@actions/core'
+import * as github from '@actions/github'
+import { generateChangelog, loadLogsmithConfig } from '@stacksjs/logsmith'
 
 async function run(): Promise<void> {
   try {

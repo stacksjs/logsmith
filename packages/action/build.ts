@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
 
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import process from 'node:process'
 
 console.log('Building GitHub Action...')
 

@@ -1,110 +1,110 @@
-name: 'Logsmith'
-description: 'Generate beautiful changelogs automatically from conventional commits'
-author: 'Chris Breuer <chris@stacksjs.org>'
+name: Logsmith
+description: Generate beautiful changelogs automatically from conventional commits
+author: Chris Breuer <chris@stacksjs.org>
 
 branding:
-  icon: 'file-text'
-  color: 'blue'
+  icon: file-text
+  color: blue
 
 inputs:
   from:
     description: 'Start commit reference (default: latest git tag)'
     required: false
   to:
-    description: 'End commit reference'
+    description: End commit reference
     required: false
-    default: 'HEAD'
+    default: HEAD
   output:
-    description: 'Changelog file name'
+    description: Changelog file name
     required: false
-    default: 'CHANGELOG.md'
+    default: CHANGELOG.md
   format:
     description: 'Output format: markdown, json, html'
     required: false
-    default: 'markdown'
+    default: markdown
   language:
     description: 'Language for changelog: en, es, fr, de, zh, ja, ko, ru, pt, it'
     required: false
-    default: 'en'
+    default: en
   theme:
     description: 'Theme for styling: default, minimal, github, gitmoji, unicode, simple, colorful, corporate'
     required: false
-    default: 'github'
+    default: github
   clean:
-    description: 'Overwrite existing changelog content'
+    description: Overwrite existing changelog content
     required: false
     default: 'false'
   exclude-authors:
-    description: 'Skip contributors (comma-separated)'
+    description: Skip contributors (comma-separated)
     required: false
   include-authors:
-    description: 'Include only specific contributors (comma-separated)'
+    description: Include only specific contributors (comma-separated)
     required: false
   hide-author-email:
-    description: 'Do not include author email in changelog'
+    description: Do not include author email in changelog
     required: false
     default: 'false'
   exclude-types:
-    description: 'Exclude commit types (comma-separated)'
+    description: Exclude commit types (comma-separated)
     required: false
   include-types:
-    description: 'Include only specific commit types (comma-separated)'
+    description: Include only specific commit types (comma-separated)
     required: false
   exclude-scopes:
-    description: 'Exclude commit scopes (comma-separated)'
+    description: Exclude commit scopes (comma-separated)
     required: false
   include-scopes:
-    description: 'Include only specific commit scopes (comma-separated)'
+    description: Include only specific commit scopes (comma-separated)
     required: false
   min-commits:
-    description: 'Minimum commits required to include a section'
+    description: Minimum commits required to include a section
     required: false
     default: '1'
   max-commits:
-    description: 'Maximum commits per section (0 = unlimited)'
+    description: Maximum commits per section (0 = unlimited)
     required: false
     default: '50'
   include-dates:
-    description: 'Include dates in changelog'
+    description: Include dates in changelog
     required: false
     default: 'true'
   group-breaking-changes:
-    description: 'Group breaking changes separately'
+    description: Group breaking changes separately
     required: false
     default: 'true'
   include-body:
-    description: 'Include commit body in changelog entries'
+    description: Include commit body in changelog entries
     required: false
     default: 'false'
   linkify:
-    description: 'Linkify issues and PRs'
+    description: Linkify issues and PRs
     required: false
     default: 'true'
   max-length:
-    description: 'Maximum description length (0 = unlimited)'
+    description: Maximum description length (0 = unlimited)
     required: false
     default: '0'
   markdown-lint:
-    description: 'Enable markdown linting and auto-fixing'
+    description: Enable markdown linting and auto-fixing
     required: false
     default: 'true'
   verbose:
-    description: 'Enable verbose logging'
+    description: Enable verbose logging
     required: false
     default: 'false'
   github-token:
-    description: 'GitHub token for API access (defaults to GITHUB_TOKEN)'
+    description: GitHub token for API access (defaults to GITHUB_TOKEN)
     required: false
     default: ${{ github.token }}
 
 outputs:
   changelog:
-    description: 'Generated changelog content'
+    description: Generated changelog content
   file:
-    description: 'Path to the generated changelog file'
+    description: Path to the generated changelog file
   format:
-    description: 'Format of the generated changelog'
+    description: Format of the generated changelog
 
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: node20
+  main: dist/index.js
