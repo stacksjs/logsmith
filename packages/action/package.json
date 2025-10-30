@@ -1,7 +1,7 @@
 {
   "name": "@stacksjs/logsmith-action",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "GitHub Action to generate beautiful changelogs automatically from conventional commits",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",
