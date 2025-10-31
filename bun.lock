@@ -12,14 +12,14 @@
         "@types/bun": "^1.3.1",
         "buddy-bot": "^0.9.9",
         "bun-git-hooks": "^0.3.1",
-        "bun-plugin-dtsx": "0.9.6",
+        "bun-plugin-dtsx": "0.21.15",
         "pickier": "^0.1.7",
         "typescript": "^5.9.3",
       },
     },
     "packages/action": {
       "name": "@stacksjs/logsmith-action",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "dependencies": {
         "@actions/core": "^1.11.1",
         "@actions/github": "^6.0.1",
@@ -28,7 +28,7 @@
     },
     "packages/logsmith": {
       "name": "@stacksjs/logsmith",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "bin": {
         "@stacksjs/logsmith": "./dist/bin/cli.js",
         "logsmith": "./dist/bin/cli.js",
@@ -564,7 +564,7 @@
 
     "@stacksjs/docs": ["@stacksjs/docs@0.70.23", "", { "dependencies": { "@iconify-json/carbon": "^1.2.8", "@shikijs/vitepress-twoslash": "^3.2.1", "@vite-pwa/assets-generator": "^1.0.0", "@vite-pwa/vitepress": "^1.0.0", "unocss": "^66.0.0", "unplugin-icons": "^22.1.0", "unplugin-vue-components": "^28.4.1", "vite-plugin-pwa": "^1.0.0", "vitepress": "1.6.3" } }, "sha512-kRk/aza/wQAAgF0fhUhG8bUHhqk3RnjBkZyoRW0fvYs3dLaAArJYX/uVquZixlQnqgizGeGZT986tEFjs5Ly+A=="],
 
-    "@stacksjs/dtsx": ["@stacksjs/dtsx@0.9.5", "", { "bin": { "dtsx": "dist/bin/cli.js" } }, "sha512-QEi8TdKzqXKbxFnOsMIz453elkM34CjSPIHZ8PlA2GJUgnqdCdmq5pNGtISV/U1tdYasAdhlfeXHdrGdqZl0Gw=="],
+    "@stacksjs/dtsx": ["@stacksjs/dtsx@0.9.8", "", { "dependencies": { "@stacksjs/clapp": "^0.2.0" }, "bin": { "dtsx": "dist/bin/cli.js" } }, "sha512-qB5fqf4yysnoqRZbUbM6KrNA0thvPZ+cEP0mS6yeORMhdFWme8VzGsmY4HD/DevRU3s0vGoS6bTT0h9Gcj8Fbg=="],
 
     "@stacksjs/error-handling": ["@stacksjs/error-handling@0.70.23", "", {}, "sha512-rQcgyum8eZnVjaF+eb6ip/IHK4GuOidwy1GcbAOqXeDwbc7oUxWFlpT7pKMeYbYa+DWZjV1WdolLxSL/orQeCw=="],
 
@@ -860,7 +860,7 @@
 
     "bun-git-hooks": ["bun-git-hooks@0.3.1", "", { "bin": { "git-hooks": "dist/bin/cli.js", "bun-git-hooks": "dist/bin/cli.js" } }, "sha512-Xs/QUqIYgBmLHSVr5VBLVbM5lZbUoAXKX2WZyoQDb2LlzcxC3BpBvMkMTQH75UuOJZwaRBq8yEe4IR6NckqdgQ=="],
 
-    "bun-plugin-dtsx": ["bun-plugin-dtsx@0.9.6", "", { "dependencies": { "@stacksjs/dtsx": "0.9.5" } }, "sha512-4yNFYFseB1LU/W5lgvuWlffHkkaZ1e4khFJw/WXgizt5JVR31RwlT4Uqh0MWBp/+s1cpXe708WLphVz7hCcZJA=="],
+    "bun-plugin-dtsx": ["bun-plugin-dtsx@0.21.15", "", { "dependencies": { "@stacksjs/dtsx": "^0.9.8" } }, "sha512-cF3L+5mUaVunIQ36KFpox0Okq3Oxg8To5jb5hSQnM0TioLBKRJCFwm14jcEOVu0vOrxqCdkNBxm/8b+0/iDdEQ=="],
 
     "bun-types": ["bun-types@1.3.1", "", { "dependencies": { "@types/node": "*" }, "peerDependencies": { "@types/react": "^19" } }, "sha512-NMrcy7smratanWJ2mMXdpatalovtxVggkj11bScuWuiOoXTiKIu2eVS1/7qbyI/4yHedtsn175n4Sm4JcdHLXw=="],
 
