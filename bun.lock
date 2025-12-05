@@ -14,7 +14,7 @@
         "buddy-bot": "^0.9.12",
         "bun-git-hooks": "^0.3.1",
         "bun-plugin-dtsx": "^0.21.17",
-        "pickier": "^0.1.9",
+        "pickier": "^0.1.10",
         "typescript": "^5.9.3",
       },
     },
@@ -37,7 +37,7 @@
       "dependencies": {
         "@stacksjs/clapp": "^0.2.0",
         "bunfig": "^0.15.6",
-        "pickier": "^0.1.9",
+        "pickier": "^0.1.10",
       },
     },
   },
@@ -1497,7 +1497,7 @@
 
     "perfect-debounce": ["perfect-debounce@1.0.0", "", {}, "sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA=="],
 
-    "pickier": ["pickier@0.1.9", "", { "dependencies": { "@stacksjs/clapp": "^0.1.16", "p-limit": "^7.2.0", "tinyglobby": "^0.2.14" }, "bin": { "pickier": "dist/bin/cli.js" } }, "sha512-NRzxCyJ1Q8edp/w+jbdkDpdVNRRro+DJNywCq7F2nFj3/+VoZcQctCX7/NyAoJpGIcWgjTVnfhsN00SVYhmX9w=="],
+    "pickier": ["pickier@0.1.10", "", { "dependencies": { "@stacksjs/clapp": "^0.1.16", "p-limit": "^7.2.0", "tinyglobby": "^0.2.14" }, "bin": { "pickier": "dist/bin/cli.js" } }, "sha512-gUXbS/PnB+6kMKZff2Lb9ZWBQICbQGRxcae/fuCp7jxRO84ExI+9IM9kd4Q/w80pAwkRabeyFypgaaB70lzweA=="],
 
     "picocolors": ["picocolors@1.1.1", "", {}, "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="],
 
