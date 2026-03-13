@@ -2,7 +2,7 @@
 
 ## About
 
-Forge beautiful changelog automatically.
+Logsmith is an automatic changelog generator that parses conventional commits and produces beautifully formatted output in Markdown, JSON, or HTML. It supports configurable commit type grouping with emojis, author filtering, breaking change detection, repository statistics with trend analysis, and a GitHub Action for CI integration. Available as both a CLI (`logsmith`) and a library (`generateChangelog()`).
 
 ## Linting
 
