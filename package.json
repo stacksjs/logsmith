@@ -37,7 +37,6 @@
     "typecheck": "bun --bun tsc --noEmit"
   },
   "devDependencies": {
-    "@stacksjs/docs": "^0.70.23",
     "@stacksjs/logsmith": "workspace:*",
     "better-dx": "^0.2.7"
   },
