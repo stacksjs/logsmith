@@ -12,3 +12,5 @@ temp
 docs/.vitepress/cache
 .env
 packages/logsmith/bin/logsmith
+.zed
+.cursor
