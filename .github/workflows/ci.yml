@@ -103,6 +103,6 @@ jobs:
 
       - name: Publish Commit
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: pantry publish:commit './packages/action' './packages/logsmith'
+        run: pantry publish:commit './packages/action' && pantry publish:commit './packages/logsmith'
         env:
           PANTRY_REGISTRY_TOKEN: ${{ secrets.PANTRY_TOKEN }}
