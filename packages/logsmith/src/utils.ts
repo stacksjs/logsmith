@@ -965,7 +965,7 @@ export function generateHtmlChangelog(
 
     for (const commit of section.commits) {
       const repoUrl = config.repo || getRepositoryUrl() || 'https://github.com/unknown/repo'
-      lines.push(`          <li class="commit-item${commit.breaking ? ' breaking-change' : ''}">`)
+      lines.push(`          <li class="${commit.breaking ? 'breaking-change ' : ''}commit-item">`)
 
       // Scope
       if (commit.scope) {
