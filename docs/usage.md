@@ -181,6 +181,7 @@ logsmith stats --verbose
 ```
 
 **Statistics include:**
+
 - Total commits and contributors
 - Commit frequency (daily/weekly/monthly)
 - Breaking changes count
@@ -228,18 +229,22 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v1
 
       - name: Generate Changelog
+
         run: |
           bun add -g logsmith
           logsmith --output CHANGELOG.md
 
       - name: Commit Changelog
+
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -253,7 +258,7 @@ jobs:
 Generate changelog before creating releases:
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # pre-release.sh
 
 echo "Generating changelog..."
@@ -267,7 +272,7 @@ echo "Changelog generated successfully!"
 Generate multiple formats simultaneously:
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # generate-all-formats.sh
 
 echo "Generating changelogs in all formats..."

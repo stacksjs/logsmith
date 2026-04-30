@@ -11,17 +11,21 @@ name: Generate Changelog
 on:
   push:
     tags:
+
       - 'v*'
 
 jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0 # Required for full git history
 
       - uses: stacksjs/logsmith-action@v0.2.0
+
         with:
           output: 'CHANGELOG.md'
           theme: 'github'
@@ -32,7 +36,9 @@ jobs:
 The action is published at [`stacksjs/logsmith-action`](https://github.com/stacksjs/logsmith/tree/main/packages/action) and can be used directly in your workflows.
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
 ```
 
 ::: tip
@@ -102,7 +108,9 @@ The action provides the following outputs that can be used in subsequent steps:
 Generate a changelog with default settings:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
 ```
 
 ### Custom Range
@@ -110,7 +118,9 @@ Generate a changelog with default settings:
 Generate a changelog for a specific commit range:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     from: 'v1.0.0'
     to: 'HEAD'
@@ -122,7 +132,9 @@ Generate a changelog for a specific commit range:
 Filter out automated commits from bots:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     exclude-authors: 'dependabot[bot],github-actions[bot],renovate[bot]'
     theme: 'github'
@@ -133,7 +145,9 @@ Filter out automated commits from bots:
 Generate a changelog with only specific commit types:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     include-types: 'feat,fix'
     theme: 'minimal'
@@ -144,7 +158,9 @@ Generate a changelog with only specific commit types:
 Generate a JSON changelog for programmatic use:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     format: 'json'
     output: 'changelog.json'
@@ -155,18 +171,21 @@ Generate a JSON changelog for programmatic use:
 Use the changelog content in subsequent steps:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   id: changelog
   with:
     theme: 'github'
 
 - name: Create Release
+
   uses: actions/create-release@v1
   env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    GITHUB*TOKEN: ${{ secrets.GITHUB*TOKEN }}
   with:
-    tag_name: ${{ github.ref }}
-    release_name: Release ${{ github.ref }}
+    tag*name: ${{ github.ref }}
+    release*name: Release ${{ github.ref }}
     body: ${{ steps.changelog.outputs.changelog }}
 ```
 
@@ -175,13 +194,16 @@ Use the changelog content in subsequent steps:
 Generate changelogs in different languages:
 
 ```yaml
+
 - name: Generate English Changelog
+
   uses: stacksjs/logsmith-action@v0.2.0
   with:
     language: 'en'
     output: 'CHANGELOG.md'
 
 - name: Generate Spanish Changelog
+
   uses: stacksjs/logsmith-action@v0.2.0
   with:
     language: 'es'
@@ -199,6 +221,7 @@ name: Release
 on:
   push:
     tags:
+
       - 'v*'
 
 jobs:
@@ -207,12 +230,15 @@ jobs:
     permissions:
       contents: write
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Generate Changelog
+
         uses: stacksjs/logsmith-action@v0.2.0
         id: changelog
         with:
@@ -221,20 +247,22 @@ jobs:
           verbose: true
 
       - name: Commit Changelog
+
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add CHANGELOG.md
-          git commit -m "docs: update changelog for ${{ github.ref_name }}" || exit 0
+          git commit -m "docs: update changelog for ${{ github.ref*name }}" || exit 0
           git push
 
       - name: Create Release
+
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB*TOKEN: ${{ secrets.GITHUB*TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          tag*name: ${{ github.ref*name }}
+          release*name: Release ${{ github.ref*name }}
           body: ${{ steps.changelog.outputs.changelog }}
 ```
 
@@ -245,7 +273,7 @@ Generate changelog previews on pull requests:
 ```yaml
 name: PR Changelog Preview
 on:
-  pull_request:
+  pull*request:
     types: [opened, synchronize]
 
 jobs:
@@ -254,28 +282,32 @@ jobs:
     permissions:
       pull-requests: write
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Generate Preview
+
         uses: stacksjs/logsmith-action@v0.2.0
         id: changelog
         with:
-          from: ${{ github.event.pull_request.base.sha }}
-          to: ${{ github.event.pull_request.head.sha }}
+          from: ${{ github.event.pull*request.base.sha }}
+          to: ${{ github.event.pull*request.head.sha }}
           theme: 'github'
 
       - name: Comment PR
+
         uses: actions/github-script@v7
         with:
           script: |
             const body = `## 📋 Changelog Preview
 
-            ${context.payload.pull_request.body}
+            ${context.payload.pull*request.body}
 
-            ### Changes
+### Changes
             ${{ steps.changelog.outputs.changelog }}
 
             <sub>Generated by Logsmith</sub>`;
@@ -283,7 +315,7 @@ jobs:
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue*number: context.issue.number,
               body: body
             });
 ```
@@ -296,7 +328,9 @@ Update changelog weekly:
 name: Weekly Changelog Update
 on:
   schedule:
+
     - cron: '0 0 * * 1' # Every Monday
+
   workflow_dispatch:
 
 jobs:
@@ -305,18 +339,22 @@ jobs:
     permissions:
       contents: write
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Generate Changelog
+
         uses: stacksjs/logsmith-action@v0.2.0
         with:
           theme: 'github'
           exclude-authors: 'dependabot[bot],renovate[bot]'
 
       - name: Commit and Push
+
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -334,17 +372,21 @@ name: Generate Changelogs
 on:
   push:
     tags:
+
       - 'v*'
 
 jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
 
       - name: Generate Markdown
+
         uses: stacksjs/logsmith-action@v0.2.0
         with:
           format: 'markdown'
@@ -352,12 +394,14 @@ jobs:
           theme: 'github'
 
       - name: Generate JSON
+
         uses: stacksjs/logsmith-action@v0.2.0
         with:
           format: 'json'
           output: 'changelog.json'
 
       - name: Generate HTML
+
         uses: stacksjs/logsmith-action@v0.2.0
         with:
           format: 'html'
@@ -365,6 +409,7 @@ jobs:
           theme: 'colorful'
 
       - name: Upload Artifacts
+
         uses: actions/upload-artifact@v3
         with:
           name: changelogs
@@ -381,7 +426,9 @@ jobs:
 Ensure you fetch the complete Git history to generate accurate changelogs:
 
 ```yaml
+
 - uses: actions/checkout@v4
+
   with:
     fetch-depth: 0  # This is crucial!
 ```
@@ -403,7 +450,9 @@ jobs:
 Exclude automated commits for cleaner changelogs:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     exclude-authors: 'dependabot[bot],renovate[bot],github-actions[bot]'
 ```
@@ -413,10 +462,13 @@ Exclude automated commits for cleaner changelogs:
 Leverage the changelog output for release notes:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   id: changelog
 
 - uses: actions/create-release@v1
+
   with:
     body: ${{ steps.changelog.outputs.changelog }}
 ```
@@ -426,7 +478,9 @@ Leverage the changelog output for release notes:
 When troubleshooting, enable verbose logging:
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     verbose: true
 ```
@@ -438,6 +492,7 @@ When troubleshooting, enable verbose logging:
 **Problem:** Action reports "No commits found"
 
 **Solution:**
+
 - Ensure `fetch-depth: 0` is set in checkout step
 - Verify the repository has conventional commits
 - Check the `from` and `to` references are valid
@@ -447,6 +502,7 @@ When troubleshooting, enable verbose logging:
 **Problem:** Cannot commit changelog changes
 
 **Solution:**
+
 - Add `contents: write` permission to the job
 - Verify the GitHub token has proper access
 - Check branch protection rules
@@ -456,6 +512,7 @@ When troubleshooting, enable verbose logging:
 **Problem:** Cannot determine version from tags
 
 **Solution:**
+
 - Ensure tags are fetched with `fetch-depth: 0`
 - Specify `from` and `to` parameters explicitly
 - Use annotated tags: `git tag -a v1.0.0 -m "Release v1.0.0"`
@@ -466,14 +523,18 @@ If you're currently using Logsmith CLI in GitHub Actions, migrating to the actio
 
 **Before:**
 ```yaml
+
 - run: |
+
     bun add -g logsmith
     logsmith --theme github --output CHANGELOG.md
 ```
 
 **After:**
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     theme: 'github'
     output: 'CHANGELOG.md'

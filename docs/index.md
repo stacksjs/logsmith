@@ -35,5 +35,3 @@ features:
     icon: "🌍"
     details: "Support for 10+ languages with localized commit types and date formatting."
 ---
-
-<Home />

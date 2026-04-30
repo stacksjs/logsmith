@@ -175,10 +175,10 @@ curl -fsSL https://bun.sh/install | bash
 **No conventional commits found:**
 ```sh
 # Logsmith works best with conventional commits
-# Example conventional commit:
+# Example conventional commit
 git commit -m "feat: add new feature for user authentication"
 
-# Learn more about conventional commits:
+# Learn more about conventional commits
 # https://www.conventionalcommits.org/
 ```
 

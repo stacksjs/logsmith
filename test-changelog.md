@@ -1,7 +1,8 @@
 # Changelog
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - repo cleanup and modernization ([98074c8](https://github.com/stacksjs/logsmith/commit/98074c8)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - remove @stacksjs/docs ([d6fe3c8](https://github.com/stacksjs/logsmith/commit/d6fe3c8)) _(by glennmichael123 <gtorregosa@gmail.com>)_
@@ -42,7 +43,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -51,7 +52,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - wip ([920b595](https://github.com/stacksjs/logsmith/commit/920b595)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - wip ([6e03156](https://github.com/stacksjs/logsmith/commit/6e03156)) _(by glennmichael123 <gtorregosa@gmail.com>)_
@@ -81,7 +82,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -90,7 +91,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - wip ([42429e4](https://github.com/stacksjs/logsmith/commit/42429e4)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - wip ([f4610b0](https://github.com/stacksjs/logsmith/commit/f4610b0)) _(by glennmichael123 <gtorregosa@gmail.com>)_
@@ -113,7 +114,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -122,7 +123,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - wip ([82279af](https://github.com/stacksjs/logsmith/commit/82279af)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - wip ([63cc7c7](https://github.com/stacksjs/logsmith/commit/63cc7c7)) _(by glennmichael123 <gtorregosa@gmail.com>)_
@@ -142,7 +143,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -151,7 +152,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - wip ([63cc7c7](https://github.com/stacksjs/logsmith/commit/63cc7c7)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - wip ([4e4f548](https://github.com/stacksjs/logsmith/commit/4e4f548)) _(by glennmichael123 <gtorregosa@gmail.com>)_
@@ -170,7 +171,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -179,7 +180,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - **deps**: update stacksjs/action-releaser action to v1.2.7 (#32) ([7f7ad72](https://github.com/stacksjs/logsmith/commit/7f7ad72)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#32](https://github.com/stacksjs/logsmith/issues/32), [#32](https://github.com/stacksjs/logsmith/issues/32))
 - **deps**: update all non-major dependencies (#29) ([ecf93a9](https://github.com/stacksjs/logsmith/commit/ecf93a9)) _(by Chris <chrisbreuer93@gmail.com>)_ ([#29](https://github.com/stacksjs/logsmith/issues/29), [#29](https://github.com/stacksjs/logsmith/issues/29))
@@ -196,7 +197,7 @@
 - wip ([695bd4e](https://github.com/stacksjs/logsmith/commit/695bd4e)) _(by glennmichael123 <gtorregosa@gmail.com>)_
 - **deps**: update dependency bun-plugin-dtsx to v0.21.15 (#19) ([5ca0290](https://github.com/stacksjs/logsmith/commit/5ca0290)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#19](https://github.com/stacksjs/logsmith/issues/19), [#19](https://github.com/stacksjs/logsmith/issues/19))
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_
@@ -205,7 +206,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.0...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - **deps**: update dependency bunfig to ^0.15.6 (#17) ([08b17b0](https://github.com/stacksjs/logsmith/commit/08b17b0)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#17](https://github.com/stacksjs/logsmith/issues/17), [#17](https://github.com/stacksjs/logsmith/issues/17))
 - **deps**: update all non-major dependencies (#14) ([882b15f](https://github.com/stacksjs/logsmith/commit/882b15f)) _(by [renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot]))_ ([#14](https://github.com/stacksjs/logsmith/issues/14), [#14](https://github.com/stacksjs/logsmith/issues/14))
@@ -213,7 +214,7 @@
 - wip ([c737325](https://github.com/stacksjs/logsmith/commit/c737325)) _(by Chris <chrisbreuer93@gmail.com>)_
 - wip ([2a45edb](https://github.com/stacksjs/logsmith/commit/2a45edb)) _(by Chris <chrisbreuer93@gmail.com>)_
 
-### Contributors
+## Contributors
 
 - _Chris <chrisbreuer93@gmail.com>_
 - _[renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>](https://github.com/renovate[bot])_

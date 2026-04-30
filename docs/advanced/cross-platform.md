@@ -413,16 +413,20 @@ strategy:
 runs-on: ${{ matrix.os }}
 
 steps:
+
   - uses: actions/checkout@v4
+
     with:
       fetch-depth: 0
 
   - uses: oven-sh/setup-bun@v1
 
   - name: Install logsmith
+
     run: bun add -g logsmith
 
   - name: Generate changelog
+
     run: logsmith --output CHANGELOG.md
 ```
 
@@ -432,16 +436,19 @@ steps:
 .logsmith_template: &logsmith
   image: oven/bun:1.2.0
   before_script:
+
     - bun add -g logsmith
+
   script:
+
     - logsmith --output CHANGELOG.md
 
 linux:
-  <<: *logsmith
+  <<: _logsmith
   tags: [linux]
 
 macos:
-  <<: *logsmith
+  <<: _logsmith
   tags: [macos]
 ```
 
@@ -492,7 +499,7 @@ await generateChangelog({
 ### Testing Across Platforms
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # scripts/test-platforms.sh
 
 platforms=("ubuntu-latest" "macos-latest" "windows-latest")
@@ -500,7 +507,7 @@ platforms=("ubuntu-latest" "macos-latest" "windows-latest")
 for platform in "${platforms[@]}"; do
     echo "Testing on $platform..."
 
-    # Use GitHub Actions or similar to test
+# Use GitHub Actions or similar to test
     gh workflow run test.yml --ref main -f platform="$platform"
 done
 ```

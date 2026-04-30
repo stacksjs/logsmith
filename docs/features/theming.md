@@ -35,38 +35,50 @@ Here's how different themes style the same content:
 
 ```markdown [Default Theme]
 ## 🚀 Features
+
 - Add user authentication system ([abc123](repo/commit/abc123))
 - Implement dark mode toggle ([def456](repo/commit/def456))
 
 ## 🐛 Bug Fixes
+
 - Fix login token expiration issue ([ghi789](repo/commit/ghi789))
+
 ```
 
 ```markdown [GitHub Theme]
 ## ✨ Features
+
 - Add user authentication system ([abc123](repo/commit/abc123))
 - Implement dark mode toggle ([def456](repo/commit/def456))
 
 ## 🐛 Bug Fixes
+
 - Fix login token expiration issue ([ghi789](repo/commit/ghi789))
+
 ```
 
 ```markdown [Minimal Theme]
 ### ✨ Features
+
 * Add user authentication system ([abc123](repo/commit/abc123))
 * Implement dark mode toggle ([def456](repo/commit/def456))
 
 ### 🔧 Bug Fixes
+
 * Fix login token expiration issue ([ghi789](repo/commit/ghi789))
+
 ```
 
 ```markdown [Corporate Theme]
 ## Features
+
 - Add user authentication system ([abc123](repo/commit/abc123))
 - Implement dark mode toggle ([def456](repo/commit/def456))
 
 ## Bug Fixes
+
 - Fix login token expiration issue ([ghi789](repo/commit/ghi789))
+
 ```
 
 :::
@@ -384,7 +396,7 @@ Apply different themes based on environment:
 
 ```typescript
 export default defineConfig({
-  theme: process.env.NODE_ENV === 'production' ? 'corporate' : 'default',
+  theme: process.env.NODE*ENV === 'production' ? 'corporate' : 'default',
 
   templates: {
     typeFormat: {
@@ -453,7 +465,7 @@ export default defineConfig({
   templates: {
     groupFormat: '## 📅 {{title}} - {{date}}',
     commitFormat: '- **{{description}}** by @{{author}} ([view commit]({{repoUrl}}/commit/{{hash}}))',
-    dateFormat: '_{{date}}_',
+    dateFormat: '*{{date}}_',
     typeFormat: {
       feat: '🎉 New Features',
       fix: '🔧 Bug Fixes',

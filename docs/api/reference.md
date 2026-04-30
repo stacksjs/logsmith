@@ -15,6 +15,7 @@ const result = await generateChangelog(options)
 ```
 
 **Parameters:**
+
 - `options` - [`LogsmithOptions`](#logsmithoptions) - Configuration options for changelog generation
 
 **Returns:** [`Promise<ChangelogResult>`](#changelogresult)
@@ -48,6 +49,7 @@ const config = await loadLogsmithConfig(overrides)
 ```
 
 **Parameters:**
+
 - `overrides` - [`LogsmithOptions`](#logsmithoptions) - Optional configuration overrides
 
 **Returns:** [`Promise<LogsmithConfig>`](#logsmithconfig)
@@ -75,6 +77,7 @@ export default defineConfig(config)
 ```
 
 **Parameters:**
+
 - `config` - [`LogsmithConfig`](#logsmithconfig) - Configuration object
 
 **Returns:** [`LogsmithConfig`](#logsmithconfig)
@@ -317,6 +320,7 @@ const theme = getTheme('github')
 ```
 
 **Parameters:**
+
 - `theme` - `SupportedTheme` - Theme name (default: 'default')
 
 **Returns:** `ThemeConfig`
@@ -401,6 +405,7 @@ const stats = analyzeCommits(config)
 ```
 
 **Parameters:**
+
 - `config` - [`LogsmithConfig`](#logsmithconfig) - Configuration for analysis
 
 **Returns:** [`RepositoryStats`](#repositorystats)
@@ -586,4 +591,3 @@ async function analyzeRepository() {
   return stats
 }
 ```
-

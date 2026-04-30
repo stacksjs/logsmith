@@ -93,11 +93,14 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
 
       - uses: stacksjs/logsmith-action@v0.2.0
+
         with:
           output: 'CHANGELOG.md'
           theme: 'github'
@@ -318,6 +321,7 @@ Standard markdown format perfect for GitHub repositories:
 
 - John Doe <john@example.com>
 - Jane Smith <jane@example.com>
+
 ```
 
 ### JSON Format

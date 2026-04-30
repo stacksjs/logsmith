@@ -371,6 +371,7 @@ export function generateChangelogContent(
   config: LogsmithConfig,
 ): string {
   const lines: string[] = []
+  const sectionLevel = changelog.version ? '###' : '##'
 
   // Header with version and date
   if (changelog.version) {
@@ -401,7 +402,7 @@ export function generateChangelogContent(
     if (section.commits.length === 0)
       continue
 
-    lines.push(`### ${section.title}`)
+    lines.push(`${sectionLevel} ${section.title}`)
     lines.push('')
 
     for (const commit of section.commits) {
@@ -454,7 +455,7 @@ export function generateChangelogContent(
 
   // Contributors
   if (changelog.contributors.length > 0 && !config.excludeEmail) {
-    lines.push(`### ${getLabel('contributors', config.language)}`)
+    lines.push(`${sectionLevel} ${getLabel('contributors', config.language)}`)
     lines.push('')
     for (const contributor of changelog.contributors) {
       lines.push(`- _${contributor}_`)

@@ -287,6 +287,7 @@ Standard markdown format perfect for GitHub repositories:
 
 - John Doe <john@example.com>
 - Jane Smith <jane@example.com>
+
 ```
 
 ### JSON Format

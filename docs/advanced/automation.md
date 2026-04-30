@@ -18,7 +18,9 @@ Logsmith excels in automated environments because it:
 For the easiest GitHub Actions integration, use the official [Logsmith GitHub Action](/github-action). The examples below show manual CLI usage, but the action provides a simpler, more maintainable approach.
 
 ```yaml
+
 - uses: stacksjs/logsmith-action@v0.2.0
+
   with:
     theme: 'github'
     output: 'CHANGELOG.md'
@@ -26,7 +28,6 @@ For the easiest GitHub Actions integration, use the official [Logsmith GitHub Ac
 
 [View full GitHub Action documentation →](/github-action)
 :::
-
 
 ### Basic Changelog Generation
 
@@ -45,20 +46,25 @@ jobs:
       contents: write
 
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
+
         uses: oven-sh/setup-bun@v1
 
       - name: Generate Changelog
+
         run: |
           bun add -g logsmith
           logsmith --theme github --output CHANGELOG.md
 
       - name: Commit Changes
+
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -87,36 +93,43 @@ jobs:
       pull-requests: write
 
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
+
         uses: oven-sh/setup-bun@v1
 
       - name: Install Dependencies
+
         run: |
           bun install
           bun add -g logsmith
 
       - name: Extract Version
+
         id: version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        run: echo "VERSION=${GITHUB*REF#refs/tags/}" >> $GITHUB*OUTPUT
 
       - name: Generate Release Changelog
+
         run: |
-          # Generate changelog for this release only
-          PREVIOUS_TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
-          if [ -n "$PREVIOUS_TAG" ]; then
-            logsmith --from "$PREVIOUS_TAG" --to "${{ steps.version.outputs.VERSION }}" \
-              --theme github --format markdown --output RELEASE_NOTES.md
+# Generate changelog for this release only
+          PREVIOUS*TAG=$(git describe --tags --abbrev=0 HEAD~1 2>/dev/null || echo "")
+          if [ -n "$PREVIOUS*TAG" ]; then
+            logsmith --from "$PREVIOUS*TAG" --to "${{ steps.version.outputs.VERSION }}" \
+              --theme github --format markdown --output RELEASE*NOTES.md
           else
             logsmith --to "${{ steps.version.outputs.VERSION }}" \
-              --theme github --format markdown --output RELEASE_NOTES.md
+              --theme github --format markdown --output RELEASE*NOTES.md
           fi
 
       - name: Update Full Changelog
+
         run: |
           logsmith --theme github --output CHANGELOG.md
           git config --local user.email "action@github.com"
@@ -126,13 +139,14 @@ jobs:
           git push origin HEAD:main
 
       - name: Create GitHub Release
+
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB*TOKEN: ${{ secrets.GITHUB*TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.VERSION }}
-          release_name: Release ${{ steps.version.outputs.VERSION }}
-          body_path: RELEASE_NOTES.md
+          tag*name: ${{ steps.version.outputs.VERSION }}
+          release*name: Release ${{ steps.version.outputs.VERSION }}
+          body*path: RELEASE*NOTES.md
           draft: false
           prerelease: false
 ```
@@ -146,7 +160,7 @@ Generate changelog previews for pull requests:
 name: PR Changelog Preview
 
 on:
-  pull_request:
+  pull*request:
     types: [opened, synchronize]
 
 jobs:
@@ -156,33 +170,39 @@ jobs:
       pull-requests: write
 
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
+
         uses: oven-sh/setup-bun@v1
 
       - name: Install logsmith
+
         run: bun add -g logsmith
 
       - name: Generate Preview
+
         id: changelog
         run: |
-          # Generate changelog for commits in this PR
-          BASE_SHA=${{ github.event.pull_request.base.sha }}
-          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+# Generate changelog for commits in this PR
+          BASE*SHA=${{ github.event.pull*request.base.sha }}
+          HEAD*SHA=${{ github.event.pull*request.head.sha }}
 
-          logsmith --from "$BASE_SHA" --to "$HEAD_SHA" \
-            --theme github --no-output > changelog_preview.md || echo "No conventional commits found" > changelog_preview.md
+          logsmith --from "$BASE*SHA" --to "$HEAD*SHA" \
+            --theme github --no-output > changelog*preview.md || echo "No conventional commits found" > changelog*preview.md
 
       - name: Comment PR
+
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const changelog = fs.readFileSync('changelog_preview.md', 'utf8');
+            const changelog = fs.readFileSync('changelog*preview.md', 'utf8');
 
             const body = `## 📋 Changelog Preview
 
@@ -196,7 +216,7 @@ jobs:
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.issue.number,
+              issue*number: context.issue.number,
             });
 
             const botComment = comments.find(comment =>
@@ -207,14 +227,14 @@ jobs:
               await github.rest.issues.updateComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                comment_id: botComment.id,
+                comment*id: botComment.id,
                 body: body
               });
             } else {
               await github.rest.issues.createComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: context.issue.number,
+                issue*number: context.issue.number,
                 body: body
               });
             }
@@ -230,8 +250,10 @@ name: Repository Statistics
 
 on:
   schedule:
+
     - cron: '0 0 * * 1' # Weekly on Monday
-  workflow_dispatch:
+
+  workflow*dispatch:
 
 jobs:
   stats:
@@ -241,28 +263,34 @@ jobs:
       pull-requests: write
 
     steps:
+
       - name: Checkout
+
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Setup Bun
+
         uses: oven-sh/setup-bun@v1
 
       - name: Install logsmith
+
         run: bun add -g logsmith
 
       - name: Generate Statistics
+
         run: |
-          # Generate stats for last week
+# Generate stats for last week
           logsmith stats --from "1 week ago" --json > weekly-stats.json
           logsmith stats --from "1 week ago" > weekly-stats.txt
 
-          # Generate stats for last month
+# Generate stats for last month
           logsmith stats --from "1 month ago" --json > monthly-stats.json
           logsmith stats --from "1 month ago" > monthly-stats.txt
 
       - name: Create Issue Report
+
         uses: actions/github-script@v7
         with:
           script: |
@@ -272,10 +300,11 @@ jobs:
 
             const body = `# 📊 Weekly Repository Statistics - ${date}
 
-            ## Summary
+## Summary
             ${weeklyStats}
 
-            ## 📈 Trends
+## 📈 Trends
+
             - View detailed trends in the [monthly report]
             - Compare with [previous weeks]
 
@@ -290,6 +319,7 @@ jobs:
             });
 
       - name: Upload Artifacts
+
         uses: actions/upload-artifact@v3
         with:
           name: repository-statistics
@@ -307,61 +337,74 @@ jobs:
 ```yaml
 # .gitlab-ci.yml
 stages:
+
   - generate
   - deploy
 
 variables:
-  BUN_VERSION: 1.2.0
+  BUN*VERSION: 1.2.0
 
 generate-changelog:
   stage: generate
-  image: oven/bun:${BUN_VERSION}
+  image: oven/bun:${BUN*VERSION}
 
-  before_script:
+  before*script:
+
     - bun add -g logsmith
 
   script:
+
     - logsmith --theme github --output CHANGELOG.md
     - logsmith stats --json > stats.json
 
   artifacts:
     paths:
+
       - CHANGELOG.md
       - stats.json
-    expire_in: 1 week
+
+    expire*in: 1 week
 
   only:
+
     - tags
     - main
 
 release-notes:
   stage: generate
-  image: oven/bun:${BUN_VERSION}
+  image: oven/bun:${BUN*VERSION}
 
-  before_script:
+  before*script:
+
     - bun add -g logsmith
 
   script:
+
     - |
-      if [ -n "$CI_COMMIT_TAG" ]; then
-        # Generate release notes for this tag
-        PREVIOUS_TAG=$(git describe --tags --abbrev=0 $CI_COMMIT_TAG~1 2>/dev/null || echo "")
-        if [ -n "$PREVIOUS_TAG" ]; then
-          logsmith --from "$PREVIOUS_TAG" --to "$CI_COMMIT_TAG" \
-            --theme github --format markdown --output RELEASE_NOTES.md
+
+      if [ -n "$CI*COMMIT*TAG" ]; then
+# Generate release notes for this tag
+        PREVIOUS*TAG=$(git describe --tags --abbrev=0 $CI*COMMIT*TAG~1 2>/dev/null || echo "")
+        if [ -n "$PREVIOUS*TAG" ]; then
+          logsmith --from "$PREVIOUS*TAG" --to "$CI*COMMIT*TAG" \
+            --theme github --format markdown --output RELEASE*NOTES.md
         else
-          logsmith --to "$CI_COMMIT_TAG" \
-            --theme github --format markdown --output RELEASE_NOTES.md
+          logsmith --to "$CI*COMMIT*TAG" \
+            --theme github --format markdown --output RELEASE*NOTES.md
         fi
       fi
 
   artifacts:
     paths:
-      - RELEASE_NOTES.md
-    expire_in: 1 day
+
+      - RELEASE*NOTES.md
+
+    expire*in: 1 day
 
   only:
+
     - tags
+
 ```
 
 ## Jenkins Pipeline
@@ -374,7 +417,7 @@ pipeline {
     agent any
 
     environment {
-        BUN_VERSION = '1.2.0'
+        BUN*VERSION = '1.2.0'
     }
 
     stages {
@@ -433,17 +476,17 @@ pipeline {
                 sh '''
                     export PATH="$HOME/.bun/bin:$PATH"
 
-                    # Generate release notes
-                    PREVIOUS_TAG=$(git describe --tags --abbrev=0 ${TAG_NAME}~1 2>/dev/null || echo "")
-                    if [ -n "$PREVIOUS_TAG" ]; then
-                        logsmith --from "$PREVIOUS_TAG" --to "${TAG_NAME}" \
-                          --theme github --format markdown --output RELEASE_NOTES.md
+# Generate release notes
+                    PREVIOUS*TAG=$(git describe --tags --abbrev=0 ${TAG*NAME}~1 2>/dev/null || echo "")
+                    if [ -n "$PREVIOUS*TAG" ]; then
+                        logsmith --from "$PREVIOUS*TAG" --to "${TAG*NAME}" \
+                          --theme github --format markdown --output RELEASE*NOTES.md
                     fi
                 '''
 
                 // Create GitHub release
                 script {
-                    def releaseNotes = readFile 'RELEASE_NOTES.md'
+                    def releaseNotes = readFile 'RELEASE*NOTES.md'
                     // Use GitHub API or plugin to create release
                 }
             }
@@ -458,13 +501,13 @@ pipeline {
             // Notify team of successful changelog generation
             slackSend(
                 channel: '#dev-notifications',
-                message: "✅ Changelog generated successfully for ${env.BUILD_TAG}"
+                message: "✅ Changelog generated successfully for ${env.BUILD*TAG}"
             )
         }
         failure {
             slackSend(
                 channel: '#dev-notifications',
-                message: "❌ Changelog generation failed for ${env.BUILD_TAG}"
+                message: "❌ Changelog generation failed for ${env.BUILD*TAG}"
             )
         }
     }
@@ -503,11 +546,15 @@ services:
       context: .
       dockerfile: Dockerfile.logsmith
     volumes:
+
       - .:/app
       - ./output:/output
+
     environment:
-      - LOGSMITH_OUTPUT=/output/CHANGELOG.md
-      - LOGSMITH_THEME=github
+
+      - LOGSMITH*OUTPUT=/output/CHANGELOG.md
+      - LOGSMITH*THEME=github
+
     command: logsmith --output /output/CHANGELOG.md --theme github --verbose
 
   stats:
@@ -515,8 +562,10 @@ services:
       context: .
       dockerfile: Dockerfile.logsmith
     volumes:
+
       - .:/app
       - ./output:/output
+
     command: logsmith stats --json --output /output/stats.json
 
   multi-format:
@@ -524,8 +573,10 @@ services:
       context: .
       dockerfile: Dockerfile.logsmith
     volumes:
+
       - .:/app
       - ./output:/output
+
     command: >
       sh -c "
         logsmith --output /output/CHANGELOG.md --theme github &&
@@ -539,14 +590,14 @@ services:
 ### Pre-commit Hook
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # .git/hooks/pre-commit
 
 # Generate changelog preview for staging area
 if command -v logsmith >/dev/null 2>&1; then
     echo "Generating changelog preview..."
 
-    # Check if there are conventional commits
+# Check if there are conventional commits
     if git log --oneline | grep -E "^[a-f0-9]+\s+(feat|fix|docs|style|refactor|perf|test|build|ci|chore)(\(.+\))?:" >/dev/null; then
         logsmith --no-output --verbose 2>&1 | head -20
         echo ""
@@ -560,15 +611,15 @@ exit 0
 ### Release Script
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # scripts/release.sh
 
 set -e
 
 # Configuration
 THEME="github"
-CHANGELOG_FILE="CHANGELOG.md"
-RELEASE_NOTES_FILE="RELEASE_NOTES.md"
+CHANGELOG*FILE="CHANGELOG.md"
+RELEASE*NOTES*FILE="RELEASE*NOTES.md"
 
 # Check if logsmith is installed
 if ! command -v logsmith >/dev/null 2>&1; then
@@ -583,82 +634,82 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-VERSION_TAG="$1"
+VERSION*TAG="$1"
 
-echo "🚀 Preparing release $VERSION_TAG"
+echo "🚀 Preparing release $VERSION*TAG"
 
 # Generate full changelog
 echo "📝 Generating full changelog..."
-logsmith --theme "$THEME" --output "$CHANGELOG_FILE" --verbose
+logsmith --theme "$THEME" --output "$CHANGELOG*FILE" --verbose
 
 # Generate release notes for this version
 echo "📋 Generating release notes..."
-PREVIOUS_TAG=$(git describe --tags --abbrev=0 "$VERSION_TAG"~1 2>/dev/null || echo "")
+PREVIOUS*TAG=$(git describe --tags --abbrev=0 "$VERSION*TAG"~1 2>/dev/null || echo "")
 
-if [ -n "$PREVIOUS_TAG" ]; then
-    echo "📈 Changes from $PREVIOUS_TAG to $VERSION_TAG"
-    logsmith --from "$PREVIOUS_TAG" --to "$VERSION_TAG" \
-        --theme "$THEME" --output "$RELEASE_NOTES_FILE" --verbose
+if [ -n "$PREVIOUS*TAG" ]; then
+    echo "📈 Changes from $PREVIOUS*TAG to $VERSION*TAG"
+    logsmith --from "$PREVIOUS*TAG" --to "$VERSION*TAG" \
+        --theme "$THEME" --output "$RELEASE*NOTES*FILE" --verbose
 else
-    echo "📈 All changes up to $VERSION_TAG"
-    logsmith --to "$VERSION_TAG" \
-        --theme "$THEME" --output "$RELEASE_NOTES_FILE" --verbose
+    echo "📈 All changes up to $VERSION*TAG"
+    logsmith --to "$VERSION*TAG" \
+        --theme "$THEME" --output "$RELEASE*NOTES*FILE" --verbose
 fi
 
 # Commit changelog
 echo "💾 Committing changelog..."
-git add "$CHANGELOG_FILE"
-git commit -m "docs: update changelog for $VERSION_TAG" || echo "No changelog changes to commit"
+git add "$CHANGELOG*FILE"
+git commit -m "docs: update changelog for $VERSION*TAG" || echo "No changelog changes to commit"
 
 # Show release notes
 echo ""
 echo "📋 Release Notes Preview:"
 echo "========================="
-cat "$RELEASE_NOTES_FILE"
+cat "$RELEASE*NOTES*FILE"
 
 echo ""
 echo "✅ Release preparation complete!"
 echo ""
 echo "Next steps:"
-echo "1. Review the generated files: $CHANGELOG_FILE, $RELEASE_NOTES_FILE"
+echo "1. Review the generated files: $CHANGELOG*FILE, $RELEASE*NOTES*FILE"
 echo "2. Push changes: git push"
-echo "3. Create and push tag: git tag $VERSION_TAG && git push origin $VERSION_TAG"
-echo "4. Create GitHub release with notes from $RELEASE_NOTES_FILE"
+echo "3. Create and push tag: git tag $VERSION*TAG && git push origin $VERSION*TAG"
+echo "4. Create GitHub release with notes from $RELEASE*NOTES*FILE"
 ```
 
 ### Monorepo Automation
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # scripts/monorepo-changelogs.sh
 
 # Generate changelogs for each package in a monorepo
 set -e
 
-PACKAGES_DIR="packages"
+PACKAGES*DIR="packages"
 THEME="minimal"
 
 echo "🏗️ Generating changelogs for monorepo packages..."
 
 # Find all packages
-for package_dir in "$PACKAGES_DIR"/*; do
-    if [ -d "$package_dir" ] && [ -f "$package_dir/package.json" ]; then
-        package_name=$(basename "$package_dir")
+for package*dir in "$PACKAGES*DIR"/*; do
+    if [ -d "$package*dir" ] && [ -f "$package*dir/package.json" ]; then
+        package*name=$(basename "$package*dir")
         echo ""
-        echo "📦 Processing package: $package_name"
+        echo "📦 Processing package: $package*name"
 
-        # Generate package-specific changelog
-        logsmith --dir "$package_dir" \
-            --output "$package_dir/CHANGELOG.md" \
+# Generate package-specific changelog
+        logsmith --dir "$package*dir" \
+            --output "$package*dir/CHANGELOG.md" \
             --theme "$THEME" \
-            --include-scopes "$package_name" \
+            --include-scopes "$package*name" \
             --verbose
 
-        # Generate package statistics
-        logsmith stats --dir "$package_dir" \
-            --json > "$package_dir/stats.json"
+# Generate package statistics
+        logsmith stats --dir "$package*dir" \
+            --json > "$package*dir/stats.json"
 
-        echo "✅ Completed $package_name"
+        echo "✅ Completed $package*name"
     fi
 done
 
@@ -679,19 +730,19 @@ Configure logsmith behavior through environment variables:
 
 ```bash
 # Set default theme
-export LOGSMITH_THEME="corporate"
+export LOGSMITH*THEME="corporate"
 
 # Set default output format
-export LOGSMITH_FORMAT="markdown"
+export LOGSMITH*FORMAT="markdown"
 
 # Set verbosity level
-export LOGSMITH_VERBOSE="true"
+export LOGSMITH*VERBOSE="true"
 
 # Set default exclude authors
-export LOGSMITH_EXCLUDE_AUTHORS="dependabot[bot],renovate[bot]"
+export LOGSMITH*EXCLUDE*AUTHORS="dependabot[bot],renovate[bot]"
 
 # GitHub token for enhanced features
-export GITHUB_TOKEN="ghp_your_token_here"
+export GITHUB*TOKEN="ghp*your*token*here"
 ```
 
 ### Configuration for CI
@@ -702,9 +753,9 @@ import { defineConfig } from 'logsmith'
 
 export default defineConfig({
   theme: 'corporate',
-  verbose: process.env.CI_DEBUG === 'true',
+  verbose: process.env.CI*DEBUG === 'true',
   excludeAuthors: ['dependabot[bot]', 'renovate[bot]'],
-  repo: process.env.GITHUB_REPOSITORY
+  repo: process.env.GITHUB*REPOSITORY
     ? `https://github.com/${process.env.GITHUB_REPOSITORY}`
     : undefined,
 })

@@ -4,7 +4,7 @@
 
 **Logsmith** is a powerful, modern changelog generation tool that automatically creates beautiful changelogs from your conventional commits. With comprehensive Git integration, multiple output formats, and extensive customization options, logsmith makes it effortless to maintain professional project documentation.
 
-## What is logsmith?
+## What is logsmith
 
 Logsmith forges beautiful changelogs automatically by analyzing your Git commit history and transforming conventional commits into well-organized, professional-looking documentation. Whether you're working on open source projects, enterprise applications, or personal repositories, logsmith streamlines the changelog creation process while maintaining consistency and clarity.
 
@@ -20,16 +20,21 @@ Logsmith forges beautiful changelogs automatically by analyzing your Git commit 
 ## Key Features
 
 ### Intelligent Commit Analysis
+
 Logsmith parses conventional commits to automatically categorize changes into sections like features, bug fixes, documentation updates, and breaking changes. It understands commit scopes, references, and can detect breaking changes from commit messages.
 
 ### Multiple Output Formats
+
 Generate changelogs in your preferred format:
+
 - **Markdown** - Perfect for GitHub, GitLab, and documentation sites
 - **JSON** - Ideal for programmatic consumption and integrations
 - **HTML** - Beautiful standalone documents with custom styling
 
 ### Rich Theming System
+
 Choose from 8 built-in themes or create custom ones:
+
 - **Default** - Colorful emojis and modern styling
 - **GitHub** - Familiar GitHub-style formatting
 - **Minimal** - Clean, understated appearance
@@ -40,7 +45,9 @@ Choose from 8 built-in themes or create custom ones:
 - **Colorful** - Vibrant theme with enhanced visual elements
 
 ### Advanced Filtering & Organization
+
 Fine-tune your changelogs with powerful filtering options:
+
 - Include/exclude specific commit types, authors, or scopes
 - Set minimum/maximum commit counts per section
 - Filter by commit message patterns
@@ -48,7 +55,9 @@ Fine-tune your changelogs with powerful filtering options:
 - Control description length and formatting
 
 ### Repository Insights
+
 Get detailed statistics about your repository:
+
 - Commit frequency analysis with daily, weekly, and monthly trends
 - Contributor growth patterns and activity metrics
 - Commit type distribution and usage patterns

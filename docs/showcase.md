@@ -51,12 +51,16 @@ jobs:
   changelog:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
+
       - uses: oven-sh/setup-bun@v1
       - run: bun add -g logsmith
       - run: logsmith --output CHANGELOG.md --theme github
+
 ```
 
 ## Submit your project

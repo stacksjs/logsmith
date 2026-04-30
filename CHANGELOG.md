@@ -226,7 +226,7 @@
 ### 🏡 Chore
 
 - Wip ([c2b66e4](https://github.com/stacksjs/logsmith/commit/c2b66e4))
-- Resolve ESM __require issue ([f84c763](https://github.com/stacksjs/logsmith/commit/f84c763))
+- Resolve ESM **require issue ([f84c763](https://github.com/stacksjs/logsmith/commit/f84c763))
 
 ### ❤️ Contributors
 
@@ -238,7 +238,7 @@
 
 ### 🩹 Fixes
 
-- Resolve ESM __require error by using dynamic imports for markdownlint ([9e5b810](https://github.com/stacksjs/logsmith/commit/9e5b810))
+- Resolve ESM **require error by using dynamic imports for markdownlint ([9e5b810](https://github.com/stacksjs/logsmith/commit/9e5b810))
 
 ### ❤️ Contributors
 

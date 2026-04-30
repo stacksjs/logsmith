@@ -187,6 +187,7 @@ logsmith stats --from "1 month ago" --verbose
 ```
 
 **Provides:**
+
 - Daily commit counts with visual charts
 - Weekly and monthly aggregations
 - Peak activity identification
@@ -203,6 +204,7 @@ logsmith stats --from "6 months ago" --json | jq '.trends.contributorGrowth'
 ```
 
 **Includes:**
+
 - New contributor timeline
 - Most active contributors
 - Contribution distribution
@@ -219,6 +221,7 @@ logsmith stats --json | jq '.trends.typeDistribution'
 ```
 
 **Shows:**
+
 - Percentage breakdown by type
 - Most/least common commit types
 - Development focus trends
@@ -260,7 +263,7 @@ logsmith stats --include-scopes "core,api"
 Compare multiple repositories:
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # analyze-repos.sh
 
 repos=("repo1" "repo2" "repo3")
@@ -270,7 +273,7 @@ for repo in "${repos[@]}"; do
 done
 
 # Combine results
-jq -s 'map({name: input_filename, stats: .})' stats-*.json > combined-stats.json
+jq -s 'map({name: input_filename, stats: .})' stats-_.json > combined-stats.json
 ```
 
 ## Programmatic Usage
@@ -375,7 +378,7 @@ async function getContributorGrowthData() {
 ### Generate Reports
 
 ```bash
-#!/bin/bash
+# !/bin/bash
 # generate-report.sh
 
 echo "# Repository Report - $(date)" > report.md
@@ -403,26 +406,32 @@ name: Repository Statistics
 
 on:
   schedule:
-    - cron: '0 0 * * 1' # Weekly on Monday
+
+    - cron: '0 0 _ _ 1' # Weekly on Monday
+
   workflow_dispatch:
 
 jobs:
   stats:
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
 
       - uses: oven-sh/setup-bun@v1
 
       - name: Generate Statistics
+
         run: |
           bun add -g logsmith
           logsmith stats --json > stats.json
           logsmith stats > stats.txt
 
       - name: Upload Statistics
+
         uses: actions/upload-artifact@v3
         with:
           name: repository-stats
@@ -431,6 +440,7 @@ jobs:
             stats.txt
 
       - name: Comment PR with Stats
+
         if: github.event_name == 'pull_request'
         run: |
           echo "## 📊 Repository Statistics" >> comment.md
@@ -463,14 +473,14 @@ async function sendStatsToSlack() {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `*Repository Activity Summary*\n• Total Commits: ${stats.totalCommits}\n• Contributors: ${stats.contributors}\n• Average per day: ${stats.trends.commitFrequency.averagePerDay.toFixed(1)}`
+          text: `_Repository Activity Summary_\n• Total Commits: ${stats.totalCommits}\n• Contributors: ${stats.contributors}\n• Average per day: ${stats.trends.commitFrequency.averagePerDay.toFixed(1)}`
         }
       },
       {
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `*Most Active Contributor:* ${stats.trends.contributorGrowth.mostActiveContributor.name} (${stats.trends.contributorGrowth.mostActiveContributor.commits} commits)`
+          text: `_Most Active Contributor:* ${stats.trends.contributorGrowth.mostActiveContributor.name} (${stats.trends.contributorGrowth.mostActiveContributor.commits} commits)`
         }
       }
     ]
