@@ -2,7 +2,7 @@
 
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.1.8...HEAD)
 
-### 🔧 Chores
+## 🔧 Chores
 
 - **deps**: update markdownlint ([b8f0f10](https://github.com/stacksjs/logsmith/commit/b8f0f10))
 - update logInfo to be gray instead of blue ([854f733](https://github.com/stacksjs/logsmith/commit/854f733))
