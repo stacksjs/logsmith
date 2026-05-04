@@ -6,7 +6,7 @@
       "name": "@stacksjs/logsmith",
       "devDependencies": {
         "@stacksjs/logsmith": "workspace:*",
-        "better-dx": "^0.2.7",
+        "better-dx": "^0.2.12",
       },
     },
     "packages/action": {
@@ -26,9 +26,9 @@
         "logsmith": "./dist/bin/cli.js",
       },
       "dependencies": {
-        "@stacksjs/clapp": "^0.2.0",
-        "bunfig": "^0.15.6",
-        "pickier": "^0.1.9",
+        "@stacksjs/clapp": "^0.2.7",
+        "bunfig": "^0.15.11",
+        "pickier": "^0.1.28",
       },
     },
   },

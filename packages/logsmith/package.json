@@ -59,8 +59,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@stacksjs/clapp": "^0.2.0",
-    "bunfig": "^0.15.6",
-    "pickier": "^0.1.9"
+    "@stacksjs/clapp": "^0.2.7",
+    "bunfig": "^0.15.11",
+    "pickier": "^0.1.28"
   }
 }
