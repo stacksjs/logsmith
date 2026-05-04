@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@stacksjs/logsmith": "workspace:*",
-    "better-dx": "^0.2.7"
+    "better-dx": "^0.2.12"
   },
   "git-hooks": {
     "pre-commit": {
