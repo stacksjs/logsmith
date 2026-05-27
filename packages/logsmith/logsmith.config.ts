@@ -53,7 +53,7 @@ const config: LogsmithConfig = defineConfig({
   // Templates and formatting
   templates: {
     commitFormat: '- {{scope}}{{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}}))',
-    groupFormat: '### {{title}}',
+    groupFormat: '## {{title}}',
     typeFormat: {
       feat: '🚀 Features',
       fix: '🐛 Bug Fixes',

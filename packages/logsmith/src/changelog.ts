@@ -134,9 +134,12 @@ export async function generateChangelog(config: LogsmithConfig): Promise<Changel
           const match = existingContent.match(headerRegex)
 
           if (match) {
-            // Insert new changelog after the main header
+            // Insert new changelog after the main header, with a blank line
+            // between the `# Changelog` title and the new release content so
+            // the output passes `markdown/heading-increment` /
+            // `markdown/blanks-around-headings` linting downstream.
             const insertIndex = existingContent.indexOf('\n', match.index!) + 1
-            finalContent = `${existingContent.slice(0, insertIndex)}${changelogContent}\n\n${existingContent.slice(insertIndex)}`
+            finalContent = `${existingContent.slice(0, insertIndex)}\n${changelogContent}\n\n${existingContent.slice(insertIndex)}`
           }
           else {
             // No main header found, prepend everything

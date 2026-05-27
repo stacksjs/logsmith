@@ -104,6 +104,16 @@ describe('config', () => {
       expect(defaultConfig.maxCommitsPerSection).toBe(50) // Updated from 0 (unlimited) to 50
       expect(defaultConfig.maxDescriptionLength).toBe(0) // unlimited
     })
+
+    // Regression for stacksjs/logsmith#3396 — the default `groupFormat`
+    // template used to be `### {{title}}`, which under the document's
+    // `# Changelog` h1 produced an h1→h3 heading jump and tripped
+    // pickier's `markdown/heading-increment` rule (and equivalent rules
+    // in markdownlint). The canonical Markdown structure is h1 = title,
+    // h2 = section, so the default must emit h2.
+    it('should emit h2 (not h3) section headings by default', () => {
+      expect(defaultConfig.templates?.groupFormat).toBe('## {{title}}')
+    })
   })
 
   describe('loadLogsmithConfig', () => {
