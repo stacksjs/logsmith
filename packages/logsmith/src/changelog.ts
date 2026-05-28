@@ -1,6 +1,7 @@
 import type { ChangelogResult, GeneratedChangelog, LogsmithConfig } from './types'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { defaultConfig } from './config'
 import {
   generateCompareUrl,
   generateFormattedChangelog,
@@ -20,7 +21,8 @@ import {
 /**
  * Generate changelog from git commits
  */
-export async function generateChangelog(config: LogsmithConfig): Promise<ChangelogResult> {
+export async function generateChangelog(options: Partial<LogsmithConfig>): Promise<ChangelogResult> {
+  const config: LogsmithConfig = { ...defaultConfig, ...options }
   const { dir, from, to, output, verbose } = config
 
   if (verbose) {
