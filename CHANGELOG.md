@@ -1,3 +1,19 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.5...v0.2.6)
+
+## 🐛 Bug Fixes
+
+- **config**: merge nested changelog options ([a08566c](https://github.com/stacksjs/logsmith/commit/a08566c)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## 🧹 Chores
+
+- release v0.2.6 ([1c59a62](https://github.com/stacksjs/logsmith/commit/1c59a62)) _(by Chris <chrisbreuer93@gmail.com>)_
+- add patch release command ([5f3e32c](https://github.com/stacksjs/logsmith/commit/5f3e32c)) _(by Chris <chrisbreuer93@gmail.com>)_
+- add docs ([4f41cee](https://github.com/stacksjs/logsmith/commit/4f41cee)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.4...v0.2.5)
 
 ## 🐛 Bug Fixes

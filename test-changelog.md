@@ -1,5 +1,25 @@
 # Changelog
 
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.5...HEAD)
+
+## 🔧 Chores
+
+- add docs ([4f41cee](https://github.com/stacksjs/logsmith/commit/4f41cee)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.5...HEAD)
+
+## 🔧 Chores
+
+- add docs ([4f41cee](https://github.com/stacksjs/logsmith/commit/4f41cee)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.1...HEAD)
 
 ## 🔧 Chores
