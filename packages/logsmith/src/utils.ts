@@ -87,37 +87,34 @@ export function getCommits(from?: string, to = 'HEAD', dir?: string): CommitInfo
   const range = from ? `${from}..${to}` : to
 
   try {
-    // Use a more reliable format with --pretty=tformat and clear separators
-    const output = execGit(`log ${range} --pretty=tformat:"%H|%s|%an|%ae|%ad|%B" --date=iso`, dir)
+    // NUL cannot occur in Git commit metadata, unlike printable delimiters
+    // such as "|" that are valid in subjects, bodies, and author names.
+    const output = execGit(`log ${range} --format="%H%x00%s%x00%an%x00%ae%x00%aI%x00%B%x00"`, dir)
     if (!output)
       return []
 
-    const commits = output.split('\n').filter(Boolean).map((line) => {
-      // Split on the first 5 pipes only, since body might contain pipes
-      const parts = line.split('|')
-      if (parts.length < 5)
-        return null
+    const fields = output.split('\0')
+    const commits: CommitInfo[] = []
+    for (let index = 0; index + 5 < fields.length; index += 6) {
+      // Git inserts a newline between formatted records. It appears before
+      // the next hash because each record itself ends with a NUL.
+      const hash = fields[index].replace(/^\n+/, '')
+      if (!hash)
+        continue
 
-      const hash = parts[0]
-      const message = parts[1]
-      const authorName = parts[2]
-      const authorEmail = parts[3]
-      const date = parts[4]
-      const body = parts.slice(5).join('|') // rejoin body parts that might have pipes
-
-      return parseCommit({
+      commits.push(parseCommit({
         hash: hash || '',
-        message: message || '',
+        message: fields[index + 1] || '',
         author: {
-          name: authorName || '',
-          email: authorEmail || '',
+          name: fields[index + 2] || '',
+          email: fields[index + 3] || '',
         },
-        date: date || '',
-        body: body || '',
-      })
-    })
+        date: fields[index + 4] || '',
+        body: fields[index + 5] || '',
+      }))
+    }
 
-    return commits.filter((commit): commit is CommitInfo => commit !== null && commit.hash.length > 0)
+    return commits
   }
   catch {
     return []

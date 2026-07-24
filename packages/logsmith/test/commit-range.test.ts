@@ -1,4 +1,8 @@
 import { describe, expect, it } from 'bun:test'
+import { execFileSync } from 'node:child_process'
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { tmpdir } from 'node:os'
+import { join } from 'node:path'
 import { execGit, getCommits, getLatestTag } from '../src/utils'
 
 describe('commit range functionality', () => {
@@ -82,5 +86,36 @@ describe('commit range functionality', () => {
     expect(parts[2]).toBe('John Doe') // author name
     expect(parts[3]).toBe('john@example.com') // author email
     expect(parts[4]).toBe('2023-01-01 12:00:00 +0000') // date
+  })
+
+  it('should preserve pipes in commit subjects and author names', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'logsmith-commit-format-'))
+
+    try {
+      execFileSync('git', ['init'], { cwd: dir })
+      execFileSync('git', ['config', 'user.name', 'Pipe | Author'], { cwd: dir })
+      execFileSync('git', ['config', 'user.email', 'pipe@example.com'], { cwd: dir })
+      writeFileSync(join(dir, 'file.txt'), 'content\n')
+      execFileSync('git', ['add', 'file.txt'], { cwd: dir })
+      execFileSync('git', [
+        'commit',
+        '-m',
+        'fix(shell): run a bare assignment before && / || as its own chain segment',
+        '-m',
+        'Keep body | delimiters intact.',
+      ], { cwd: dir })
+
+      const [commit] = getCommits(undefined, 'HEAD', dir)
+
+      expect(commit.description).toBe('run a bare assignment before && / || as its own chain segment')
+      expect(commit.author).toEqual({
+        name: 'Pipe | Author',
+        email: 'pipe@example.com',
+      })
+      expect(commit.body).toContain('Keep body | delimiters intact.')
+    }
+    finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 })
