@@ -111,6 +111,26 @@ export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promi
     ...defaultConfig,
     ...loadedConfig,
     ...filteredOverrides,
+    github: {
+      ...defaultConfig.github,
+      ...loadedConfig.github,
+      ...filteredOverrides.github,
+    },
+    templates: {
+      ...defaultConfig.templates,
+      ...loadedConfig.templates,
+      ...filteredOverrides.templates,
+      typeFormat: {
+        ...defaultConfig.templates.typeFormat,
+        ...loadedConfig.templates?.typeFormat,
+        ...filteredOverrides.templates?.typeFormat,
+      },
+    },
+    markdownLintRules: {
+      ...defaultConfig.markdownLintRules,
+      ...loadedConfig.markdownLintRules,
+      ...filteredOverrides.markdownLintRules,
+    },
   }
 
   return config

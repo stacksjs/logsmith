@@ -468,7 +468,12 @@ export interface LogsmithConfig {
  * @see {@link LogsmithConfig} for the complete configuration interface
  * @see {@link loadLogsmithConfig} for loading configuration with overrides
  */
-export type LogsmithOptions = Partial<LogsmithConfig>
+export type LogsmithOptions = Omit<Partial<LogsmithConfig>, 'github' | 'templates'> & {
+  github?: Partial<LogsmithConfig['github']>
+  templates?: Partial<Omit<LogsmithConfig['templates'], 'typeFormat'>> & {
+    typeFormat?: Record<string, string>
+  }
+}
 
 /**
  * Information about a single Git commit.

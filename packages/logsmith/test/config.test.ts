@@ -194,6 +194,27 @@ describe('config', () => {
       // Other type formats should remain from defaults
       expect(config.templates.typeFormat.fix).toBe(defaultConfig.templates.typeFormat.fix)
     })
+
+    it('should preserve nested defaults for partial nested overrides', async () => {
+      const config = await loadLogsmithConfig({
+        github: {
+          token: 'test-token',
+        },
+        templates: {
+          groupFormat: '## {{title}}',
+        },
+        markdownLintRules: {
+          MD013: true,
+        },
+      })
+
+      expect(config.github.token).toBe('test-token')
+      expect(config.templates.groupFormat).toBe('## {{title}}')
+      expect(config.templates.commitFormat).toBe(defaultConfig.templates.commitFormat)
+      expect(config.templates.typeFormat.fix).toBe(defaultConfig.templates.typeFormat.fix)
+      expect(config.markdownLintRules?.MD013).toBe(true)
+      expect(config.markdownLintRules?.MD041).toBe(false)
+    })
   })
 
   describe('defineConfig', () => {
