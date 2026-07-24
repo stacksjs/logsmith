@@ -1,3 +1,24 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.3...v0.2.4)
+
+## 🐛 Bug Fixes
+
+- **changelog**: preserve dollar sequences in commit text ([6f4730b](https://github.com/stacksjs/logsmith/commit/6f4730b)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **changelog**: merge defaults so generateChangelog tolerates partial config ([ffafdac](https://github.com/stacksjs/logsmith/commit/ffafdac)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## 🧹 Chores
+
+- release v0.2.4 ([6142d41](https://github.com/stacksjs/logsmith/commit/6142d41)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **deps**: declare bun ^1.3.14 in deps.yaml ([d3ace92](https://github.com/stacksjs/logsmith/commit/d3ace92)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **deps**: refresh bun.lock to pick up pickier 0.1.37 ([63a057b](https://github.com/stacksjs/logsmith/commit/63a057b)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+- **deps**: refresh bun.lock to pick up pickier 0.1.35 ([1cbe95b](https://github.com/stacksjs/logsmith/commit/1cbe95b)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+- **deps**: refresh bun.lock to pick up pickier 0.1.33 ([799cf3b](https://github.com/stacksjs/logsmith/commit/799cf3b)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+- wip ([97c2e8c](https://github.com/stacksjs/logsmith/commit/97c2e8c)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+- _glennmichael123 <gtorregosa@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.0...HEAD)
 
 ### 🧹 Chores
