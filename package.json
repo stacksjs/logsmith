@@ -32,9 +32,9 @@
     "changelog:generate": "./logsmith --output CHANGELOG.md",
     "release": "bunx --bun bumpx prompt --recursive",
     "release:patch": "bunx --bun bumpx patch --recursive --yes",
-    "dev:docs": "bun --bun vitepress dev docs",
-    "build:docs": "bun --bun vitepress build docs",
-    "preview:docs": "bun --bun vitepress preview docs",
+    "dev:docs": "bun --bun bunpress dev docs",
+    "build:docs": "bun --bun bunpress build docs",
+    "preview:docs": "bun --bun bunpress preview docs",
     "typecheck": "bun --bun tsc --noEmit"
   },
   "devDependencies": {
