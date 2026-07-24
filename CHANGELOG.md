@@ -1,3 +1,17 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.4...v0.2.5)
+
+## 🐛 Bug Fixes
+
+- **changelog**: frame git metadata with NUL separators ([faa16a4](https://github.com/stacksjs/logsmith/commit/faa16a4)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## 🧹 Chores
+
+- release v0.2.5 ([4259798](https://github.com/stacksjs/logsmith/commit/4259798)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.3...v0.2.4)
 
 ## 🐛 Bug Fixes
