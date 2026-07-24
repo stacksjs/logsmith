@@ -478,6 +478,38 @@ describe('utils', () => {
       expect(result).toContain('resolve bug')
     })
 
+    it('should preserve dollar replacement patterns in commit metadata', () => {
+      const changelog: GeneratedChangelog = {
+        date: '2024-01-01',
+        sections: [{
+          title: '🚀 Features',
+          commits: [{
+            type: 'feat',
+            description: String.raw`$'\cX' control-character escapes in ANSI-C quoting`,
+            hash: 'a31d6be',
+            author: 'Chris $& Breuer',
+          }],
+        }],
+        contributors: [],
+      }
+      const config = {
+        ...defaultConfig,
+        format: 'markdown' as const,
+        repo: 'https://github.com/den-shell/den',
+        templates: {
+          ...defaultConfig.templates,
+          commitFormat: '- {{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}})) by {{author}}',
+        },
+      }
+
+      const result = generateFormattedChangelog(changelog, config)
+
+      expect(result).toContain(
+        String.raw`- $'\cX' control-character escapes in ANSI-C quoting ([a31d6be](https://github.com/den-shell/den/commit/a31d6be)) by Chris $& Breuer`,
+      )
+      expect(result.match(/a31d6be/g)).toHaveLength(2)
+    })
+
     it('should generate JSON changelog', () => {
       const config = { ...defaultConfig, format: 'json' as const }
       const result = generateFormattedChangelog(mockChangelog, config)

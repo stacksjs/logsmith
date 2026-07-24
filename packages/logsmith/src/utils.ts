@@ -415,11 +415,11 @@ export function generateChangelogContent(
         : config.templates?.commitFormat || '- {{scope}}{{description}} ([{{hash}}]({{repoUrl}}/commit/{{hash}}))'
 
       let line = templateFormat
-        .replace(/\{\{description\}\}/g, commit.description)
-        .replace(/\{\{hash\}\}/g, commit.hash)
-        .replace(/\{\{author\}\}/g, commit.author || '')
-        .replace(/\{\{scope\}\}/g, commit.scope ? `**${commit.scope}**: ` : '')
-        .replace(/\{\{repoUrl\}\}/g, repoUrl)
+        .replace(/\{\{description\}\}/g, () => commit.description)
+        .replace(/\{\{hash\}\}/g, () => commit.hash)
+        .replace(/\{\{author\}\}/g, () => commit.author || '')
+        .replace(/\{\{scope\}\}/g, () => commit.scope ? `**${commit.scope}**: ` : '')
+        .replace(/\{\{repoUrl\}\}/g, () => repoUrl)
 
       // Add breaking change indicator if not in dedicated section
       if (commit.breaking && !config.groupBreakingChanges) {
