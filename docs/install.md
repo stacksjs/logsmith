@@ -189,7 +189,7 @@ If you encounter issues:
 1. Check the [troubleshooting guide](/advanced/cross-platform)
 2. Search [existing issues](https://github.com/stacksjs/logsmith/issues)
 3. Create a [new issue](https://github.com/stacksjs/logsmith/issues/new)
-4. Join our [Discord community](https://discord.gg/stacksjs)
+4. Join our [Discord community](https://stacksjs.com/discord)
 
 ## Next Steps
 

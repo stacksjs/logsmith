@@ -40,7 +40,7 @@ Replace OWNER and REPO with your GitHub organization and repository names. The b
 ### Stay involved
 
 - Watch the repository to receive notifications about new releases
-- Join our Discord community at <https://discord.gg/stacksjs>
+- Join our Discord community at <https://stacksjs.com/discord>
 - Follow development on the GitHub project board and issues
 - Share your experience on social media and tag the repo
 

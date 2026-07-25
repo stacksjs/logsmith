@@ -566,7 +566,7 @@ echo "Git repo: $(git rev-parse --is-inside-work-tree 2>/dev/null || echo 'false
 ### Support Channels
 
 1. **GitHub Issues**: [stacksjs/logsmith/issues](https://github.com/stacksjs/logsmith/issues)
-2. **Discord**: [Join Stacks Discord](https://discord.gg/stacksjs)
+2. **Discord**: [Join Stacks Discord](https://stacksjs.com/discord)
 3. **Discussions**: [GitHub Discussions](https://github.com/stacksjs/logsmith/discussions)
 
 ## Next Steps
