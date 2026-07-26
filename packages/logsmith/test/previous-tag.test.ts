@@ -93,6 +93,35 @@ describe('getPreviousTag', () => {
     }
   })
 
+  it('walks the full history when earlier tags were never fetched', () => {
+    // The release-CI shape: the checkout leaves only the tag being released
+    // reachable, so `git describe --tags --abbrev=0 <tag>^` finds nothing.
+    // Resolving to the tag at HEAD here produced an empty range and no notes
+    // at all -- undefined is what lets the whole history be walked instead.
+    const dir = mkdtempSync(join(tmpdir(), 'logsmith-single-tag-'))
+
+    try {
+      execFileSync('git', ['init'], { cwd: dir })
+      execFileSync('git', ['config', 'user.name', 'Test'], { cwd: dir })
+      execFileSync('git', ['config', 'user.email', 'test@example.com'], { cwd: dir })
+
+      for (const n of ['one', 'two', 'three']) {
+        writeFileSync(join(dir, 'file.txt'), `${n}\n`)
+        execFileSync('git', ['add', 'file.txt'], { cwd: dir })
+        execFileSync('git', ['commit', '-m', `fix: change ${n}`], { cwd: dir })
+      }
+
+      // Only the released tag exists — no earlier tag to step back to.
+      execFileSync('git', ['tag', 'v1.0.1'], { cwd: dir })
+
+      expect(getPreviousTag('v1.0.1', dir)).toBeUndefined()
+      expect(getCommits(getPreviousTag('v1.0.1', dir), 'v1.0.1', dir)).toHaveLength(3)
+    }
+    finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
   it('returns undefined in a repository with no tags', () => {
     const dir = mkdtempSync(join(tmpdir(), 'logsmith-no-tags-'))
 
