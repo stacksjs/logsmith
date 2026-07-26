@@ -1,5 +1,19 @@
 # Changelog
 
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.7...HEAD)
+
+## ✅ Tests
+
+- **changelog**: cover the release-CI shape that produced no notes ([a919674](https://github.com/stacksjs/logsmith/commit/a919674)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## 🔧 Chores
+
+- release v0.2.8 ([a81e471](https://github.com/stacksjs/logsmith/commit/a81e471)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.6...HEAD)
 
 ## 📝 Documentation
