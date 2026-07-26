@@ -68,6 +68,57 @@ export function getLatestTag(dir?: string): string | undefined {
 }
 
 /**
+ * Resolve the tag to generate a changelog *from*, given the ref being released.
+ *
+ * `git describe --tags --abbrev=0` reports the nearest tag reachable from a
+ * ref, and that includes a tag placed on the ref itself. A tag-triggered
+ * release checks out the tag it is releasing, so asking for "the latest tag"
+ * there answers with the tag being released -- and `v1.2.3..v1.2.3` is empty.
+ * That is the normal case for a release pipeline, not an edge case, so step
+ * back one tag whenever the nearest one is the target itself.
+ *
+ * Returns undefined when no earlier tag exists (the first release), which
+ * callers treat as "walk the whole history".
+ */
+export function getPreviousTag(to = 'HEAD', dir?: string): string | undefined {
+  const nearest = (() => {
+    try {
+      return execGit(`describe --tags --abbrev=0 ${to}`, dir) || undefined
+    }
+    catch {
+      return undefined
+    }
+  })()
+
+  if (!nearest)
+    return undefined
+
+  // Only step back if the nearest tag *is* the ref we are releasing.
+  if (!refsMatch(nearest, to, dir))
+    return nearest
+
+  try {
+    return execGit(`describe --tags --abbrev=0 ${nearest}^`, dir) || undefined
+  }
+  catch {
+    // No earlier tag: this is the first release.
+    return undefined
+  }
+}
+
+/**
+ * Whether two git refs resolve to the same commit.
+ */
+function refsMatch(a: string, b: string, dir?: string): boolean {
+  try {
+    return execGit(`rev-parse ${a}^{commit}`, dir) === execGit(`rev-parse ${b}^{commit}`, dir)
+  }
+  catch {
+    return false
+  }
+}
+
+/**
  * Get all tags sorted by version
  */
 export function getAllTags(dir?: string): string[] {
@@ -617,8 +668,8 @@ export function analyzeCommits(config: LogsmithConfig): RepositoryStats {
   const { dir = process.cwd(), from, to = 'HEAD' } = config
 
   // Determine from/to references
-  const fromRef = from || getLatestTag(dir)
   const toRef = to
+  const fromRef = from || getPreviousTag(toRef, dir)
 
   // Get commits
   const commits = getCommits(fromRef, toRef, dir)

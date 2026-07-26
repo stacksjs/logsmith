@@ -7,7 +7,7 @@ import {
   generateFormattedChangelog,
   getCommits,
   getContributors,
-  getLatestTag,
+  getPreviousTag,
   getRepositoryUrl,
   groupCommits,
   isGitRepository,
@@ -35,8 +35,8 @@ export async function generateChangelog(options: LogsmithOptions): Promise<Chang
   }
 
   // Determine from/to references
-  const fromRef = from || getLatestTag(dir)
   const toRef = to
+  const fromRef = from || getPreviousTag(toRef, dir)
 
   if (verbose && fromRef) {
     logInfo(`Generating changelog from ${fromRef} to ${toRef}`)
