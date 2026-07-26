@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { getCommits, getPreviousTag } from '../src/utils'
+import { getCommits, getPreviousTag, gitRepositoryError } from '../src/utils'
 
 /**
  * Build a repo shaped like a real release history: a commit, a release tag,
@@ -134,6 +134,36 @@ describe('getPreviousTag', () => {
       execFileSync('git', ['commit', '-m', 'feat: initial'], { cwd: dir })
 
       expect(getPreviousTag('HEAD', dir)).toBeUndefined()
+    }
+    finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+})
+
+describe('gitRepositoryError', () => {
+  it('returns undefined inside a real repository', () => {
+    const dir = makeRepo()
+
+    try {
+      expect(gitRepositoryError(dir)).toBeUndefined()
+    }
+    finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
+  })
+
+  it('reports the underlying git failure rather than a flat "not a repository"', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'logsmith-not-a-repo-'))
+
+    try {
+      const error = gitRepositoryError(dir)
+
+      // The point is that the caller can print WHY: a bare boolean sent people
+      // hunting for a missing .git when the real cause was git being absent
+      // from PATH or refusing the directory.
+      expect(error).toBeDefined()
+      expect(error).toContain('git')
     }
     finally {
       rmSync(dir, { recursive: true, force: true })

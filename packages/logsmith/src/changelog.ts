@@ -10,7 +10,7 @@ import {
   getPreviousTag,
   getRepositoryUrl,
   groupCommits,
-  isGitRepository,
+  gitRepositoryError,
   lintMarkdown,
   logError,
   logInfo,
@@ -30,8 +30,9 @@ export async function generateChangelog(options: LogsmithOptions): Promise<Chang
   }
 
   // Verify git repository
-  if (!isGitRepository(dir)) {
-    logError(`Directory ${dir} is not a git repository`)
+  const gitError = gitRepositoryError(dir)
+  if (gitError) {
+    logError(`Cannot read git history in ${dir}: ${gitError}`)
   }
 
   // Determine from/to references

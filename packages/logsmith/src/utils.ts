@@ -46,12 +46,26 @@ export function execGit(command: string, cwd?: string): string {
  * Check if current directory is a git repository
  */
 export function isGitRepository(dir?: string): boolean {
+  return gitRepositoryError(dir) === undefined
+}
+
+/**
+ * Why `git rev-parse --git-dir` failed here, or undefined if it succeeded.
+ *
+ * `rev-parse` fails for reasons that have nothing to do with the directory
+ * lacking a `.git` -- git missing from PATH, a refused `safe.directory` under
+ * a different HOME, an unreadable object store. Reporting all of those as
+ * "not a git repository" sends people looking at the wrong thing, so keep the
+ * underlying message and let the caller print it.
+ */
+export function gitRepositoryError(dir?: string): string | undefined {
   try {
     execGit('rev-parse --git-dir', dir)
-    return true
+    return undefined
   }
-  catch {
-    return false
+  catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    return message.trim() || 'git rev-parse --git-dir failed'
   }
 }
 
