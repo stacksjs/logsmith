@@ -31,7 +31,7 @@
     "changelog": "./logsmith --verbose",
     "changelog:generate": "./logsmith --output CHANGELOG.md",
     "release": "bunx --bun bumpx prompt --recursive",
-    "release:patch": "bunx --bun bumpx patch --recursive --yes",
+    "release:patch": "bunx --bun bumpx patch --recursive --commit --tag --push --yes",
     "dev:docs": "bun --bun bunpress dev docs",
     "build:docs": "bun --bun bunpress build docs",
     "preview:docs": "bun --bun bunpress preview docs",
