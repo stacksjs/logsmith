@@ -1,5 +1,19 @@
 # Changelog
 
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.6...HEAD)
+
+## 📝 Documentation
+
+- link the community as stacksjs.com/discord ([5303a1d](https://github.com/stacksjs/logsmith/commit/5303a1d)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## 🔧 Chores
+
+- use bunpress ([47a64fd](https://github.com/stacksjs/logsmith/commit/47a64fd)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.5...HEAD)
 
 ## 🔧 Chores
