@@ -25,6 +25,13 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
+      # `pantry publish` does not run npm's prepublishOnly lifecycle, so
+      # without this the package ships whatever dist happens to be in the tree.
+      # That is how a fix could sit in src, released and version-bumped, while
+      # every consumer kept running the old build.
+      - name: Build
+        run: bun --bun run build
+
       - name: Publish
         run: pantry publish --npm --access public
         env:
