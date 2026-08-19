@@ -1,7 +1,7 @@
-import type { BunpressConfig } from 'bunpress'
+import type { BunPressConfig } from '@stacksjs/bunpress'
 
-const config: BunpressConfig = {
-  name: 'logsmith',
+const config: BunPressConfig = {
+  title: 'logsmith',
   description: 'Forge beautiful changelog automatically',
   url: 'https://logsmith.sh',
 
