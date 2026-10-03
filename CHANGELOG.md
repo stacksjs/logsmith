@@ -1,3 +1,20 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.11...v0.2.12)
+
+## 🐛 Bug Fixes
+
+- **cli**: --no-output writes nothing, and an issue is linked once ([ce08fc2](https://github.com/stacksjs/logsmith/commit/ce08fc2)) _(by Chris <chrisbreuer93@gmail.com>)_ ([#283](https://github.com/stacksjs/logsmith/issues/283))
+- **ci**: setup-php 2.37.1, which closes the open advisory ([e19ed16](https://github.com/stacksjs/logsmith/commit/e19ed16)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **docs**: use the config keys bunpress actually has ([e9aa61c](https://github.com/stacksjs/logsmith/commit/e9aa61c)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## 🔧 Chores
+
+- release v0.2.12 ([1edbe6a](https://github.com/stacksjs/logsmith/commit/1edbe6a)) _(by Chris <chrisbreuer93@gmail.com>)_
+- release through @stacksjs/bumpx, not the unrelated npm 'bumpx' ([94b7012](https://github.com/stacksjs/logsmith/commit/94b7012)) _(by Chris <chrisbreuer93@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.5...v0.2.6)
 
 ## 🐛 Bug Fixes

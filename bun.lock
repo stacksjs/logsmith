@@ -12,7 +12,7 @@
     },
     "packages/action": {
       "name": "@stacksjs/logsmith-action",
-      "version": "0.2.11",
+      "version": "0.2.12",
       "dependencies": {
         "@actions/core": "^1.11.1",
         "@actions/github": "^6.0.1",
@@ -21,7 +21,7 @@
     },
     "packages/logsmith": {
       "name": "@stacksjs/logsmith",
-      "version": "0.2.11",
+      "version": "0.2.12",
       "bin": {
         "@stacksjs/logsmith": "./dist/bin/cli.js",
         "logsmith": "./dist/bin/cli.js",
