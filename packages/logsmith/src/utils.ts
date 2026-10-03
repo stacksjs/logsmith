@@ -263,7 +263,16 @@ export function parseReferences(text: string): GitReference[] {
     })
   }
 
-  return references
+  // One commit naming an issue in its subject and again in its body is still
+  // one reference; listing both appended the same link twice.
+  const seen = new Set<string>()
+  return references.filter((reference) => {
+    const key = `${reference.type}:${reference.id}`
+    if (seen.has(key))
+      return false
+    seen.add(key)
+    return true
+  })
 }
 
 /**

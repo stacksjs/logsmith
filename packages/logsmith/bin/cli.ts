@@ -87,6 +87,12 @@ cli
           actualFormat = 'html'
         }
       }
+      else if (outputFile === false || options.noOutput) {
+        // --no-output: the parser reports it as output === false. Treating
+        // that as "no output given" wrote CHANGELOG.md, the opposite of what
+        // the flag promises (craft-native/craft#283).
+        outputFile = false
+      }
       else if (!outputFile) {
         // Auto-generate output filename based on format
         const extensions = { json: 'json', html: 'html', markdown: 'md' }
