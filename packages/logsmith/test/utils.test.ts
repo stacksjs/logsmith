@@ -10,6 +10,8 @@ import {
   lintMarkdown,
   parseCommit,
   parseReferences,
+  referenceBaseUrl,
+  referenceLabel,
   symbols,
 } from '../src/utils'
 
@@ -128,6 +130,75 @@ describe('utils', () => {
 
       expect(references).toHaveLength(3)
       expect(references.every(ref => ref.type === 'issue')).toBe(true)
+    })
+
+    // stacksjs/logsmith#3402: `#6c6c70` was read as issue `#6` and `#000` as
+    // issue `#000`, so changelogs linked to issues nobody had mentioned.
+    it('should not read CSS hex colours as issues', () => {
+      expect(parseReferences('feat: use #6c6c70 for borders and #000 for text')).toEqual([])
+      expect(parseReferences('style: #fff background, #1a2b3c accent')).toEqual([])
+    })
+
+    it('should treat a leading zero as part of something other than an issue', () => {
+      expect(parseReferences('chore: bump to #0012')).toEqual([])
+    })
+
+    it('should require the digits to end the token', () => {
+      expect(parseReferences('docs: see v1.2#3a and #12-foo')).toEqual([])
+    })
+
+    it('should keep the owner on cross-repo references', () => {
+      const references = parseReferences('fix: align with pantry-pm/pantry#242 and stacksjs/stx#2040')
+
+      expect(references).toEqual([
+        { type: 'issue', id: '242', repo: 'pantry-pm/pantry' },
+        { type: 'issue', id: '2040', repo: 'stacksjs/stx' },
+      ])
+    })
+
+    it('should keep the owner on cross-repo closing keywords', () => {
+      expect(parseReferences('fixes pantry-pm/pantry#242')).toEqual([
+        { type: 'issue', id: '242', repo: 'pantry-pm/pantry' },
+      ])
+    })
+
+    it('should keep a cross-repo reference distinct from the local one', () => {
+      expect(parseReferences('refs #242 and pantry-pm/pantry#242')).toEqual([
+        { type: 'issue', id: '242' },
+        { type: 'issue', id: '242', repo: 'pantry-pm/pantry' },
+      ])
+    })
+  })
+
+  describe('referenceBaseUrl', () => {
+    it('should point a cross-repo reference at its own repository', () => {
+      expect(referenceBaseUrl('https://github.com/stacksjs/logsmith', {
+        type: 'issue',
+        id: '242',
+        repo: 'pantry-pm/pantry',
+      })).toBe('https://github.com/pantry-pm/pantry')
+    })
+
+    it('should stay on the current host for a cross-repo reference', () => {
+      expect(referenceBaseUrl('https://git.example.com/stacksjs/logsmith', {
+        type: 'issue',
+        id: '7',
+        repo: 'other/thing',
+      })).toBe('https://git.example.com/other/thing')
+    })
+
+    it('should leave a same-repo reference alone', () => {
+      expect(referenceBaseUrl('https://github.com/stacksjs/logsmith', {
+        type: 'issue',
+        id: '242',
+      })).toBe('https://github.com/stacksjs/logsmith')
+    })
+  })
+
+  describe('referenceLabel', () => {
+    it('should render a reference the way it was written', () => {
+      expect(referenceLabel({ type: 'issue', id: '242', repo: 'pantry-pm/pantry' })).toBe('pantry-pm/pantry#242')
+      expect(referenceLabel({ type: 'issue', id: '242' })).toBe('#242')
     })
   })
 

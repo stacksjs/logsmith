@@ -180,7 +180,16 @@ feat: add feature (#456)
 
 # Multiple references
 fix: resolve issues #123, #124, fixes #125
+
+# Cross-repo references keep their owner and link to that repository
+fix: align with pantry-pm/pantry#242
 ```
+
+A `#` only opens a reference when it starts a token and the digits end it, so
+CSS hex colours such as `#6c6c70`, `#000` and `#fff` are left alone. A number
+with a leading zero is not treated as a reference either. One exception remains:
+an all-digit colour like `#123456` is indistinguishable from an issue number and
+is still parsed as a reference.
 
 ### Reference Structure
 
@@ -188,6 +197,7 @@ fix: resolve issues #123, #124, fixes #125
 interface GitReference {
   type: 'issue' | 'pr'
   id: string
+  repo?: string  // `owner/repo`, when the reference names another repository
   url?: string  // Generated from repo URL
 }
 ```

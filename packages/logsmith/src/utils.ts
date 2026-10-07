@@ -240,16 +240,22 @@ export function parseCommit(rawCommit: {
 export function parseReferences(text: string): GitReference[] {
   const references: GitReference[] = []
 
+  // A `#` only opens a reference when it starts a token or follows an
+  // `owner/repo` prefix, and the digits have to end that token. Without those
+  // bounds a CSS colour like `#6c6c70` parsed as issue `#6`, and `#000` as
+  // issue `#000`, so changelogs linked to issues nobody had mentioned.
+  const reference = String.raw`(?:([\w.-]+\/[\w.-]+))?#([1-9]\d*)(?![\w-])`
   // Match #123, fixes #123, closes #123, etc.
-  const issuePattern = /(?:fixes?|closes?|resolves?|refs?)\s+#(\d+)/gi
-  const simpleIssuePattern = /#(\d+)/g
+  const issuePattern = new RegExp(String.raw`(?:fixes?|closes?|resolves?|refs?)\s+${reference}`, 'gi')
+  const simpleIssuePattern = new RegExp(String.raw`(?<![\w/-])${reference}`, 'g')
 
   let match
   // eslint-disable-next-line no-cond-assign
   while ((match = issuePattern.exec(text)) !== null) {
     references.push({
       type: 'issue',
-      id: match[1],
+      id: match[2],
+      repo: match[1],
     })
   }
 
@@ -259,7 +265,8 @@ export function parseReferences(text: string): GitReference[] {
   while ((match = simpleIssuePattern.exec(text)) !== null) {
     references.push({
       type: 'issue',
-      id: match[1],
+      id: match[2],
+      repo: match[1],
     })
   }
 
@@ -267,12 +274,37 @@ export function parseReferences(text: string): GitReference[] {
   // one reference; listing both appended the same link twice.
   const seen = new Set<string>()
   return references.filter((reference) => {
-    const key = `${reference.type}:${reference.id}`
+    const key = `${reference.type}:${reference.repo ?? ''}#${reference.id}`
     if (seen.has(key))
       return false
     seen.add(key)
     return true
+  }).map((reference) => {
+    // `repo` is absent rather than undefined for same-repo references, so that
+    // callers comparing whole objects stay simple.
+    if (reference.repo === undefined)
+      delete reference.repo
+    return reference
   })
+}
+
+/**
+ * Resolve the base URL a reference links to.
+ * A cross-repo reference lives beside this repository on the same host, so the
+ * owner/name pair is swapped off the end instead of assuming github.com.
+ */
+export function referenceBaseUrl(repoUrl: string, reference: GitReference): string {
+  if (!reference.repo)
+    return repoUrl
+
+  return repoUrl.replace(/\/[^/]+\/[^/]+$/, `/${reference.repo}`)
+}
+
+/**
+ * Render a reference the way it was written, keeping any owner/repo prefix.
+ */
+export function referenceLabel(reference: GitReference): string {
+  return `${reference.repo ?? ''}#${reference.id}`
 }
 
 /**
@@ -500,13 +532,15 @@ export function generateChangelogContent(
       // Add references with enhanced linking
       if (commit.references && commit.references.length > 0) {
         const refs = commit.references.map((ref) => {
+          const base = referenceBaseUrl(repoUrl, ref)
+          const label = referenceLabel(ref)
           if (config.linkifyIssues && ref.type === 'issue') {
-            return `[#${ref.id}](${repoUrl}/issues/${ref.id})`
+            return `[${label}](${base}/issues/${ref.id})`
           }
           if (config.linkifyPRs && ref.type === 'pr') {
-            return `[#${ref.id}](${repoUrl}/pull/${ref.id})`
+            return `[${label}](${base}/pull/${ref.id})`
           }
-          return `#${ref.id}`
+          return label
         }).join(', ')
         line = `${line} (${refs})`
       }
@@ -1058,13 +1092,15 @@ export function generateHtmlChangelog(
       // References
       if (commit.references && commit.references.length > 0) {
         const refs = commit.references.map((ref) => {
+          const base = referenceBaseUrl(repoUrl, ref)
+          const label = referenceLabel(ref)
           if (config.linkifyIssues && ref.type === 'issue') {
-            return `<a href="${repoUrl}/issues/${ref.id}" class="issue-link" target="_blank">#${ref.id}</a>`
+            return `<a href="${base}/issues/${ref.id}" class="issue-link" target="_blank">${label}</a>`
           }
           if (config.linkifyPRs && ref.type === 'pr') {
-            return `<a href="${repoUrl}/pull/${ref.id}" class="pr-link" target="_blank">#${ref.id}</a>`
+            return `<a href="${base}/pull/${ref.id}" class="pr-link" target="_blank">${label}</a>`
           }
-          return `#${ref.id}`
+          return label
         }).join(', ')
         lines.push(`            <span class="commit-references">(${refs})</span>`)
       }

@@ -599,6 +599,8 @@ export interface GitReference {
   type: 'issue' | 'pr'
   /** Reference ID (issue number, PR number, etc.) */
   id: string
+  /** `owner/repo` the reference points at, when it names another repository */
+  repo?: string
   /** Full URL to the reference (if available) */
   url?: string
 }
