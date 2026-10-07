@@ -1,9 +1,32 @@
-import type { CommitInfo } from '../src/types'
+import type { CommitInfo, LogsmithConfig } from '../src/types'
 import { describe, expect, it } from 'bun:test'
 import { defaultConfig } from '../src/config'
 import { getContributors } from '../src/utils'
 
 describe('contributors deduplication', () => {
+  it('should list contributors when the config has no author lists', () => {
+    const commits: CommitInfo[] = [
+      {
+        hash: 'abc123',
+        message: 'feat: add feature',
+        author: { name: 'John Doe', email: 'john@example.com' },
+        date: '2023-01-01',
+        type: 'feat',
+        scope: undefined,
+        description: 'add feature',
+        body: '',
+        breaking: false,
+        references: [],
+      },
+    ]
+
+    const partial = { ...defaultConfig } as Partial<LogsmithConfig>
+    delete partial.excludeAuthors
+    delete partial.includeAuthors
+
+    expect(getContributors(commits, partial as LogsmithConfig)).toEqual(['John Doe <john@example.com>'])
+  })
+
   it('should deduplicate contributors by name when they have different emails', () => {
     const commits: CommitInfo[] = [
       {

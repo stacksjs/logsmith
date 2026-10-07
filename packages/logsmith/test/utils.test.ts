@@ -268,6 +268,27 @@ describe('utils', () => {
       expect(featSection?.commits).toHaveLength(1) // limited to 1
     })
 
+    // stacksjs/logsmith#3402 shipped without a changelog entry because bumpx
+    // bundles an older logsmith whose generateChangelog() handed its raw
+    // options to groupCommits(); the missing filter lists threw on `.length`.
+    it('should treat a config with no filter lists as filtering nothing', () => {
+      const partial = { ...defaultConfig } as Partial<LogsmithConfig>
+      for (const key of [
+        'excludeCommitTypes',
+        'includeCommitTypes',
+        'excludeScopes',
+        'includeScopes',
+        'excludeMessages',
+      ] as const) {
+        delete partial[key]
+      }
+
+      const sections = groupCommits(mockCommits, partial as LogsmithConfig)
+
+      expect(sections.map(section => section.title.includes('Features'))).toContain(true)
+      expect(sections.reduce((total, section) => total + section.commits.length, 0)).toBe(mockCommits.length)
+    })
+
     it('should exclude commit types when configured', () => {
       const config: LogsmithConfig = {
         ...defaultConfig,

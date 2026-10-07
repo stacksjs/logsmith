@@ -429,37 +429,53 @@ export function groupCommits(commits: CommitInfo[], config: LogsmithConfig): Cha
 }
 
 /**
+ * Read a filter list off a config that may not have been merged with the
+ * defaults, so a missing list filters nothing instead of throwing.
+ */
+function filterList(value: string[] | undefined): string[] {
+  return Array.isArray(value) ? value : []
+}
+
+/**
  * Check if a commit should be excluded based on configuration
  */
 function shouldExcludeCommit(commit: CommitInfo, config: LogsmithConfig): boolean {
   const type = commit.type || 'misc'
 
+  // A caller handing us a partial config is filtering on nothing, not crashing:
+  // `generateChangelog` merges the defaults in first, but `groupCommits` is
+  // exported, and a consumer passing its own options object straight through
+  // used to die on `undefined.length`.
+  const excludeCommitTypes = filterList(config.excludeCommitTypes)
+  const includeCommitTypes = filterList(config.includeCommitTypes)
+  const excludeScopes = filterList(config.excludeScopes)
+  const includeScopes = filterList(config.includeScopes)
+  const excludeMessages = filterList(config.excludeMessages)
+
   // Check commit type filtering
-  if (config.excludeCommitTypes.length > 0 && config.excludeCommitTypes.includes(type)) {
+  if (excludeCommitTypes.length > 0 && excludeCommitTypes.includes(type)) {
     return true
   }
 
-  if (config.includeCommitTypes.length > 0 && !config.includeCommitTypes.includes(type)) {
+  if (includeCommitTypes.length > 0 && !includeCommitTypes.includes(type)) {
     return true
   }
 
   // Check scope filtering
   if (commit.scope) {
-    if (config.excludeScopes.length > 0 && config.excludeScopes.includes(commit.scope)) {
+    if (excludeScopes.length > 0 && excludeScopes.includes(commit.scope)) {
       return true
     }
 
-    if (config.includeScopes.length > 0 && !config.includeScopes.includes(commit.scope)) {
+    if (includeScopes.length > 0 && !includeScopes.includes(commit.scope)) {
       return true
     }
   }
 
   // Check message filtering
-  if (config.excludeMessages.length > 0) {
-    for (const excludePattern of config.excludeMessages) {
-      if (commit.message.includes(excludePattern)) {
-        return true
-      }
+  for (const excludePattern of excludeMessages) {
+    if (commit.message.includes(excludePattern)) {
+      return true
     }
   }
 
@@ -617,17 +633,20 @@ export function formatAuthorWithGitHub(name: string, email: string, hideEmail: b
 export function getContributors(commits: CommitInfo[], config: LogsmithConfig): string[] {
   const contributorMap = new Map<string, string>()
 
+  const excludeAuthors = filterList(config.excludeAuthors)
+  const includeAuthors = filterList(config.includeAuthors)
+
   for (const commit of commits) {
     const { name, email } = commit.author
 
     // Skip excluded authors
-    if (config.excludeAuthors.includes(name) || config.excludeAuthors.includes(email)) {
+    if (excludeAuthors.includes(name) || excludeAuthors.includes(email)) {
       continue
     }
 
     // Only include specific authors if specified
-    if (config.includeAuthors.length > 0) {
-      if (!config.includeAuthors.includes(name) && !config.includeAuthors.includes(email)) {
+    if (includeAuthors.length > 0) {
+      if (!includeAuthors.includes(name) && !includeAuthors.includes(email)) {
         continue
       }
     }

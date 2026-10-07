@@ -22,6 +22,12 @@ Logsmith is an automatic changelog generator that parses conventional commits an
 - **better-dx** provides shared dev tooling as peer dependencies — do not install its peers (e.g., `typescript`, `pickier`, `bun-plugin-dtsx`) separately if `better-dx` is already in `package.json`
 - If `better-dx` is in `package.json`, ensure `bunfig.toml` includes `linker = "hoisted"`
 
+## Releases
+
+- Release with `bun run release:patch` (or `bun run release`), which runs **@stacksjs/bumpx** with `--no-changelog` and then `scripts/post-release.ts`
+- The changelog and the GitHub release notes are written by that script, not by bumpx — bumpx bundles an older logsmith whose `generateChangelog()` crashed on a partial config
+- Run `bun run post-release` on its own to fill in a changelog entry or release notes that are missing; it is idempotent
+
 ## Commits
 
 - Use conventional commit messages (e.g., `fix:`, `feat:`, `chore:`)

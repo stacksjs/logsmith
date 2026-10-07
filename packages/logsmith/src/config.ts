@@ -102,14 +102,18 @@ export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promi
   })
 
   // Filter out undefined values from overrides to avoid overriding defaults
-  const filteredOverrides = Object.fromEntries(
-    Object.entries(overrides).filter(([, value]) => value !== undefined),
-  ) as LogsmithOptions
+  const filteredOverrides = defined(overrides)
+
+  // The loaded config needs the same treatment: a config file that declares a
+  // key without a value, or a loader that fills every key in from the shape of
+  // the defaults, would otherwise spread `undefined` over a real default and
+  // leave the list filters unusable.
+  const filteredLoaded = defined(loadedConfig)
 
   // Merge configurations with proper precedence: overrides > loaded > defaults
   const config: LogsmithConfig = {
     ...defaultConfig,
-    ...loadedConfig,
+    ...filteredLoaded,
     ...filteredOverrides,
     github: {
       ...defaultConfig.github,
@@ -134,6 +138,15 @@ export async function loadLogsmithConfig(overrides: LogsmithOptions = {}): Promi
   }
 
   return config
+}
+
+/**
+ * Drop keys whose value is undefined, so spreading cannot erase a default.
+ */
+function defined<T extends object>(source: T): T {
+  return Object.fromEntries(
+    Object.entries(source).filter(([, value]) => value !== undefined),
+  ) as T
 }
 
 /**
