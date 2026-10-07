@@ -2,20 +2,6 @@
 
 ## 🐛 Bug Fixes
 
-- **parser**: a hex colour is not an issue, and a cross-repo ref keeps its owner ([fbcc297](https://github.com/stacksjs/logsmith/commit/fbcc297)) _(by glennmichael123 <gtorregosa@gmail.com>)_ ([#3402](https://github.com/stacksjs/logsmith/issues/3402), [#6](https://github.com/stacksjs/logsmith/issues/6), [pantry-pm/pantry#242](https://github.com/pantry-pm/pantry/issues/242), [#123456](https://github.com/stacksjs/logsmith/issues/123456))
-
-## 🔧 Chores
-
-- release v0.2.13 ([5746d89](https://github.com/stacksjs/logsmith/commit/5746d89)) _(by glennmichael123 <gtorregosa@gmail.com>)_
-
-## Contributors
-
-- _glennmichael123 <gtorregosa@gmail.com>_
-
-[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.12...v0.2.13)
-
-## 🐛 Bug Fixes
-
 - **parser**: a hex colour is not an issue, and a cross-repo ref keeps its owner ([fbcc297](https://github.com/stacksjs/logsmith/commit/fbcc297)) _(by glennmichael123 <gtorregosa@gmail.com>)_ ([#3402](https://github.com/stacksjs/logsmith/issues/3402))
 
 ## 🧹 Chores
