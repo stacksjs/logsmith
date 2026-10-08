@@ -1,3 +1,23 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.13...v0.2.14)
+
+## 🐛 Bug Fixes
+
+- **release**: generate the changelog ourselves, not through bumpx ([aaa65a5](https://github.com/stacksjs/logsmith/commit/aaa65a5)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## 🧹 Chores
+
+- release v0.2.14 ([f348cbc](https://github.com/stacksjs/logsmith/commit/f348cbc)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+- changelog for v0.2.13 ([1c758c0](https://github.com/stacksjs/logsmith/commit/1c758c0)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+- add the v0.2.13 changelog entry bumpx failed to write ([bccd461](https://github.com/stacksjs/logsmith/commit/bccd461)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## 📄 Miscellaneous
+
+- Revert "chore: changelog for v0.2.13" ([0965117](https://github.com/stacksjs/logsmith/commit/0965117)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## Contributors
+
+- _glennmichael123 <gtorregosa@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.12...v0.2.13)
 
 ## 🐛 Bug Fixes
