@@ -84,18 +84,56 @@ else {
   }
 }
 
-// Release notes are a nicety, so a missing `gh` or an already-written body is
-// reported and shrugged off rather than failing the release.
-try {
-  const body = execFileSync('gh', ['release', 'view', tag, '--json', 'body', '-q', '.body'], {
-    cwd: root,
-    encoding: 'utf-8',
-  })
+/**
+ * Read the release body, waiting for the release to exist.
+ *
+ * The Releaser workflow creates it a minute or two after the tag lands, so
+ * asking once straight after the push just misses it. Anything other than a
+ * missing release — no `gh`, not signed in — is not going to fix itself and
+ * gives up at once.
+ */
+async function releaseBody(attempts = 40, delayMs = 15_000): Promise<string | undefined> {
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      return execFileSync('gh', ['release', 'view', tag, '--json', 'body', '-q', '.body'], {
+        cwd: root,
+        encoding: 'utf-8',
+        stdio: ['ignore', 'pipe', 'pipe'],
+      })
+    }
+    catch (error) {
+      const reason = error instanceof Error && 'stderr' in error ? String(error.stderr) : `${error}`
+      if (!reason.includes('release not found')) {
+        console.error(`! Could not read the ${tag} release: ${reason.trim() || error}`)
+        return undefined
+      }
 
-  if (body.trim()) {
-    console.error(`✓ ${tag} already has release notes; leaving them alone.`)
+      if (attempt === 1)
+        console.error(`⏳ Waiting for the Releaser workflow to create ${tag}...`)
+
+      if (attempt === attempts)
+        break
+
+      await Bun.sleep(delayMs)
+    }
   }
-  else {
+
+  console.error(`! ${tag} has not appeared; the Releaser workflow may have failed.`)
+  return undefined
+}
+
+// Release notes are a nicety, so anything unexpected here is reported with the
+// command to finish the job by hand rather than failing the release.
+const body = await releaseBody()
+
+if (body === undefined) {
+  console.error(`  Fill them in with: bun run post-release`)
+}
+else if (body.trim()) {
+  console.error(`✓ ${tag} already has release notes; leaving them alone.`)
+}
+else {
+  try {
     execFileSync('gh', ['release', 'edit', tag, '--notes-file', '-'], {
       cwd: root,
       encoding: 'utf-8',
@@ -103,8 +141,8 @@ try {
     })
     console.error(`✓ Filled in the ${tag} release notes.`)
   }
-}
-catch (error) {
-  console.error(`! Could not set the ${tag} release notes: ${error instanceof Error ? error.message : error}`)
-  console.error(`  Set them by hand with: gh release edit ${tag} --notes-file CHANGELOG.md`)
+  catch (error) {
+    console.error(`! Could not set the ${tag} release notes: ${error instanceof Error ? error.message : error}`)
+    console.error(`  Set them by hand with: gh release edit ${tag} --notes-file CHANGELOG.md`)
+  }
 }
