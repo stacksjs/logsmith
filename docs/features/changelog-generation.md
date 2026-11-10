@@ -188,7 +188,7 @@ await generateChangelog({
 # Include commit bodies
 logsmith --include-body
 
-# Hide author emails
+# Show author email addresses (hidden by default)
 logsmith --show-author-email
 
 # Limit description length

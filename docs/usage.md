@@ -117,7 +117,7 @@ logsmith --exclude-scopes "test,docs" --output CHANGELOG.md
 Customize the content and appearance:
 
 ```bash
-# Hide author emails
+# Show author email addresses (hidden by default)
 logsmith --show-author-email --output CHANGELOG.md
 
 # Include commit bodies
