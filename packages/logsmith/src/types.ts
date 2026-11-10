@@ -371,7 +371,7 @@ export interface LogsmithConfig {
    * A release commit is inside the range of the release it makes, so without
    * this every release lists itself. Default: true.
    */
-  excludeReleaseCommits: boolean
+  excludeReleaseCommits?: boolean
 
   // Breaking changes options
   /** Whether to group breaking changes in a separate section */
