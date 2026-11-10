@@ -27,6 +27,7 @@ export const defaultConfig: LogsmithConfig = {
   excludeScopes: [],
   includeScopes: [],
   excludeMessages: [],
+  excludeReleaseCommits: true,
 
   // Breaking changes options
   groupBreakingChanges: true,

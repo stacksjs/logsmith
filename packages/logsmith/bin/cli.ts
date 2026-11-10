@@ -112,7 +112,8 @@ cli
         clean: options.clean || false,
         excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : undefined,
         includeAuthors: options.includeAuthors ? options.includeAuthors.split(',').map((s: string) => s.trim()) : [],
-        hideAuthorEmail: options.hideAuthorEmail || false,
+        // Only the flag turns it on; without it a config file's choice stands.
+        hideAuthorEmail: options.hideAuthorEmail || undefined,
         excludeCommitTypes: options.excludeTypes ? options.excludeTypes.split(',').map((s: string) => s.trim()) : [],
         includeCommitTypes: options.includeTypes ? options.includeTypes.split(',').map((s: string) => s.trim()) : [],
         excludeScopes: options.excludeScopes ? options.excludeScopes.split(',').map((s: string) => s.trim()) : [],

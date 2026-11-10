@@ -97,6 +97,9 @@ export default defineConfig({
   // Message patterns to exclude
   excludeMessages: [],
 
+  // Leave out commits that only mark a release (chore: release v1.2.3)
+  excludeReleaseCommits: true,
+
   // ============================================
   // BREAKING CHANGES OPTIONS
   // ============================================

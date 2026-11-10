@@ -135,6 +135,7 @@ interface LogsmithConfig {
   excludeScopes: string[]
   includeScopes: string[]
   excludeMessages: string[]
+  excludeReleaseCommits: boolean
 
   // Breaking changes options
   groupBreakingChanges: boolean

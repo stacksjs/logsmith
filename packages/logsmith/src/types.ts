@@ -365,6 +365,13 @@ export interface LogsmithConfig {
   includeScopes: string[]
   /** Commit message patterns to exclude (strings or regex patterns) */
   excludeMessages: string[]
+  /**
+   * Leave the commits that only mark a release out of the changelog
+   * (`chore: release v1.2.3`, `chore(release): v1.2.3`, `chore: changelog for v1.2.3`).
+   * A release commit is inside the range of the release it makes, so without
+   * this every release lists itself. Default: true.
+   */
+  excludeReleaseCommits: boolean
 
   // Breaking changes options
   /** Whether to group breaking changes in a separate section */

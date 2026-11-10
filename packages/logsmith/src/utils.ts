@@ -436,11 +436,30 @@ function filterList(value: string[] | undefined): string[] {
   return Array.isArray(value) ? value : []
 }
 
+const RELEASE_COMMIT = /^(?:(?:chore|build|ci|release)(?:\([^)]*\))?!?:\s*)?(?:(?:release|bump(?:\s+version)?(?:\s+to)?|changelog\s+for)\s+)?v?\d+\.\d+\.\d+(?:[-+][\w.+-]+)?$/i
+
+/**
+ * Whether a commit only marks a release: `chore: release v1.2.3`,
+ * `chore(release): v1.2.3-build.4`, `chore: changelog for v1.2.3`, a bare `v1.2.3`.
+ *
+ * The subject has to be nothing but the marker and a version. `fix: support
+ * 1.2.3 lockfiles` is a change and stays.
+ */
+export function isReleaseCommit(message: string): boolean {
+  return RELEASE_COMMIT.test((message.split('\n')[0] || '').trim())
+}
+
 /**
  * Check if a commit should be excluded based on configuration
  */
 function shouldExcludeCommit(commit: CommitInfo, config: LogsmithConfig): boolean {
   const type = commit.type || 'misc'
+
+  // The release commit sits inside the range of the release it makes (the tag
+  // points at it), so a release would otherwise list itself. Only an explicit
+  // false keeps it: a partial config filters it out like the defaults do.
+  if (config.excludeReleaseCommits !== false && isReleaseCommit(commit.message))
+    return true
 
   // A caller handing us a partial config is filtering on nothing, not crashing:
   // `generateChangelog` merges the defaults in first, but `groupCommits` is
