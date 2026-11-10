@@ -130,7 +130,7 @@ logsmith [options]
 
 - `--exclude-authors <authors>` - Skip contributors (comma-separated)
 - `--include-authors <authors>` - Include only specific contributors (comma-separated)
-- `--hide-author-email` - Do not include author email in changelog
+- `--show-author-email` - Print author email addresses in the changelog (hidden by default)
 
 **Advanced Filtering:**
 
@@ -216,7 +216,7 @@ export default defineConfig({
   output: 'CHANGELOG.md',
 
   // Changelog options
-  hideAuthorEmail: false,
+  hideAuthorEmail: true,
   excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'],
 
   // Templates and formatting

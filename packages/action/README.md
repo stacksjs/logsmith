@@ -69,7 +69,7 @@ jobs:
 | Input | Description | Default |
 |-------|-------------|---------|
 | `clean` | Overwrite existing changelog content | `false` |
-| `hide-author-email` | Do not include author email in changelog | `false` |
+| `hide-author-email` | Leave author email addresses out of the changelog; `false` prints them | `true` |
 | `include-dates` | Include dates in changelog | `true` |
 | `group-breaking-changes` | Group breaking changes separately | `true` |
 | `include-body` | Include commit body in changelog entries | `false` |

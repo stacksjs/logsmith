@@ -1,7 +1,11 @@
 import type { CommitInfo, LogsmithConfig } from '../src/types'
 import { describe, expect, it } from 'bun:test'
-import { defaultConfig } from '../src/config'
+import { defaultConfig as shippedDefaults } from '../src/config'
 import { getContributors } from '../src/utils'
+
+// Addresses are hidden by default. These tests are about what is printed when
+// they are shown, so they ask for them.
+const defaultConfig = { ...shippedDefaults, hideAuthorEmail: false }
 
 describe('contributors deduplication', () => {
   it('should list contributors when the config has no author lists', () => {
@@ -180,5 +184,14 @@ describe('contributors deduplication', () => {
     expect(contributors).toHaveLength(2)
     expect(contributors[0]).toBe('Alice Brown <alice@example.com>')
     expect(contributors[1]).toBe('Zoe Wilson <zoe@example.com>')
+  })
+})
+
+describe('author addresses', () => {
+  it('are left out unless asked for', () => {
+    const commits = [{ hash: 'a1', message: 'feat: x', author: { name: 'Ada Lovelace', email: 'ada@example.com' }, date: '2026-01-01', type: 'feat', description: 'x' }] as any
+    expect(shippedDefaults.hideAuthorEmail).toBe(true)
+    expect(getContributors(commits, shippedDefaults).join(' ')).not.toContain('@')
+    expect(getContributors(commits, { ...shippedDefaults, hideAuthorEmail: false }).join(' ')).toContain('ada@example.com')
   })
 })

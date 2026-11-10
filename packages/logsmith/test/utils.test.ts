@@ -1,6 +1,7 @@
 import type { CommitInfo, GeneratedChangelog, LogsmithConfig } from '../src/types'
 import { describe, expect, it } from 'bun:test'
 import { defaultConfig } from '../src/config'
+import { defaultConfig as shippedDefaults } from '../src/config'
 import {
   analyzeCommits,
   colors,
@@ -313,6 +314,9 @@ describe('utils', () => {
   })
 
   describe('getContributors', () => {
+    // Addresses are hidden by default; these are about what is printed when they are shown.
+    const defaultConfig = { ...shippedDefaults, hideAuthorEmail: false }
+
     const mockCommits: CommitInfo[] = [
       {
         hash: 'abc123',

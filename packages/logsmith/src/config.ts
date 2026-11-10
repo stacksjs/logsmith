@@ -17,7 +17,10 @@ export const defaultConfig: LogsmithConfig = {
   excludeAuthors: ['dependabot[bot]', 'github-actions[bot]'], // Added default bot exclusions
   includeAuthors: [],
   excludeEmail: false,
-  hideAuthorEmail: false,
+  // A changelog is published: in the repository, in every GitHub release, in the
+  // npm tarball. An address printed there is an address harvested, and nobody
+  // reading release notes needs it, so names are shown and addresses are opt-in.
+  hideAuthorEmail: true,
 
   // Enhanced filtering options
   excludeCommitTypes: [],

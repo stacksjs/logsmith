@@ -118,7 +118,7 @@ Customize the content and appearance:
 
 ```bash
 # Hide author emails
-logsmith --hide-author-email --output CHANGELOG.md
+logsmith --show-author-email --output CHANGELOG.md
 
 # Include commit bodies
 logsmith --include-body --output CHANGELOG.md

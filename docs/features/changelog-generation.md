@@ -189,7 +189,7 @@ await generateChangelog({
 logsmith --include-body
 
 # Hide author emails
-logsmith --hide-author-email
+logsmith --show-author-email
 
 # Limit description length
 logsmith --max-length 100

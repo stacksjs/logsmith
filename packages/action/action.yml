@@ -41,9 +41,9 @@ inputs:
     description: Include only specific contributors (comma-separated)
     required: false
   hide-author-email:
-    description: Do not include author email in changelog
+    description: Leave author email addresses out of the changelog. Set to 'false' to print them.
     required: false
-    default: 'false'
+    default: 'true'
   exclude-types:
     description: Exclude commit types (comma-separated)
     required: false

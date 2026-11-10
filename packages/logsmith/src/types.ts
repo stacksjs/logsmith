@@ -347,7 +347,7 @@ export interface LogsmithConfig {
   includeAuthors: string[]
   /** Whether to exclude author email addresses */
   excludeEmail: boolean
-  /** Whether to hide author email addresses in output */
+  /** Hide author email addresses in output. Default: true, since a changelog is published. */
   hideAuthorEmail: boolean
 
   // Enhanced filtering options

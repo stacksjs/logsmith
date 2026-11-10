@@ -508,7 +508,7 @@ Technical details for developer audiences:
 export default defineConfig({
   theme: 'unicode',
   includeCommitBody: true,
-  hideAuthorEmail: false,
+  hideAuthorEmail: true,
   templates: {
     commitFormat: '- `{{type}}{{scope}}`: {{description}} ({{hash}}) by {{author}}',
     groupFormat: '### {{title}}',

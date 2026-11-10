@@ -25,7 +25,8 @@ cli
   .option('--clean', 'Determine if the working directory is clean and exit if not')
   .option('--exclude-authors <authors>', 'Skip contributors (comma-separated)')
   .option('--include-authors <authors>', 'Include only specific contributors (comma-separated)')
-  .option('--hide-author-email', 'Do not include author email in changelog')
+  .option('--show-author-email', 'Print author email addresses in the changelog (hidden by default)')
+  .option('--hide-author-email', 'Hide author email addresses (the default; kept so existing commands still run)')
   .option('--exclude-types <types>', 'Exclude commit types (comma-separated)')
   .option('--include-types <types>', 'Include only specific commit types (comma-separated)')
   .option('--exclude-scopes <scopes>', 'Exclude commit scopes (comma-separated)')
@@ -113,7 +114,8 @@ cli
         excludeAuthors: options.excludeAuthors ? options.excludeAuthors.split(',').map((s: string) => s.trim()) : undefined,
         includeAuthors: options.includeAuthors ? options.includeAuthors.split(',').map((s: string) => s.trim()) : [],
         // Only the flag turns it on; without it a config file's choice stands.
-        hideAuthorEmail: options.hideAuthorEmail || undefined,
+        // Showing wins when both are given: it is the one somebody typed on purpose.
+        hideAuthorEmail: options.showAuthorEmail ? false : (options.hideAuthorEmail || undefined),
         excludeCommitTypes: options.excludeTypes ? options.excludeTypes.split(',').map((s: string) => s.trim()) : [],
         includeCommitTypes: options.includeTypes ? options.includeTypes.split(',').map((s: string) => s.trim()) : [],
         excludeScopes: options.excludeScopes ? options.excludeScopes.split(',').map((s: string) => s.trim()) : [],
