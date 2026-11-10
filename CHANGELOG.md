@@ -1,3 +1,16 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.14...v0.2.15)
+
+## 🐛 Bug Fixes
+
+- **types**: excludeReleaseCommits is optional, so a full config written before it still type-checks ([16fac3d](https://github.com/stacksjs/logsmith/commit/16fac3d)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **changelog**: leave a release's own commit out of its notes, and let a config file hide emails under the CLI ([e7048f4](https://github.com/stacksjs/logsmith/commit/e7048f4)) _(by Chris <chrisbreuer93@gmail.com>)_
+- **release**: wait for the Releaser workflow before writing release notes ([279ccac](https://github.com/stacksjs/logsmith/commit/279ccac)) _(by glennmichael123 <gtorregosa@gmail.com>)_
+
+## Contributors
+
+- _Chris <chrisbreuer93@gmail.com>_
+- _glennmichael123 <gtorregosa@gmail.com>_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.13...v0.2.14)
 
 ## 🐛 Bug Fixes
