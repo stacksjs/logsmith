@@ -1,3 +1,17 @@
+[Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.15...v0.2.16)
+
+## 🚀 Features
+
+- **changelog**: leave author email addresses out by default ([daf4451](https://github.com/stacksjs/logsmith/commit/daf4451)) _(by Chris)_
+
+## 📚 Documentation
+
+- describe --show-author-email as what it does ([bca71df](https://github.com/stacksjs/logsmith/commit/bca71df)) _(by Chris)_
+
+## Contributors
+
+- _Chris_
+
 [Compare changes](https://github.com/stacksjs/logsmith/compare/v0.2.14...v0.2.15)
 
 ## 🐛 Bug Fixes
